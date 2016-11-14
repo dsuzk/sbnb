@@ -48,7 +48,7 @@ CONCERT_LIB_DIR = $(CONCERT_DIR)/lib/$(SYSTEM)/$(CPLEX_LIB_FORMAT)
 CONCERT_INCLUDE_DIR = $(CONCERT_DIR)/include
 CPLEX_INCLUDE_DIR   = $(CPLEX_DIR)/include
 
-GTEST_LIB_FLAG = -lgtest_main
+GTEST_LIB_FLAG = -lgtest_main -lpthread
 
 LIB_FLAGS  = -L$(CPLEX_LIB_DIR) -L$(CONCERT_LIB_DIR) -L$(LIB_DIR) -lconcert -lilocplex -lcplex -lm -lpthread
 INCLUDE_FLAGS = -isystem $(CPLEX_INCLUDE_DIR) -isystem $(CONCERT_INCLUDE_DIR) -isystem $(INCLUDE_DIR) -Isrc -Itest

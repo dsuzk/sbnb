@@ -34,14 +34,17 @@ link_directories(
 		${CONCERT_LIB_DIR}/${SYSTEM}/static_pic
 )
 
+set(MAIN ${PROJECT_SOURCE_DIR}/src/main.cpp)
 
 file(
 		GLOB SOURCE_FILES
-		"src/*.h"
-		"src/*.cpp"
+		${PROJECT_SOURCE_DIR}/src/*/*.h
+		${PROJECT_SOURCE_DIR}/src/*/*.cpp
 )
 
-add_executable(bnb ${SOURCE_FILES})
+list(REMOVE_ITEM SOURCE_FILES ${MAIN})
+
+add_executable(bnb ${MAIN} ${SOURCE_FILES})
 
 target_link_libraries(
 		bnb
@@ -77,7 +80,7 @@ add_library(googletest ${GOOGLETEST_SOURCES})
 
 add_dependencies(googletest update_submodules)
 
-file(GLOB TEST_SOURCE_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)
+file(GLOB TEST_SOURCE_FILES ${PROJECT_SOURCE_DIR}/test/*/*.cpp)
 
 list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 

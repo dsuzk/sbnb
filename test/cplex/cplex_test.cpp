@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <ilcplex/ilocplex.h>
 #include <iostream>
-#include "ExampleModel.h"
+#include "example_model.h"
 
 using namespace std;
 

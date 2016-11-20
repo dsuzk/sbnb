@@ -68,6 +68,10 @@ enable_testing()
 include_directories(
 		${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}
 		${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/include
+		${PROJECT_BINARY_DIR}/include
+		${PROJECT_SOURCE_DIR}/src
+		${CPLEX_ROOT}/include
+		${CONCERT_ROOT}/include
 )
 
 set(
@@ -94,4 +98,5 @@ target_link_libraries(
 		ilocplex
 		cplex
 		concert
-		pthread)
+		pthread
+)

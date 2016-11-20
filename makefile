@@ -66,10 +66,10 @@ BUILD_DIR := build
 TEST_DIR := test
 GTEST_DIR := googletest/googletest
 
-SOURCES := $(filter-out $(SRC_DIR)/main.$(SRC_EXTENSION), $(wildcard $(SRC_DIR)/*.$(SRC_EXTENSION)))
+SOURCES := $(filter-out $(SRC_DIR)/main.$(SRC_EXTENSION), $(shell find $(SRC_DIR) -name '*.$(SRC_EXTENSION)'))
 OBJECTS := $(patsubst $(SRC_DIR)/%, $(BUILD_DIR)/%, $(SOURCES:.$(SRC_EXTENSION)=.o))
 
-TESTS := $(wildcard $(TEST_DIR)/*.$(SRC_EXTENSION))
+TESTS := $(shell find $(TEST_DIR) -name '*.$(SRC_EXTENSION)')
 TEST_OBJECTS := $(patsubst $(TEST_DIR)/%, $(BUILD_DIR)/%, $(TESTS:.$(SRC_EXTENSION)=.o))
 
 # ---------------------------------------------------------------------
@@ -112,12 +112,12 @@ $(TEST_TARGET): $(OBJECTS) $(TEST_OBJECTS)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.$(SRC_EXTENSION)
 	@echo "Building sources..."
-	@mkdir -p $(BUILD_DIR)
+	@mkdir -p $(dir $@)
 	@echo " "$(COMPILER) $@
 	@$(COMPILER) $(COMPILER_FLAGS) $(INCLUDE_FLAGS) -c -o $@ $<
 
 $(BUILD_DIR)/%.o: $(TEST_DIR)/%.$(SRC_EXTENSION)
 	@echo "Building tests..."
-	@mkdir -p $(BUILD_DIR)
+	@mkdir -p $(dir $@)
 	@echo " "$(COMPILER) $@
 	@$(COMPILER) $(COMPILER_FLAGS) $(INCLUDE_FLAGS) -c -o $@ $<

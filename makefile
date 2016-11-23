@@ -65,6 +65,7 @@ SRC_DIR := src
 BUILD_DIR := build
 TEST_DIR := test
 GTEST_DIR := googletest/googletest
+DOXY_CONFIG := doxyconfig
 
 SOURCES := $(filter-out $(SRC_DIR)/main.$(SRC_EXTENSION), $(shell find $(SRC_DIR) -name '*.$(SRC_EXTENSION)'))
 OBJECTS := $(patsubst $(SRC_DIR)/%, $(BUILD_DIR)/%, $(SOURCES:.$(SRC_EXTENSION)=.o))
@@ -93,6 +94,11 @@ clean:
 	@echo "Cleaning...";
 	$(RM) -r $(BUILD_DIR) $(TARGET_DIR)
 	@make -C $(GTEST_DIR)/make clean
+
+docu:
+	doxygen $(DOXY_CONFIG)
+
+.PHONY: all test docu
 
 # ---------------------------------------------------------------------
 # Compile excecutable binary and testcases

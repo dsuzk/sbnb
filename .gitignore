@@ -1,6 +1,7 @@
 # Project specific
 lib/*
 bin/*
+docu/*
 
 # Compiled Object files
 *.slo

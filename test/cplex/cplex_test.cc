@@ -5,6 +5,12 @@
 
 using namespace std;
 
+/** \brief tests a ILOModel
+ *
+ *  this test class tests a IloModel which is given to
+ *  createSampleModel to add the optimizeproblem and constraints
+ */
+
 TEST(Cplex, model_test){
 
   IloEnv env;

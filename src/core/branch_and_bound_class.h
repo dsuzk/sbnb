@@ -2,34 +2,40 @@
 #define _SBNB_CORE_BRANCH_AND_BOUND_CLASS_H_
 
 #include <ilcplex/ilocplex.h>
+#include "node_selection/node_class.h"
+#include "IPModel/IPModel_class.h"
 
 /**
- * @brief The main entry point for the branch and bound framework 
+ * @brief The main entry point for the branch and bound framework
  */
 class BranchAndBound
 {
- private:
-    IloModel& model_;
-    IloNumVarArray& variables_;
+private:
+    IloModel* model_;
+    IloNumVarArray* variables_;
 
     double global_dual_bound_;
     double global_primal_bound_;
 
     // Numerical Values Array as returned by eg. cplex.getValues
     // Solution of cplex.solve()
-    const IloNumArray* best_solution_;
+    IloNumArray* best_solution_;
+    // Node<IPModel*> current_node_;
+
 
   public:
     BranchAndBound(IloModel*, IloNumVarArray*);
 
-    double globalDualBound() const;
-    double globalPrimalBound() const;
-    
-    const IloNumVarArray& getVariables() { return variables_; };
-    const IloModel& getModel() { return model_; };
+    const IloNumVarArray& variables() const;
+    const IloModel& model() const;
+
+    double global_dual_bound() const;
+    double global_primal_bound() const;
+
+    const IloNumArray& best_solution() const;
 
     // wait for BNB implementation
-    // const BNBNode* currentNode() const;
+    // const Node<IPModel*>* currentNode() const;
 
     void optimize();
 };

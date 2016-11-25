@@ -10,16 +10,14 @@ class BnBNodeSelection {
 public:
     BnBNodeSelection();
 
-    virtual void add_node(Node<T> node) = 0;
-
     virtual Node<T> current_node() = 0;
 
     virtual Node<T> next_node() = 0;
 
-    virtual bool has_next_node() = 0;
+    virtual void SetNextNode(Node<T> node) = 0;
 
+    virtual bool HasNextNode() = 0;
 };
-
 
 template<class T>
 

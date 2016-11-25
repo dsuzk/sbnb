@@ -26,21 +26,21 @@ TEST(BreadthFirstTraversal, next_node_Test) {
   Node<int> f(6);
   Node<int> g(7);
 
-  traversal.add_node(a);
+  traversal.SetNextNode(a);
 
   Node<int> next = traversal.next_node();
   int expected_content = 1;
   EXPECT_EQ(next.content, expected_content);
 
-  traversal.add_node(b);
-  traversal.add_node(c);
+  traversal.SetNextNode(b);
+  traversal.SetNextNode(c);
 
   next = traversal.next_node();
   expected_content = 2;
   EXPECT_EQ(next.content, expected_content);
 
-  traversal.add_node(d);
-  traversal.add_node(e);
+  traversal.SetNextNode(d);
+  traversal.SetNextNode(e);
 
   next = traversal.next_node();
   expected_content = 3;
@@ -54,8 +54,8 @@ TEST(BreadthFirstTraversal, next_node_Test) {
   expected_content = 5;
   EXPECT_EQ(next.content, expected_content);
 
-  traversal.add_node(f);
-  traversal.add_node(g);
+  traversal.SetNextNode(f);
+  traversal.SetNextNode(g);
 
   next = traversal.next_node();
   expected_content = 6;
@@ -74,8 +74,8 @@ TEST(BreadthFirstTraversal, current_node_Test) {
   Node<int> a(1);
   Node<int> b(2);
 
-  traversal.add_node(a);
-  traversal.add_node(b);
+  traversal.SetNextNode(a);
+  traversal.SetNextNode(b);
 
   Node<int> current = traversal.current_node();
   int expected_content = 1;
@@ -83,17 +83,17 @@ TEST(BreadthFirstTraversal, current_node_Test) {
 
 }
 
-TEST(BreadthFirstTraversal, has_next_node_Test) {
+TEST(BreadthFirstTraversal, HasNextNode_Test) {
 
   BreadthFirstTraversal<int> traversal;
 
   Node<int> a(0);
-  traversal.add_node(a);
+  traversal.SetNextNode(a);
 
-  EXPECT_TRUE(traversal.has_next_node());
+  EXPECT_TRUE(traversal.HasNextNode());
 
   traversal.next_node();
 
-  EXPECT_FALSE(traversal.has_next_node());
+  EXPECT_FALSE(traversal.HasNextNode());
 
 }

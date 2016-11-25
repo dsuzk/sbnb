@@ -34,12 +34,12 @@ link_directories(
 		${CONCERT_LIB_DIR}/${SYSTEM}/static_pic
 )
 
-set(MAIN ${PROJECT_SOURCE_DIR}/src/main.cpp)
+set(MAIN ${PROJECT_SOURCE_DIR}/src/main.cc)
 
 file(
 		GLOB SOURCE_FILES
 		${PROJECT_SOURCE_DIR}/src/*/*.h
-		${PROJECT_SOURCE_DIR}/src/*/*.cpp
+		${PROJECT_SOURCE_DIR}/src/*/*.cc
 )
 
 list(REMOVE_ITEM SOURCE_FILES ${MAIN})
@@ -84,9 +84,9 @@ add_library(googletest ${GOOGLETEST_SOURCES})
 
 add_dependencies(googletest update_submodules)
 
-file(GLOB TEST_SOURCE_FILES ${PROJECT_SOURCE_DIR}/test/*/*.cpp)
+file(GLOB TEST_SOURCE_FILES ${PROJECT_SOURCE_DIR}/test/*/*.cc)
 
-list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
+list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cc)
 
 add_executable(unit_tests ${TEST_SOURCE_FILES} ${SOURCE_FILES})
 

@@ -1,22 +1,39 @@
-#include <ilcplex/ilocplex.h>
+
 #include <iostream>
+#include <ilcplex/ilocplex.h>
+#include "example_model.h"
 
 using namespace std;
-void createSampleModel(IloModel* model, IloNumVarArray* variables){
 
-  IloEnv env = (*model).getEnv();
-  IloRangeArray constraints(env);
-  IloNumVarArray var = *variables;
+ExampleModel::ExampleModel() {
 
-  (*model).add(IloMaximize(env, 2*var[0]+3*var[1]));
+  IloEnv environment_;
+  this->environment = &environment_;
 
-  constraints.add(4*var[0]+12*var[1] <= 33);
-  constraints.add(10*var[0]+4*var[1] <= 35);
+  IloModel model_(environment_);
+  this->model = &model_;
+
+  IloNumVarArray variables_(environment_);
+  this->variables = &variables_;
+
+  variables_.add(IloNumVar(environment_, 0.0, IloInfinity, ILOINT));
+  variables_.add(IloNumVar(environment_, 0.0, IloInfinity, ILOINT));
+
+  IloRangeArray constraints(environment_);
+
+  model_.add(IloMaximize(environment_, 2 * variables_[0] + 3 * variables_[1]));
+
+  constraints.add(4 * variables_[0] + 12 * variables_[1] <= 33);
+  constraints.add(10 * variables_[0] + 4 * variables_[1] <= 35);
 
   constraints[0].setName("c1");
   constraints[1].setName("c2");
 
-  (*model).add(constraints);
+  model_.add(constraints);
+
+  IloCplex cplex_(model_);
+  this->cplex = &cplex_;
+
 }
 
 

@@ -1,20 +1,21 @@
-#ifndef BNB_IPMODEL_H_
-#define BNB_IPMODEL_H_
+#ifndef BNB_CORE_BNBPROBLEM_H_
+#define BNB_CORE_BNBPROBLEM_H_
 
 #include <ilcplex/ilocplex.h>
 
-
-class IPModel {
-
-private:
+/**
+ * @brief The current Problem/Subproblem of a BnB Tree
+ */
+class BnBProblem {
+ private:
   IloModel* model_;
   IloNumVarArray* variables_;
   IloConstraint* constraint_;
-  IloNumArray solution_;
+  IloNumArray* solution_;
 
-public:
-  IPModel(IloModel*, IloNumVarArray*);
-  IPModel(IloModel*, IloNumVarArray*, IloConstraint*);
+ public:
+  BnBProblem(IloModel*, IloNumVarArray*);
+  BnBProblem(IloModel*, IloNumVarArray*, IloConstraint*);
   void AddFixing(IloConstraint*);
   const IloNumArray& GetSolution() const;
   const IloConstraintArray& fixings() const;
@@ -28,5 +29,5 @@ public:
   double primalBound() const;
 };
 
+#endif //BNB_CORE_BNBPROBLEM_H_
 
-#endif //BNB_IPMODEL_H_

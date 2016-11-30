@@ -14,34 +14,34 @@ class DepthFirstTraversal : public BnBNodeSelection<T> {
 public:
     DepthFirstTraversal();
 
-    Node<T> next_node();
+    Node<T> *next_node();
 
-    Node<T> current_node();
+    Node<T> *current_node();
 
-    void SetNextNode(Node<T> node);
+    void SetNextNode(Node<T> *node);
 
     bool HasNextNode();
 
 private:
-    stack<Node<T> > traversal_order_;
+    stack<Node<T> *> traversal_order_;
 };
 
 template<class T>
 DepthFirstTraversal<T>::DepthFirstTraversal() {}
 
 template<class T>
-void DepthFirstTraversal<T>::SetNextNode(Node<T> node) {
+void DepthFirstTraversal<T>::SetNextNode(Node<T> *node) {
   this->traversal_order_.push(node);
 }
 
 template<class T>
-Node<T> DepthFirstTraversal<T>::current_node() {
+Node<T> *DepthFirstTraversal<T>::current_node() {
   return this->traversal_order_.top();
 }
 
 template<class T>
-Node<T> DepthFirstTraversal<T>::next_node() {
-  Node<T> next = this->traversal_order_.top();
+Node<T> *DepthFirstTraversal<T>::next_node() {
+  Node<T> *next = this->traversal_order_.top();
   this->traversal_order_.pop();
   return next;
 }

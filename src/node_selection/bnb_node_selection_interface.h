@@ -10,11 +10,11 @@ class BnBNodeSelection {
 public:
     BnBNodeSelection();
 
-    virtual Node<T> current_node() = 0;
+    virtual Node<T> *current_node() = 0;
 
-    virtual Node<T> next_node() = 0;
+    virtual Node<T> *next_node() = 0;
 
-    virtual void SetNextNode(Node<T> node) = 0;
+    virtual void SetNextNode(Node<T> *node) = 0;
 
     virtual bool HasNextNode() = 0;
 };

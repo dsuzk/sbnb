@@ -14,34 +14,34 @@ class BreadthFirstTraversal : public BnBNodeSelection<T> {
 public:
     BreadthFirstTraversal();
 
-    Node<T> current_node();
+    Node<T> *current_node();
 
-    Node<T> next_node();
+    Node<T> *next_node();
 
-    void SetNextNode(Node<T> node);
+    void SetNextNode(Node<T> *node);
 
     bool HasNextNode();
 
 private:
-    queue<Node<T> > traversal_order_;
+    queue<Node<T> *> traversal_order_;
 };
 
 template<class T>
 BreadthFirstTraversal<T>::BreadthFirstTraversal() {}
 
 template<class T>
-void BreadthFirstTraversal<T>::SetNextNode(Node<T> node) {
+void BreadthFirstTraversal<T>::SetNextNode(Node<T> *node) {
   this->traversal_order_.push(node);
 }
 
 template<class T>
-Node<T> BreadthFirstTraversal<T>::current_node() {
+Node<T> *BreadthFirstTraversal<T>::current_node() {
   return this->traversal_order_.front();
 }
 
 template<class T>
-Node<T> BreadthFirstTraversal<T>::next_node() {
-  Node<T> next = this->traversal_order_.front();
+Node<T> *BreadthFirstTraversal<T>::next_node() {
+  Node<T> *next = this->traversal_order_.front();
   this->traversal_order_.pop();
   return next;
 }

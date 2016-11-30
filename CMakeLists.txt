@@ -70,6 +70,7 @@ include_directories(
 		${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/include
 		${PROJECT_BINARY_DIR}/include
 		${PROJECT_SOURCE_DIR}/src
+		${PROJECT_SOURCE_DIR}/test
 		${CPLEX_ROOT}/include
 		${CONCERT_ROOT}/include
 )

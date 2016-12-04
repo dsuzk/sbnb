@@ -1,6 +1,5 @@
 #include "core/bnb_problem_class.h"
 
-
 BnBProblem::BnBProblem(IloModel* model, IloNumVarArray* variables) {
   model_ = model;
   variables_ = variables;
@@ -10,9 +9,7 @@ BnBProblem::BnBProblem(IloModel* model, IloNumVarArray* variables, IloConstraint
   model_ = model;
   variables_ = variables;
   constraint_ = constraint;
-  AddFixing(constraint_);
 }
-
 
 void BnBProblem::AddFixing(IloConstraint* constraint) {
   model_->add(*constraint);

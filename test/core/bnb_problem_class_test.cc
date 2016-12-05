@@ -10,7 +10,7 @@ TEST(BnBProblem, getSolution) {
   try {
 
     ExampleCplexModel example_model;
-    BnBProblem problem(example_model.model, example_model.variables);
+    BnBProblem problem(example_model.cplex, example_model.variables);
 
     problem.Solve();
     const IloNumArray solution = problem.GetSolution();

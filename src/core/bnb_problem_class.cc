@@ -1,28 +1,31 @@
 #include "core/bnb_problem_class.h"
 
-BnBProblem::BnBProblem(IloModel* model, IloNumVarArray* variables) {
-  model_ = model;
+BnBProblem::BnBProblem(IloCplex* cplex, IloNumVarArray* variables) {
+  cplex_ = cplex;
   variables_ = variables;
+
+  model_ = cplex_->getModel();
 }
 
-BnBProblem::BnBProblem(IloModel* model, IloNumVarArray* variables, IloConstraint* constraint) {
-  model_ = model;
+BnBProblem::BnBProblem(IloCplex* cplex, IloNumVarArray* variables, IloConstraint* constraint) {
+  cplex_ = cplex;
   variables_ = variables;
   constraint_ = constraint;
+
+  model_ = cplex_->getModel();
 }
 
 void BnBProblem::AddFixing(IloConstraint* constraint) {
-  model_->add(*constraint);
+  model_.add(*constraint);
 }
 
 void BnBProblem::Solve() {
-  IloCplex cplex(*model_);
-  cplex.solve();
-  this -> solution_ = IloNumArray(this->model_->getEnv());
-  cplex.getValues(solution_, *variables_);
+  cplex_->solve();
+  solution_ = IloNumArray(cplex_->getEnv());
+  cplex_->getValues(solution_, *variables_);
 }
 
 const IloNumArray& BnBProblem::GetSolution() const {
-  return this->solution_;
+  return solution_;
 }
 

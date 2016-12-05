@@ -13,6 +13,8 @@ class BranchAndBound {
   IloModel* model_;
   IloNumVarArray* variables_;
 
+  IloCplex cplex_;
+
   double global_dual_bound_;
   double global_primal_bound_;
 

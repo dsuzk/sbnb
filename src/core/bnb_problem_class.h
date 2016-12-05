@@ -8,15 +8,16 @@
  */
 class BnBProblem {
  private:
-  IloModel* model_;
+  IloCplex* cplex_;
   IloNumVarArray* variables_;
   IloConstraint* constraint_;
 
+  IloModel model_;
   IloNumArray solution_;
 
  public:
-  BnBProblem(IloModel*, IloNumVarArray*);
-  BnBProblem(IloModel*, IloNumVarArray*, IloConstraint*);
+  BnBProblem(IloCplex*, IloNumVarArray*);
+  BnBProblem(IloCplex*, IloNumVarArray*, IloConstraint*);
   void AddFixing(IloConstraint*);
   void Solve();
   const IloNumArray& GetSolution() const;

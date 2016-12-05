@@ -6,6 +6,8 @@
 BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables) {
   model_ = model;
   variables_ = variables;
+
+  cplex_ = IloCplex(*model_);
 }
 
 /*
@@ -28,7 +30,7 @@ void BranchAndBound::optimize() {
   /*
    * 0.generate root problem and add to node selection
    */
-  BnBProblem problem(model_, variables_);
+  BnBProblem problem(&cplex_, variables_);
   Node<BnBProblem*> root(&problem);
 
   DepthFirstTraversal<BnBProblem*> node_selection;

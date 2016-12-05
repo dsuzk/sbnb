@@ -4,9 +4,9 @@
 
 #include <ilcplex/ilocplex.h>
 
-class TestCplexProblem {
+class ExampleCplexModel {
 public:
-    TestCplexProblem();
+    ExampleCplexModel();
 
     IloEnv *environment;
     IloModel *model;

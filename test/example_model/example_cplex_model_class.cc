@@ -1,11 +1,11 @@
 
 #include <iostream>
 #include <ilcplex/ilocplex.h>
-#include "test_cplex_problem_class.h"
+#include "example_model/example_cplex_model_class.h"
 
 using namespace std;
 
-TestCplexProblem::TestCplexProblem() {
+ExampleCplexModel::ExampleCplexModel() {
 
   this->environment = new IloEnv();
   this->model = new IloModel(*environment); 

@@ -1,6 +1,9 @@
 
 #include <math.h>
+#include <ilcplex/ilocplex.h>
 #include "first_fractional.h"
+
+using namespace std;
 
 bool IsFractional(const double number) {
   double fractional_part, integral_part;
@@ -8,8 +11,8 @@ bool IsFractional(const double number) {
   return (fractional_part != 0);
 }
 
-int IndexOfFirstFractional(const double numbers[], size_t length) {
-  for (int i = 0; i < length; i++) {
+int IndexOfFirstFractional(const IloNumArray &numbers) {
+  for (int i = 0; i < numbers.getSize(); i++) {
     if (IsFractional(numbers[i])) {
       return i;
     }

@@ -1,4 +1,5 @@
 #include "core/bnb_problem_class.h"
+#include <string>
 
 BnBProblem::BnBProblem(IloCplex* cplex, IloNumVarArray* variables) {
   cplex_ = cplex;
@@ -33,4 +34,13 @@ void BnBProblem::Solve() {
 const IloNumArray& BnBProblem::GetSolution() const {
   return solution_;
 }
+
+bool BnBProblem::solved() const {
+  IloCplex cplex(*model_);
+  return (cplex.getStatus() == IloAlgorithm::Feasible);
+
+}
+
+
+
 

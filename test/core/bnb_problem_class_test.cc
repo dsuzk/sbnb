@@ -27,6 +27,7 @@ TEST(BnBProblem, getSolution) {
     model.add(constraints);
 
     BnBProblem problem(&model, &variables);
+    problem.Solve();
     const IloNumArray solution = problem.GetSolution();
     ASSERT_EQ(1, solution[0]);
     ASSERT_EQ(2, solution[1]);

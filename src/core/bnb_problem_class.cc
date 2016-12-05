@@ -15,14 +15,14 @@ void BnBProblem::AddFixing(IloConstraint* constraint) {
   model_->add(*constraint);
 }
 
-const IloNumArray& BnBProblem::GetSolution() const {
+void BnBProblem::Solve() {
   IloCplex cplex(*model_);
   cplex.solve();
+  this -> solution_ = IloNumArray(this->model_->getEnv());
+  cplex.getValues(solution_, *variables_);
+}
 
-  // if not 'new'Segmentation Error cause pointer does not point so anything anymore
-  // TODO figure out a way to return pointer to member/ or delete 'new' pointer
-  IloNumArray* solution = new IloNumArray(this->model_->getEnv());
-  cplex.getValues(*solution, *variables_);
-  return *solution;
+const IloNumArray& BnBProblem::GetSolution() const {
+  return this->solution_;
 }
 

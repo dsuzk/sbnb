@@ -11,12 +11,14 @@ class BnBProblem {
   IloModel* model_;
   IloNumVarArray* variables_;
   IloConstraint* constraint_;
-  IloNumArray* solution_;
+
+  IloNumArray solution_;
 
  public:
   BnBProblem(IloModel*, IloNumVarArray*);
   BnBProblem(IloModel*, IloNumVarArray*, IloConstraint*);
   void AddFixing(IloConstraint*);
+  void Solve();
   const IloNumArray& GetSolution() const;
   const IloConstraintArray& fixings() const;
 

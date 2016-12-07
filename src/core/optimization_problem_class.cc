@@ -1,14 +1,11 @@
-#include "core/optimization_problem_class.h"
 #include <string>
 #include <iostream>
-
-using namespace std;
+#include "core/optimization_problem_class.h"
 
 OptimizationProblem::OptimizationProblem(IloCplex* cplex, IloNumVarArray* variables)
   : cplex_(cplex),
     variables_(variables),
-    model_(cplex->getModel())
-{}
+    model_(cplex->getModel()) {}
 
 OptimizationProblem::OptimizationProblem(IloCplex* cplex, IloNumVarArray* variables, IloConstraint* constraint)
   : cplex_(cplex),
@@ -32,10 +29,9 @@ void OptimizationProblem::Solve() {
   cplex_status_ = cplex_->getStatus();
   solution_ = IloNumArray(cplex_->getEnv());
 
-  if(solved_){
+  if(solved_)
     cplex_->getValues(solution_, *variables_);
-  }
-
+  
 }
 
 const IloNumArray& OptimizationProblem::GetSolution() const {
@@ -57,6 +53,4 @@ bool OptimizationProblem::IsUnbounded() const {
 double OptimizationProblem::GetObjectiveValue()  {
   return cplex_->getObjValue();
 }
-
-
 

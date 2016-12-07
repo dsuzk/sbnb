@@ -10,13 +10,18 @@ BnBProblem::BnBProblem(IloCplex* cplex, IloNumVarArray* variables) {
 BnBProblem::BnBProblem(IloCplex* cplex, IloNumVarArray* variables, IloConstraint* constraint) {
   cplex_ = cplex;
   variables_ = variables;
-  constraint_ = constraint;
 
   model_ = cplex_->getModel();
+  fixings_ = IloConstraintArray(cplex_->getEnv());
+  fixings_.add(*constraint);
 }
 
 void BnBProblem::AddFixing(IloConstraint* constraint) {
-  model_.add(*constraint);
+  fixings_.add(*constraint);
+}
+
+const IloConstraintArray& BnBProblem::GetFixings() const {
+  return fixings_; 
 }
 
 void BnBProblem::Solve() {

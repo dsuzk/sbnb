@@ -10,10 +10,10 @@ class BnBProblem {
  private:
   IloCplex* cplex_;
   IloNumVarArray* variables_;
-  IloConstraint* constraint_;
 
   IloModel model_;
   IloNumArray solution_;
+  IloConstraintArray fixings_;
 
  public:
   BnBProblem(IloCplex*, IloNumVarArray*);
@@ -21,7 +21,7 @@ class BnBProblem {
   void AddFixing(IloConstraint*);
   void Solve();
   const IloNumArray& GetSolution() const;
-  const IloConstraintArray& fixings() const;
+  const IloConstraintArray& GetFixings() const;
 
   bool fathomed() const;
   bool unbounded() const;

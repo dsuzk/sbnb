@@ -15,6 +15,9 @@ class BnBProblem {
   IloNumArray solution_;
   IloConstraintArray fixings_;
 
+  IloAlgorithm::Status cplex_status_;
+  bool solved_;
+
  public:
   BnBProblem(IloCplex*, IloNumVarArray*);
   BnBProblem(IloCplex*, IloNumVarArray*, IloConstraint*);

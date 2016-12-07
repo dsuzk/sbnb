@@ -24,3 +24,71 @@ TEST(BnBProblem, getSolution) {
     cerr << "Error: " << e.getMessage() << endl;
   }
 }
+
+TEST(BnBProblem, solved) {
+  try {
+
+    ExampleCplexModel example_model;
+    BnBProblem problem(example_model.cplex, example_model.variables);
+
+    problem.Solve();
+
+    ASSERT_TRUE(problem.solved());
+
+  } catch (const IloException& e) {
+    cerr << "Error: " << e.getMessage() << endl;
+  }
+}
+
+TEST(BnBProblem, infeasible) {
+  try {
+
+    IloEnv env;
+    IloModel model(env);
+    IloNumVarArray variables(env);
+    IloRangeArray constraints(env);
+
+    variables.add(IloNumVar(env, 6.0, 6.0, ILOFLOAT));
+    variables.add(IloNumVar(env, 6.0, 6.0, ILOFLOAT));
+
+    model.add(IloMinimize(env, variables[0] + variables[1]));
+    constraints.add(variables[0] + variables[1] <= 11);
+    model.add(constraints);
+
+    IloCplex cplex(model);
+    BnBProblem problem(&cplex, &variables);
+    problem.Solve();
+
+    ASSERT_TRUE(problem.infeasible());
+
+  } catch (const IloException& e) {
+    cerr << "Error: " << e.getMessage() << endl;
+  }
+}
+
+TEST(BnBProblem, unbounded) {
+  try {
+
+    IloEnv env;
+    IloModel model(env);
+    IloNumVarArray variables(env);
+    IloRangeArray constraints(env);
+
+    variables.add(IloNumVar(env, 0.0, INFINITY, ILOFLOAT));
+    variables.add(IloNumVar(env, 0.0, INFINITY, ILOFLOAT));
+
+    model.add(IloMaximize(env, variables[0] + variables[1]));
+
+    constraints.add(variables[0] + variables[1] >= 0);
+    model.add(constraints);
+    IloCplex cplex(model);
+
+    BnBProblem problem(&cplex, &variables);
+    problem.Solve();
+
+    ASSERT_TRUE(problem.unbounded());
+
+  } catch (const IloException& e) {
+    cerr << "Error: " << e.getMessage() << endl;
+  }
+}

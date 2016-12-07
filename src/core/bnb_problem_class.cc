@@ -1,5 +1,8 @@
 #include "core/bnb_problem_class.h"
 #include <string>
+#include <iostream>
+
+using namespace std;
 
 BnBProblem::BnBProblem(IloCplex* cplex, IloNumVarArray* variables) {
   cplex_ = cplex;
@@ -26,9 +29,14 @@ const IloConstraintArray& BnBProblem::GetFixings() const {
 }
 
 void BnBProblem::Solve() {
-  cplex_->solve();
+  solved_ = (bool)cplex_->solve();
+  cplex_status_ = cplex_->getStatus();
   solution_ = IloNumArray(cplex_->getEnv());
-  cplex_->getValues(solution_, *variables_);
+
+  if(solved_){
+    cplex_->getValues(solution_, *variables_);
+  }
+
 }
 
 const IloNumArray& BnBProblem::GetSolution() const {
@@ -36,9 +44,16 @@ const IloNumArray& BnBProblem::GetSolution() const {
 }
 
 bool BnBProblem::solved() const {
-  IloCplex cplex(*model_);
-  return (cplex.getStatus() == IloAlgorithm::Feasible);
+  return solved_;
+}
 
+bool BnBProblem::infeasible() const {
+  return (cplex_status_==IloAlgorithm::Infeasible);
+}
+
+bool BnBProblem::unbounded() const {
+
+  return (cplex_status_ ==IloAlgorithm::Unbounded || cplex_status_ == IloAlgorithm::InfeasibleOrUnbounded);
 }
 
 

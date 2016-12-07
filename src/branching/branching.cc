@@ -15,12 +15,9 @@ Branching::Branching(BranchingRule rule) {
   }
 }
 
-vector<BnBProblem *> *Branching::Branch(IloCplex &cplex, IloNumVarArray &variables) {
+vector<BnBProblem *> *Branching::Branch(IloCplex &cplex, IloNumArray &solutions, IloNumVarArray &variables) {
 
   vector<BnBProblem *> *sub_problems = new vector<BnBProblem *>;
-
-  IloNumArray solutions(cplex.getEnv());
-  cplex.getValues(solutions, variables);
 
   int index_of_problem_to_be_branched = this->IndexOfNextVariableToFix(solutions);
   if (index_of_problem_to_be_branched == NO_FIXING_VALUE_FOUND) {
@@ -29,8 +26,6 @@ vector<BnBProblem *> *Branching::Branch(IloCplex &cplex, IloNumVarArray &variabl
 
   IloNumVar problem_to_be_branched = variables[index_of_problem_to_be_branched];
   IloNum value_to_be_branched = cplex.getValue(problem_to_be_branched);
-
-  IloModel model = cplex.getModel();
 
   IloConstraint less_than_or_equal_to_constraint(problem_to_be_branched <= floor(value_to_be_branched));
   BnBProblem *less_than_or_equal_to_problem = new BnBProblem(&cplex, &variables, &less_than_or_equal_to_constraint);

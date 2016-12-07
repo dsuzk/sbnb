@@ -18,7 +18,7 @@ class Branching {
 public:
     Branching(BranchingRule rule);
 
-    vector<BnBProblem*> *Branch(IloCplex &cplex, IloNumVarArray &variables);
+    vector<BnBProblem*> *Branch(IloCplex &cplex, IloNumArray &solutions, IloNumVarArray &variables);
 
 private:
     int (*IndexOfNextVariableToFix)(const IloNumArray &numbers);

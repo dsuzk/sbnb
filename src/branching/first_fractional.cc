@@ -3,8 +3,6 @@
 #include <ilcplex/ilocplex.h>
 #include "first_fractional.h"
 
-using namespace std;
-
 bool IsFractional(const double number) {
   double fractional_part, integral_part;
   fractional_part = modf(number, &integral_part);

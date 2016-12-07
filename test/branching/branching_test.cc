@@ -2,7 +2,6 @@
 #include <gtest/gtest.h>
 #include <ilcplex/ilocplex.h>
 #include <branching/branching.h>
-#include <iostream>
 
 TEST(Branching, branch_Test) {
 
@@ -30,11 +29,13 @@ TEST(Branching, branch_Test) {
   // Solution for x1 => 2.769231
   // Solution for x2 => 1.826923
   cplex.solve();
+  IloNumArray solutions_(environment);
+  cplex.getValues(solutions_,variables );
 
   // ACTUAL TEST ---------------------------------------------------
 
   Branching branching(BranchingRule::FIRST_FRACTIONAL);
-  const vector<BnBProblem *> sub_problems = *branching.Branch(cplex, variables);
+  const vector<BnBProblem *> sub_problems = *branching.Branch(cplex, solutions_, variables);
 
   double expected_solutions_of_branch1[2] = {3.0, 1.25};
   double expected_solutions_of_branch2[2] = {2.0, 2.0833333333333335};

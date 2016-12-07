@@ -20,7 +20,7 @@ class BranchAndBound {
 
   // Numerical Values Array as returned by eg. cplex.getValues
   // Solution of cplex.solve()
-  IloNumArray* best_solution_;
+  IloNumArray best_solution_;
   // Node<IPModel*> current_node_;
 
 

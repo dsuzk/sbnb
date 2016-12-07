@@ -6,7 +6,7 @@
 BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables) {
   model_ = model;
   variables_ = variables;
-
+  best_solution_= IloNumArray(model_->getEnv());
   cplex_ = IloCplex(*model_);
 }
 
@@ -44,6 +44,7 @@ void BranchAndBound::optimize() {
     // 2. solve BnBProblem of Node and find optimal solution z for variables x*/
     // IloNumArray actual_solution = actual_problem->GetSolution();
     // TODO: find objective value/solution 'z'
+    actual_problem.Solve();
 
     // 3. if infeasible or unbounded process next node
     // if (actual_problem->infeasible() || actual_problem->unbounded()) {
@@ -61,3 +62,6 @@ void BranchAndBound::optimize() {
   }
 }
 
+const IloNumArray &BranchAndBound::best_solution() const {
+  return best_solution_;
+}

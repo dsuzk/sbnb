@@ -30,5 +30,6 @@ ExampleCplexModel::ExampleCplexModel() {
 
   model->add(constraints);
   this->cplex = new IloCplex(*model);
+  cplex->setOut(environment->getNullStream());
 }
 

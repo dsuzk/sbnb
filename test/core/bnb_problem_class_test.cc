@@ -34,6 +34,8 @@ TEST(OptimizationProblem, solved) {
     problem.Solve();
 
     ASSERT_TRUE(problem.IsSolved());
+    ASSERT_FALSE(problem.IsInfeasible());
+    ASSERT_FALSE(problem.IsUnbounded());
 
   } catch (const IloException& e) {
     cerr << "Error: " << e.getMessage() << endl;
@@ -56,10 +58,21 @@ TEST(OptimizationProblem, infeasible) {
     model.add(constraints);
 
     IloCplex cplex(model);
+<<<<<<< HEAD
     OptimizationProblem problem(&cplex, &variables);
     problem.Solve();
 
     ASSERT_TRUE(problem.IsInfeasible());
+=======
+    cplex.setOut(env.getNullStream());
+
+    BnBProblem problem(&cplex, &variables);
+    problem.Solve();
+
+    ASSERT_TRUE(problem.infeasible());
+    ASSERT_FALSE(problem.unbounded());
+    ASSERT_FALSE(problem.solved());
+>>>>>>> test(bnb_problem) assert on side effects
 
   } catch (const IloException& e) {
     cerr << "Error: " << e.getMessage() << endl;
@@ -81,12 +94,20 @@ TEST(OptimizationProblem, unbounded) {
 
     constraints.add(variables[0] + variables[1] >= 0);
     model.add(constraints);
+
     IloCplex cplex(model);
+    cplex.setOut(env.getNullStream());
 
     OptimizationProblem problem(&cplex, &variables);
     problem.Solve();
 
+<<<<<<< HEAD
     ASSERT_TRUE(problem.IsUnbounded());
+=======
+    ASSERT_TRUE(problem.unbounded());
+    ASSERT_FALSE(problem.infeasible());
+    ASSERT_FALSE(problem.solved());
+>>>>>>> test(bnb_problem) assert on side effects
 
   } catch (const IloException& e) {
     cerr << "Error: " << e.getMessage() << endl;
@@ -129,3 +150,4 @@ TEST(OptimizationProblem, objective_value) {
     cerr << "Error: " << e.getMessage() << endl;
   }
 }
+

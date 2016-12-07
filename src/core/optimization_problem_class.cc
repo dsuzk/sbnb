@@ -25,13 +25,15 @@ const IloConstraintArray& OptimizationProblem::GetFixings() const {
 }
 
 void OptimizationProblem::Solve() {
+  model_.add(fixings_);
   solved_ = (bool)cplex_->solve();
   cplex_status_ = cplex_->getStatus();
   solution_ = IloNumArray(cplex_->getEnv());
 
   if(solved_)
     cplex_->getValues(solution_, *variables_);
-  
+
+  model_.remove(fixings_);
 }
 
 const IloNumArray& OptimizationProblem::GetSolution() const {

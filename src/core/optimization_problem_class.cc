@@ -4,19 +4,18 @@
 
 using namespace std;
 
-OptimizationProblem::OptimizationProblem(IloCplex* cplex, IloNumVarArray* variables) {
-  cplex_ = cplex;
-  variables_ = variables;
+OptimizationProblem::OptimizationProblem(IloCplex* cplex, IloNumVarArray* variables)
+  : cplex_(cplex),
+    variables_(variables),
+    model_(cplex->getModel())
+{}
 
-  model_ = cplex_->getModel();
-}
-
-OptimizationProblem::OptimizationProblem(IloCplex* cplex, IloNumVarArray* variables, IloConstraint* constraint) {
-  cplex_ = cplex;
-  variables_ = variables;
-
-  model_ = cplex_->getModel();
-  fixings_ = IloConstraintArray(cplex_->getEnv());
+OptimizationProblem::OptimizationProblem(IloCplex* cplex, IloNumVarArray* variables, IloConstraint* constraint)
+  : cplex_(cplex),
+    variables_(variables),
+    model_(cplex->getModel()),
+    fixings_(cplex->getEnv()) {
+  
   fixings_.add(*constraint);
 }
 

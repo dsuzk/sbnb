@@ -2,8 +2,6 @@
 #include <ilcplex/ilocplex.h>
 #include "branching.h"
 
-using namespace std;
-
 int NO_FIXING_VALUE_FOUND = -1;
 
 Branching::Branching(BranchingRule rule) {

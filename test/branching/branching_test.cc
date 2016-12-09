@@ -35,7 +35,7 @@ TEST(Branching, branch_Test) {
   // ACTUAL TEST ---------------------------------------------------
 
   Branching branching(BranchingRule::FIRST_FRACTIONAL);
-  const vector<BnBProblem *> sub_problems = *branching.Branch(cplex, solutions_, variables);
+  const vector<OptimizationProblem *> sub_problems = *branching.Branch(cplex, solutions_, variables);
 
   double expected_solutions_of_branch1[2] = {3.0, 1.25};
   double expected_solutions_of_branch2[2] = {2.0, 2.0833333333333335};
@@ -43,7 +43,7 @@ TEST(Branching, branch_Test) {
   double *expected_solutions[2] = {expected_solutions_of_branch1, expected_solutions_of_branch2};
 
   for (int i = 0; i < sub_problems.size(); ++i) {
-    BnBProblem sub_problem = *sub_problems[i];
+    OptimizationProblem sub_problem = *sub_problems[i];
 
     IloConstraintArray fixings = sub_problem.GetFixings();
     model.add(fixings);

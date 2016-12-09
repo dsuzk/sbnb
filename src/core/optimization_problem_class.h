@@ -1,12 +1,12 @@
-#ifndef BNB_CORE_BNBPROBLEM_H_
-#define BNB_CORE_BNBPROBLEM_H_
+#ifndef BNB_CORE_OPTIMIZATION_PROBLEM_H_
+#define BNB_CORE_OPTIMIZATION_PROBLEM_H_
 
 #include <ilcplex/ilocplex.h>
 
 /**
- * @brief The current Problem/Subproblem of a BnB Tree
+ * @brief The current OptimizationProblem/SubOptimizationproblem of a BnB Tree
  */
-class BnBProblem {
+class OptimizationProblem {
  private:
   IloCplex* cplex_;
   IloNumVarArray* variables_;
@@ -21,8 +21,8 @@ class BnBProblem {
   double objective_value_;
 
  public:
-  BnBProblem(IloCplex*, IloNumVarArray*);
-  BnBProblem(IloCplex*, IloNumVarArray*, IloConstraint*);
+  OptimizationProblem(IloCplex*, IloNumVarArray*);
+  OptimizationProblem(IloCplex*, IloNumVarArray*, IloConstraint*);
   void AddFixing(IloConstraint*);
   void Solve();
   const IloNumArray& GetSolution() const;
@@ -36,5 +36,5 @@ class BnBProblem {
 
 };
 
-#endif //BNB_CORE_BNBPROBLEM_H_
+#endif //BNB_CORE_OPTIMIZATION_PROBLEM_H_
 

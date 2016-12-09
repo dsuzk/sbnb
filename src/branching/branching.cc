@@ -15,9 +15,9 @@ Branching::Branching(BranchingRule rule) {
   }
 }
 
-vector<BnBProblem *> *Branching::Branch(IloCplex &cplex, IloNumArray &solutions, IloNumVarArray &variables) {
+vector<OptimizationProblem *> *Branching::Branch(IloCplex &cplex, IloNumArray &solutions, IloNumVarArray &variables) {
 
-  vector<BnBProblem *> *sub_problems = new vector<BnBProblem *>;
+  vector<OptimizationProblem *> *sub_problems = new vector<OptimizationProblem *>;
 
   int index_of_problem_to_be_branched = this->IndexOfNextVariableToFix(solutions);
   if (index_of_problem_to_be_branched == NO_FIXING_VALUE_FOUND) {
@@ -28,11 +28,11 @@ vector<BnBProblem *> *Branching::Branch(IloCplex &cplex, IloNumArray &solutions,
   IloNum value_to_be_branched = cplex.getValue(problem_to_be_branched);
 
   IloConstraint less_than_or_equal_to_constraint(problem_to_be_branched <= floor(value_to_be_branched));
-  BnBProblem *less_than_or_equal_to_problem = new BnBProblem(&cplex, &variables, &less_than_or_equal_to_constraint);
+  OptimizationProblem *less_than_or_equal_to_problem = new OptimizationProblem(&cplex, &variables, &less_than_or_equal_to_constraint);
   sub_problems->insert(sub_problems->begin(), less_than_or_equal_to_problem);
 
   IloConstraint greater_than_or_equal_to_constraint(ceil(value_to_be_branched) <= problem_to_be_branched);
-  BnBProblem *greater_than_or_equal_to_problem = new BnBProblem(&cplex, &variables, &greater_than_or_equal_to_constraint);
+  OptimizationProblem *greater_than_or_equal_to_problem = new OptimizationProblem(&cplex, &variables, &greater_than_or_equal_to_constraint);
   sub_problems->insert(sub_problems->begin(), greater_than_or_equal_to_problem);
 
   return sub_problems;

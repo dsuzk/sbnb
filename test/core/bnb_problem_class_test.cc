@@ -1,16 +1,16 @@
 #include <iostream>
 #include <ilcplex/ilocplex.h>
 #include "gtest/gtest.h"
-#include "core/bnb_problem_class.h"
+#include "core/optimization_problem_class.h"
 #include "example_model/example_cplex_model_class.h"
 
 using namespace std;
 
-TEST(BnBProblem, getSolution) {
+TEST(OptimizationProblem, getSolution) {
   try {
 
     ExampleCplexModel example_model;
-    BnBProblem problem(example_model.cplex, example_model.variables);
+    OptimizationProblem problem(example_model.cplex, example_model.variables);
 
     problem.Solve();
     const IloNumArray solution = problem.GetSolution();
@@ -25,11 +25,11 @@ TEST(BnBProblem, getSolution) {
   }
 }
 
-TEST(BnBProblem, solved) {
+TEST(OptimizationProblem, solved) {
   try {
 
     ExampleCplexModel example_model;
-    BnBProblem problem(example_model.cplex, example_model.variables);
+    OptimizationProblem problem(example_model.cplex, example_model.variables);
 
     problem.Solve();
 
@@ -40,7 +40,7 @@ TEST(BnBProblem, solved) {
   }
 }
 
-TEST(BnBProblem, infeasible) {
+TEST(OptimizationProblem, infeasible) {
   try {
 
     IloEnv env;
@@ -56,7 +56,7 @@ TEST(BnBProblem, infeasible) {
     model.add(constraints);
 
     IloCplex cplex(model);
-    BnBProblem problem(&cplex, &variables);
+    OptimizationProblem problem(&cplex, &variables);
     problem.Solve();
 
     ASSERT_TRUE(problem.IsInfeasible());
@@ -66,7 +66,7 @@ TEST(BnBProblem, infeasible) {
   }
 }
 
-TEST(BnBProblem, unbounded) {
+TEST(OptimizationProblem, unbounded) {
   try {
 
     IloEnv env;
@@ -83,7 +83,7 @@ TEST(BnBProblem, unbounded) {
     model.add(constraints);
     IloCplex cplex(model);
 
-    BnBProblem problem(&cplex, &variables);
+    OptimizationProblem problem(&cplex, &variables);
     problem.Solve();
 
     ASSERT_TRUE(problem.IsUnbounded());
@@ -93,7 +93,7 @@ TEST(BnBProblem, unbounded) {
   }
 }
 
-TEST(BnBProblem, objective_value) {
+TEST(OptimizationProblem, objective_value) {
   try {
 
     IloEnv environment;
@@ -118,7 +118,7 @@ TEST(BnBProblem, objective_value) {
     cplex.setOut(environment.getNullStream());
 
 
-    BnBProblem problem(&cplex, &variables);
+    OptimizationProblem problem(&cplex, &variables);
     problem.Solve();
 
     double expected_solution_ = 11.01923076923077;

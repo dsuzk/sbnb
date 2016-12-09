@@ -3,7 +3,7 @@
 
 #include <ilcplex/ilocplex.h>
 #include "node_selection/node_class.h"
-#include "core/bnb_problem_class.h"
+#include "core/optimization_problem_class.h"
 
 /**
  * @brief The main entry point for the branch and bound framework

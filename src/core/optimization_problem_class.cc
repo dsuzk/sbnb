@@ -1,17 +1,17 @@
-#include "core/bnb_problem_class.h"
+#include "core/optimization_problem_class.h"
 #include <string>
 #include <iostream>
 
 using namespace std;
 
-BnBProblem::BnBProblem(IloCplex* cplex, IloNumVarArray* variables) {
+OptimizationProblem::OptimizationProblem(IloCplex* cplex, IloNumVarArray* variables) {
   cplex_ = cplex;
   variables_ = variables;
 
   model_ = cplex_->getModel();
 }
 
-BnBProblem::BnBProblem(IloCplex* cplex, IloNumVarArray* variables, IloConstraint* constraint) {
+OptimizationProblem::OptimizationProblem(IloCplex* cplex, IloNumVarArray* variables, IloConstraint* constraint) {
   cplex_ = cplex;
   variables_ = variables;
 
@@ -20,15 +20,15 @@ BnBProblem::BnBProblem(IloCplex* cplex, IloNumVarArray* variables, IloConstraint
   fixings_.add(*constraint);
 }
 
-void BnBProblem::AddFixing(IloConstraint* constraint) {
+void OptimizationProblem::AddFixing(IloConstraint* constraint) {
   fixings_.add(*constraint);
 }
 
-const IloConstraintArray& BnBProblem::GetFixings() const {
+const IloConstraintArray& OptimizationProblem::GetFixings() const {
   return fixings_; 
 }
 
-void BnBProblem::Solve() {
+void OptimizationProblem::Solve() {
   solved_ = (bool)cplex_->solve();
   cplex_status_ = cplex_->getStatus();
   solution_ = IloNumArray(cplex_->getEnv());
@@ -39,23 +39,23 @@ void BnBProblem::Solve() {
 
 }
 
-const IloNumArray& BnBProblem::GetSolution() const {
+const IloNumArray& OptimizationProblem::GetSolution() const {
   return solution_;
 }
 
-bool BnBProblem::IsSolved() const {
+bool OptimizationProblem::IsSolved() const {
   return solved_;
 }
 
-bool BnBProblem::IsInfeasible() const {
+bool OptimizationProblem::IsInfeasible() const {
   return (cplex_status_==IloAlgorithm::Infeasible);
 }
 
-bool BnBProblem::IsUnbounded() const {
+bool OptimizationProblem::IsUnbounded() const {
   return (cplex_status_ ==IloAlgorithm::Unbounded || cplex_status_ == IloAlgorithm::InfeasibleOrUnbounded);
 }
 
-double BnBProblem::GetObjectiveValue()  {
+double OptimizationProblem::GetObjectiveValue()  {
   objective_value_ = cplex_->getObjValue();
 }
 

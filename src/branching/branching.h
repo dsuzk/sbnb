@@ -18,7 +18,7 @@ class Branching {
 public:
     Branching(BranchingRule rule);
 
-    vector<OptimizationProblem*> *Branch(IloCplex &cplex, IloNumArray &solutions, IloNumVarArray &variables);
+    vector<IloConstraint*> *Branch(IloNumArray &solutions, IloNumVarArray &variables);
 
 private:
     int (*IndexOfNextVariableToFix)(const IloNumArray &numbers);

@@ -10,7 +10,9 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables)
   : model_(model),
     variables_(variables),
     best_solution_(IloNumArray(model_->getEnv())),
-    cplex_(IloCplex(*model)) {
+    cplex_(IloCplex(*model)),
+    global_dual_bound_(0.0),
+    global_primal_bound_(0.0) {
 
   cplex_.setOut(model_->getEnv().getNullStream());
 }
@@ -33,45 +35,47 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables)
  */
 void BranchAndBound::optimize() {
 
+  Branching branching(FIRST_FRACTIONAL);
+  DepthFirstTraversal<OptimizationProblem*> node_selection;
+
   OptimizationProblem problem(&cplex_, variables_);
   Node<OptimizationProblem*> root(&problem);
-
-  DepthFirstTraversal<OptimizationProblem*> node_selection;
   node_selection.SetNextNode(&root);
 
   while (node_selection.HasNextNode()) {
 
-    Node<OptimizationProblem*> actual_node = *node_selection.next_node();
-    OptimizationProblem actual_problem = *actual_node.content;
+    Node<OptimizationProblem*> current_node = *node_selection.next_node();
+    OptimizationProblem current_problem = *current_node.content;
 
-    actual_problem.Solve();
+    current_problem.Solve();
 
-    IloNumArray actual_solution = actual_problem.GetSolution();
-
-    // find optimal solution z for variables x*/
-    // TODO: find objective value/solution 'z'
-
-    if (actual_problem.IsInfeasible() || actual_problem.IsUnbounded()) {
+    if (current_problem.IsInfeasible() || current_problem.IsUnbounded()) {
       continue;
     }
 
-    Branching branching(FIRST_FRACTIONAL);
-    std::vector<OptimizationProblem*> branches = *branching.Branch(cplex_, actual_solution, *variables_);
+    IloNumArray current_solution_variables = current_problem.GetSolution();
+    std::vector<IloConstraint*> branched_constraints = *branching.Branch(current_solution_variables, *variables_);
 
-    if (branches.size() == 0) {
-      // set global_lower_bound LB to max{LB, z} and process next node;
+    double objective_value = current_problem.GetObjectiveValue();
+
+    // solution has only integer values
+    if (branched_constraints.size() == 0) {
+      global_dual_bound_ = max(global_dual_bound_, objective_value);
       continue;
     }
-    // if z <= LB and process next node
 
-    /*  - get (next) variable to fixate from BranchingRule
-     *  - generate two (sub-) OptimizationProblems with Constraints from BranchingRule
-     *  - add new Problems to NodeSelection
-     */
+    if (objective_value <= global_dual_bound_) {
+      continue;
+    }
 
-    for (auto branch : branches) {
-      Node<OptimizationProblem*> *new_problem = new Node<OptimizationProblem*>(branch);
-      //node_selection.SetNextNode(new_problem);
+    //  - get (next) variable to fixate from BranchingRule
+    //  - generate two (sub-) OptimizationProblems with Constraints from BranchingRule
+    //  - add new Problems to NodeSelection
+
+    for (auto constraint : branched_constraints) {
+      OptimizationProblem *sub_problem = new OptimizationProblem(&cplex_, variables_, constraint);
+      Node<OptimizationProblem*> *sub_problem_node = new Node<OptimizationProblem*>(sub_problem);
+      node_selection.SetNextNode(sub_problem_node);
     }
   }
 }

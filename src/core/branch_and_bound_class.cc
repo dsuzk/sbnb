@@ -6,11 +6,13 @@
 #include "node_selection/depth_first_traversal_class.h"
 #include "core/optimization_problem_class.h"
 
-BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables) {
-  model_ = model;
-  variables_ = variables;
-  best_solution_= IloNumArray(model_->getEnv());
-  cplex_ = IloCplex(*model_);
+BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables)
+  : model_(model),
+    variables_(variables),
+    best_solution_(IloNumArray(model_->getEnv())),
+    cplex_(IloCplex(*model)) {
+
+  cplex_.setOut(model_->getEnv().getNullStream());
 }
 
 /*

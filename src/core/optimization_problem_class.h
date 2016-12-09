@@ -21,7 +21,7 @@ class OptimizationProblem {
  public:
   OptimizationProblem(IloCplex*, IloNumVarArray*);
   OptimizationProblem(IloCplex*, IloNumVarArray*, IloConstraint*);
-  void AddFixing(IloConstraint*);
+  void AddFixings(IloConstraintArray*);
   void Solve();
   const IloNumArray& GetSolution() const;
   const IloConstraintArray& GetFixings() const;

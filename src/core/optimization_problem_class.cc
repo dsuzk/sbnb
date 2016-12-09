@@ -17,8 +17,10 @@ OptimizationProblem::OptimizationProblem(IloCplex* cplex, IloNumVarArray* variab
   fixings_.add(*constraint);
 }
 
-void OptimizationProblem::AddFixing(IloConstraint* constraint) {
-  fixings_.add(*constraint);
+void OptimizationProblem::AddFixings(IloConstraintArray* fixings) {
+  for (int i = 0; i < fixings->getSize(); ++i) {
+    fixings_.add(fixings[i]);
+  }
 }
 
 const IloConstraintArray& OptimizationProblem::GetFixings() const {

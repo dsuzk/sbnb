@@ -14,11 +14,8 @@ TEST(OptimizationProblem, getSolution) {
 
     problem.Solve();
     const IloNumArray solution = problem.GetSolution();
-    ASSERT_EQ(1, solution[0]);
-    ASSERT_EQ(2, solution[1]);
-    ASSERT_EQ(3, solution[2]);
-    // why fail? float calc errors
-    // ASSERT_EQ(2.76923, solution[3]);
+    ASSERT_DOUBLE_EQ(2.7692307692307692, solution[0]);
+    ASSERT_DOUBLE_EQ(1.8269230769230766, solution[1]);
 
   } catch (const IloException& e) {
     cerr << "Error: " << e.getMessage() << endl;

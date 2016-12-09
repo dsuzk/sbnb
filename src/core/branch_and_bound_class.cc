@@ -1,4 +1,5 @@
 
+#include <iostream>
 #include <vector>
 #include "branch_and_bound_class.h"
 #include "branching/branching.h"
@@ -57,12 +58,17 @@ void BranchAndBound::optimize() {
     std::vector<IloConstraint*> branched_constraints = *branching.Branch(current_solution_variables, *variables_);
 
     double objective_value = current_problem.GetObjectiveValue();
+    cerr << "OBJECTIVE VALUE:------> " << objective_value << endl;
 
     // solution has only integer values
     if (branched_constraints.size() == 0) {
-      global_dual_bound_ = max(global_dual_bound_, objective_value);
+      if (objective_value > global_dual_bound_) {
+        global_dual_bound_ = objective_value;
+        best_solution_ = current_solution_variables;
+      }
       continue;
     }
+    cerr << "DUAL BOUND:------> " << global_dual_bound_ << endl;
 
     if (objective_value <= global_dual_bound_) {
       continue;
@@ -74,6 +80,7 @@ void BranchAndBound::optimize() {
 
     for (auto constraint : branched_constraints) {
       OptimizationProblem *sub_problem = new OptimizationProblem(&cplex_, variables_, constraint);
+      sub_problem->AddFixings(current_problem.GetFixings());
       Node<OptimizationProblem*> *sub_problem_node = new Node<OptimizationProblem*>(sub_problem);
       node_selection.SetNextNode(sub_problem_node);
     }

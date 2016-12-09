@@ -25,7 +25,6 @@ TEST(Branching, branch_Test) {
 
     IloConstraint constraint = *sub_problems[i];
     OptimizationProblem *sub_problem = new OptimizationProblem(example_model.cplex, example_model.variables, &constraint);
-    IloConstraintArray fixings = sub_problem->GetFixings();
     sub_problem->Solve();
     solution = sub_problem->GetSolution();
 

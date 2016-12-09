@@ -17,11 +17,12 @@ class OptimizationProblem {
 
   IloAlgorithm::Status cplex_status_;
   bool solved_;
+  double objective_value_;
 
  public:
   OptimizationProblem(IloCplex*, IloNumVarArray*);
   OptimizationProblem(IloCplex*, IloNumVarArray*, IloConstraint*);
-  void AddFixings(IloConstraintArray*);
+  void AddFixings(const IloConstraintArray&);
   void Solve();
   const IloNumArray& GetSolution() const;
   const IloConstraintArray& GetFixings() const;

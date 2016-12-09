@@ -17,8 +17,8 @@ OptimizationProblem::OptimizationProblem(IloCplex* cplex, IloNumVarArray* variab
   fixings_.add(*constraint);
 }
 
-void OptimizationProblem::AddFixings(IloConstraintArray* fixings) {
-  for (int i = 0; i < fixings->getSize(); ++i) {
+void OptimizationProblem::AddFixings(const IloConstraintArray& fixings) {
+  for (int i = 0; i < fixings.getSize(); ++i) {
     fixings_.add(fixings[i]);
   }
 }
@@ -33,8 +33,10 @@ void OptimizationProblem::Solve() {
   cplex_status_ = cplex_->getStatus();
   solution_ = IloNumArray(cplex_->getEnv());
 
-  if(solved_)
+  if(solved_) {
     cplex_->getValues(solution_, *variables_);
+    objective_value_ = cplex_->getObjValue();
+  }
 
   model_.remove(fixings_);
 }
@@ -56,6 +58,6 @@ bool OptimizationProblem::IsUnbounded() const {
 }
 
 double OptimizationProblem::GetObjectiveValue()  {
-  return cplex_->getObjValue();
+  return objective_value_;
 }
 

@@ -27,13 +27,13 @@ class BranchAndBound {
  public:
   BranchAndBound(IloModel*, IloNumVarArray*);
 
-  const IloNumVarArray& variables() const;
-  const IloModel& model() const;
+  const IloNumVarArray& GetVariables() const;
+  const IloModel& GetModel() const;
 
-  double global_dual_bound() const;
-  double global_primal_bound() const;
+  double GetGlobalDualBound() const;
+  double GetPrimalDualBound() const;
 
-  const IloNumArray& best_solution() const;
+  const IloNumArray& GetBestSolution() const;
 
   // wait for BNB implementation
   // const Node<IPModel*>* currentNode() const;

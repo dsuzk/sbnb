@@ -40,7 +40,7 @@ TEST(BranchAndBoundClass, OptimizationTest) {
     cerr << "Error: " << e.getMessage() << endl;
   }
 
-  IloNumArray solution_values = branchAndBound.best_solution();
+  IloNumArray solution_values = branchAndBound.GetBestSolution();
 
   IloNum expected_solutions[2] = {2, 2};
 

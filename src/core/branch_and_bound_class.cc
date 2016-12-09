@@ -74,6 +74,6 @@ void BranchAndBound::optimize() {
   }
 }
 
-const IloNumArray &BranchAndBound::best_solution() const {
+const IloNumArray &BranchAndBound::GetBestSolution() const {
   return best_solution_;
 }

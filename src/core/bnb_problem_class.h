@@ -18,6 +18,8 @@ class BnBProblem {
   IloAlgorithm::Status cplex_status_;
   bool solved_;
 
+  double objective_value_;
+
  public:
   BnBProblem(IloCplex*, IloNumVarArray*);
   BnBProblem(IloCplex*, IloNumVarArray*, IloConstraint*);
@@ -31,8 +33,8 @@ class BnBProblem {
   bool infeasible() const;
   bool solved() const;
 
-  double dualBound() const;
-  double primalBound() const;
+  double GetObjectiveValue();
+
 };
 
 #endif //BNB_CORE_BNBPROBLEM_H_

@@ -56,6 +56,9 @@ bool BnBProblem::unbounded() const {
   return (cplex_status_ ==IloAlgorithm::Unbounded || cplex_status_ == IloAlgorithm::InfeasibleOrUnbounded);
 }
 
+double BnBProblem::GetObjectiveValue()  {
+  objective_value_ = cplex_->getObjValue();
+}
 
 
 

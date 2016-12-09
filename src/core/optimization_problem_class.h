@@ -18,8 +18,6 @@ class OptimizationProblem {
   IloAlgorithm::Status cplex_status_;
   bool solved_;
 
-  double objective_value_;
-
  public:
   OptimizationProblem(IloCplex*, IloNumVarArray*);
   OptimizationProblem(IloCplex*, IloNumVarArray*, IloConstraint*);

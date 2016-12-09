@@ -56,7 +56,7 @@ bool OptimizationProblem::IsUnbounded() const {
 }
 
 double OptimizationProblem::GetObjectiveValue()  {
-  objective_value_ = cplex_->getObjValue();
+  return cplex_->getObjValue();
 }
 
 

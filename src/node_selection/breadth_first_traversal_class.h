@@ -14,9 +14,9 @@ class BreadthFirstTraversal : public NodeSelection<T> {
 public:
     BreadthFirstTraversal();
 
-    Node<T> *current_node();
+    Node<T> *CurrentNode();
 
-    Node<T> *next_node();
+    Node<T> *NextNode();
 
     void SetNextNode(Node<T> *node);
 
@@ -35,12 +35,12 @@ void BreadthFirstTraversal<T>::SetNextNode(Node<T> *node) {
 }
 
 template<class T>
-Node<T> *BreadthFirstTraversal<T>::current_node() {
+Node<T> *BreadthFirstTraversal<T>::CurrentNode() {
   return this->traversal_order_.front();
 }
 
 template<class T>
-Node<T> *BreadthFirstTraversal<T>::next_node() {
+Node<T> *BreadthFirstTraversal<T>::NextNode() {
   Node<T> *next = this->traversal_order_.front();
   this->traversal_order_.pop();
   return next;

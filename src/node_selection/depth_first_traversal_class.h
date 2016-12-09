@@ -14,9 +14,9 @@ class DepthFirstTraversal : public NodeSelection<T> {
 public:
     DepthFirstTraversal();
 
-    Node<T> *next_node();
+    Node<T> *NextNode();
 
-    Node<T> *current_node();
+    Node<T> *CurrentNode();
 
     void SetNextNode(Node<T> *node);
 
@@ -35,12 +35,12 @@ void DepthFirstTraversal<T>::SetNextNode(Node<T> *node) {
 }
 
 template<class T>
-Node<T> *DepthFirstTraversal<T>::current_node() {
+Node<T> *DepthFirstTraversal<T>::CurrentNode() {
   return this->traversal_order_.top();
 }
 
 template<class T>
-Node<T> *DepthFirstTraversal<T>::next_node() {
+Node<T> *DepthFirstTraversal<T>::NextNode() {
   Node<T> *next = this->traversal_order_.top();
   this->traversal_order_.pop();
   return next;

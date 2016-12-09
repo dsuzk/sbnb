@@ -44,7 +44,7 @@ void BranchAndBound::optimize() {
 
   while (node_selection.HasNextNode()) {
 
-    Node<OptimizationProblem*> current_node = *node_selection.next_node();
+    Node<OptimizationProblem*> current_node = *node_selection.NextNode();
     OptimizationProblem current_problem = *current_node.content;
 
     current_problem.Solve();

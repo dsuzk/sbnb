@@ -10,9 +10,9 @@ class NodeSelection {
 public:
     NodeSelection();
 
-    virtual Node<T> *current_node() = 0;
+    virtual Node<T> *CurrentNode() = 0;
 
-    virtual Node<T> *next_node() = 0;
+    virtual Node<T> *NextNode() = 0;
 
     virtual void SetNextNode(Node<T> *node) = 0;
 

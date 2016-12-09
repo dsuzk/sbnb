@@ -3,7 +3,7 @@
 #include <node_selection/breadth_first_traversal_class.h>
 #include <node_selection/node_class.h>
 
-TEST(BreadthFirstTraversal, next_node_Test) {
+TEST(BreadthFirstTraversal, NextNode_Test) {
 
   /*
             (a)
@@ -28,46 +28,46 @@ TEST(BreadthFirstTraversal, next_node_Test) {
 
   traversal.SetNextNode(&a);
 
-  Node<int> *next = traversal.next_node();
+  Node<int> *next = traversal.NextNode();
   int expected_content = 1;
   EXPECT_EQ(next->content, expected_content);
 
   traversal.SetNextNode(&b);
   traversal.SetNextNode(&c);
 
-  next = traversal.next_node();
+  next = traversal.NextNode();
   expected_content = 2;
   EXPECT_EQ(next->content, expected_content);
 
   traversal.SetNextNode(&d);
   traversal.SetNextNode(&e);
 
-  next = traversal.next_node();
+  next = traversal.NextNode();
   expected_content = 3;
   EXPECT_EQ(next->content, expected_content);
 
-  next = traversal.next_node();
+  next = traversal.NextNode();
   expected_content = 4;
   EXPECT_EQ(next->content, expected_content);
 
-  next = traversal.next_node();
+  next = traversal.NextNode();
   expected_content = 5;
   EXPECT_EQ(next->content, expected_content);
 
   traversal.SetNextNode(&f);
   traversal.SetNextNode(&g);
 
-  next = traversal.next_node();
+  next = traversal.NextNode();
   expected_content = 6;
   EXPECT_EQ(next->content, expected_content);
 
-  next = traversal.next_node();
+  next = traversal.NextNode();
   expected_content = 7;
   EXPECT_EQ(next->content, expected_content);
 
 }
 
-TEST(BreadthFirstTraversal, current_node_Test) {
+TEST(BreadthFirstTraversal, CurrentNode_Test) {
 
   BreadthFirstTraversal<int> traversal;
 
@@ -77,7 +77,7 @@ TEST(BreadthFirstTraversal, current_node_Test) {
   traversal.SetNextNode(&a);
   traversal.SetNextNode(&b);
 
-  Node<int> *current = traversal.current_node();
+  Node<int> *current = traversal.CurrentNode();
   int expected_content = 1;
   EXPECT_EQ(current->content, expected_content);
 
@@ -92,7 +92,7 @@ TEST(BreadthFirstTraversal, HasNextNode_Test) {
 
   EXPECT_TRUE(traversal.HasNextNode());
 
-  traversal.next_node();
+  traversal.NextNode();
 
   EXPECT_FALSE(traversal.HasNextNode());
 

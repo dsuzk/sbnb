@@ -5,7 +5,8 @@
 OptimizationProblem::OptimizationProblem(IloCplex* cplex, IloNumVarArray* variables)
   : cplex_(cplex),
     variables_(variables),
-    model_(cplex->getModel()) {}
+    model_(cplex->getModel()),
+    fixings_(cplex->getEnv()) {}
 
 OptimizationProblem::OptimizationProblem(IloCplex* cplex, IloNumVarArray* variables, IloConstraint* constraint)
   : cplex_(cplex),

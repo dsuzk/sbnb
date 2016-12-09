@@ -2,7 +2,7 @@
 #include <vector>
 #include "branch_and_bound_class.h"
 #include "branching/branching.h"
-#include "node_selection/bnb_node_selection_interface.h"
+#include "node_selection/node_selection_interface.h"
 #include "node_selection/depth_first_traversal_class.h"
 #include "core/optimization_problem_class.h"
 

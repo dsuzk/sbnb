@@ -3,13 +3,13 @@
 #define SBNB_NODE_SELECTION_BREATH_FIRST_TRAVERSAL_CLASS_H_
 
 #include <queue>
-#include "bnb_node_selection_interface.h"
+#include "node_selection_interface.h"
 #include "node_class.h"
 
 using namespace std;
 
 template<class T>
-class BreadthFirstTraversal : public BnBNodeSelection<T> {
+class BreadthFirstTraversal : public NodeSelection<T> {
 
 public:
     BreadthFirstTraversal();

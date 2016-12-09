@@ -3,13 +3,13 @@
 #define SBNB_NODE_SELECTION_DEPTH_FIRST_TRAVERSAL_CLASS_H_
 
 #include <stack>
-#include "bnb_node_selection_interface.h"
+#include "node_selection_interface.h"
 #include "node_class.h"
 
 using namespace std;
 
 template<class T>
-class DepthFirstTraversal : public BnBNodeSelection<T> {
+class DepthFirstTraversal : public NodeSelection<T> {
 
 public:
     DepthFirstTraversal();

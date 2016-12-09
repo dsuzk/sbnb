@@ -5,10 +5,10 @@
 #include "node_class.h"
 
 template<class T>
-class BnBNodeSelection {
+class NodeSelection {
 
 public:
-    BnBNodeSelection();
+    NodeSelection();
 
     virtual Node<T> *current_node() = 0;
 
@@ -21,6 +21,6 @@ public:
 
 template<class T>
 
-BnBNodeSelection<T>::BnBNodeSelection() {}
+NodeSelection<T>::NodeSelection() {}
 
 #endif //SBNB_NODE_SELECTION_BNB_NODE_SELECTION_INTERFACE_H_

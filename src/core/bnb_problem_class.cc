@@ -43,16 +43,15 @@ const IloNumArray& BnBProblem::GetSolution() const {
   return solution_;
 }
 
-bool BnBProblem::solved() const {
+bool BnBProblem::IsSolved() const {
   return solved_;
 }
 
-bool BnBProblem::infeasible() const {
+bool BnBProblem::IsInfeasible() const {
   return (cplex_status_==IloAlgorithm::Infeasible);
 }
 
-bool BnBProblem::unbounded() const {
-
+bool BnBProblem::IsUnbounded() const {
   return (cplex_status_ ==IloAlgorithm::Unbounded || cplex_status_ == IloAlgorithm::InfeasibleOrUnbounded);
 }
 

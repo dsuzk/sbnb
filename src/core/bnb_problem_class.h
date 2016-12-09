@@ -28,10 +28,9 @@ class BnBProblem {
   const IloNumArray& GetSolution() const;
   const IloConstraintArray& GetFixings() const;
 
-  bool fathomed() const;
-  bool unbounded() const;
-  bool infeasible() const;
-  bool solved() const;
+  bool IsSolved() const;
+  bool IsInfeasible() const;
+  bool IsUnbounded() const;
 
   double GetObjectiveValue();
 

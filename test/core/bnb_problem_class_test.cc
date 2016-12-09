@@ -33,7 +33,7 @@ TEST(BnBProblem, solved) {
 
     problem.Solve();
 
-    ASSERT_TRUE(problem.solved());
+    ASSERT_TRUE(problem.IsSolved());
 
   } catch (const IloException& e) {
     cerr << "Error: " << e.getMessage() << endl;
@@ -59,7 +59,7 @@ TEST(BnBProblem, infeasible) {
     BnBProblem problem(&cplex, &variables);
     problem.Solve();
 
-    ASSERT_TRUE(problem.infeasible());
+    ASSERT_TRUE(problem.IsInfeasible());
 
   } catch (const IloException& e) {
     cerr << "Error: " << e.getMessage() << endl;
@@ -86,7 +86,7 @@ TEST(BnBProblem, unbounded) {
     BnBProblem problem(&cplex, &variables);
     problem.Solve();
 
-    ASSERT_TRUE(problem.unbounded());
+    ASSERT_TRUE(problem.IsUnbounded());
 
   } catch (const IloException& e) {
     cerr << "Error: " << e.getMessage() << endl;

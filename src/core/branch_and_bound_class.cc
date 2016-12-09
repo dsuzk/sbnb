@@ -49,7 +49,7 @@ void BranchAndBound::optimize() {
     // find optimal solution z for variables x*/
     // TODO: find objective value/solution 'z'
 
-    if (actual_problem.infeasible() || actual_problem.unbounded()) {
+    if (actual_problem.IsInfeasible() || actual_problem.IsUnbounded()) {
       continue;
     }
 

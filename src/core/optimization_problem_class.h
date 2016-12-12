@@ -4,14 +4,13 @@
 #include <ilcplex/ilocplex.h>
 
 /**
- * @brief The current OptimizationProblem/SubOptimizationproblem of a BnB Tree
+ * @brief The current Optimization (sub-)Problem of a BnB Tree
  */
 class OptimizationProblem {
  private:
   IloCplex* cplex_;
   IloNumVarArray* variables_;
 
-  IloModel model_;
   IloNumArray solution_;
   IloConstraintArray fixings_;
 
@@ -31,8 +30,7 @@ class OptimizationProblem {
   bool IsInfeasible() const;
   bool IsUnbounded() const;
 
-  double GetObjectiveValue();
-
+  double GetObjectiveValue() const;
 };
 
 #endif //BNB_CORE_OPTIMIZATION_PROBLEM_H_

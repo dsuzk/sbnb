@@ -3,6 +3,7 @@
 
 #include <ilcplex/ilocplex.h>
 #include "node_selection/node_class.h"
+#include "node_selection/node_selection_class.h"
 #include "core/optimization_problem_class.h"
 
 /**
@@ -18,11 +19,9 @@ class BranchAndBound {
   double global_dual_bound_;
   double global_primal_bound_;
 
-  // Numerical Values Array as returned by eg. cplex.getValues
-  // Solution of cplex.solve()
   IloNumArray best_solution_;
-  // Node<IPModel*> current_node_;
 
+  void GenerateSubproblems(std::vector<IloConstraint*>&, OptimizationProblem&, NodeSelection<OptimizationProblem*>&);
 
  public:
   BranchAndBound(IloModel*, IloNumVarArray*);

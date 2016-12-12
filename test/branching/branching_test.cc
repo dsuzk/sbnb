@@ -14,7 +14,7 @@ TEST(Branching, branch_Test) {
   IloNumArray solution = root_problem.GetSolution();
 
   Branching branching(BranchingRule::FIRST_FRACTIONAL);
-  const vector<IloConstraint *> sub_problems = *branching.Branch(solution, *example_model.variables);
+  const std::vector<IloConstraint> sub_problems = branching.Branch(solution, *example_model.variables);
 
   double expected_solution_of_branch1[2] = {3.0, 1.25};
   double expected_solution_of_branch2[2] = {2.0, 2.0833333333333335};
@@ -23,7 +23,7 @@ TEST(Branching, branch_Test) {
 
   for (int i = 0; i < sub_problems.size(); ++i) {
 
-    IloConstraint constraint = *sub_problems[i];
+    IloConstraint constraint = sub_problems[i];
     OptimizationProblem *sub_problem = new OptimizationProblem(example_model.cplex, example_model.variables, &constraint);
     sub_problem->Solve();
     solution = sub_problem->GetSolution();

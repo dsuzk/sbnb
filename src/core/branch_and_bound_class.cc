@@ -48,7 +48,7 @@ void BranchAndBound::optimize() {
       // subproblem has better value than former best solution
       if (objective_value > global_dual_bound_) {
         // get constraints to fixate from BranchingRule
-        std::vector<IloConstraint*> branched_constraints = *branching.Branch(current_solution_variables, *variables_);
+        std::vector<IloConstraint> branched_constraints = branching.Branch(current_solution_variables, *variables_);
 
         if (branched_constraints.size() > 0) { // subproblem has non-integer values
           GenerateSubproblems(branched_constraints, current_problem, node_selection);
@@ -61,11 +61,11 @@ void BranchAndBound::optimize() {
   }
 }
 
-void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint*>& branched_constraints, OptimizationProblem& current_problem,
+void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint>& branched_constraints, OptimizationProblem& current_problem,
                                          NodeSelection<OptimizationProblem*>& node_selection) {
   for (auto constraint : branched_constraints) {
     // generate two (sub-)OptimizationProblems with Constraints from BranchingRule
-    OptimizationProblem* sub_problem = new OptimizationProblem(&cplex_, variables_, constraint);
+    OptimizationProblem* sub_problem = new OptimizationProblem(&cplex_, variables_, &constraint);
     sub_problem->AddFixings(current_problem.GetFixings());
     Node<OptimizationProblem*>* sub_problem_node = new Node<OptimizationProblem*>(sub_problem);
     // add new Problems to NodeSelection

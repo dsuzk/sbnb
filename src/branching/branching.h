@@ -7,8 +7,6 @@
 #include <core/optimization_problem_class.h>
 #include "first_fractional.h"
 
-using namespace std;
-
 enum BranchingRule {
     FIRST_FRACTIONAL
 };
@@ -18,7 +16,7 @@ class Branching {
 public:
     Branching(BranchingRule rule);
 
-    vector<IloConstraint*> *Branch(IloNumArray &solutions, IloNumVarArray &variables);
+    std::vector<IloConstraint> Branch(IloNumArray &solutions, IloNumVarArray &variables);
 
 private:
     int (*IndexOfNextVariableToFix)(const IloNumArray &numbers);

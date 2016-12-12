@@ -21,7 +21,7 @@ class BranchAndBound {
 
   IloNumArray best_solution_;
 
-  void GenerateSubproblems(std::vector<IloConstraint*>&, OptimizationProblem&, NodeSelection<OptimizationProblem*>&);
+  void GenerateSubproblems(std::vector<IloConstraint>&, OptimizationProblem&, NodeSelection<OptimizationProblem*>&);
 
  public:
   BranchAndBound(IloModel*, IloNumVarArray*);

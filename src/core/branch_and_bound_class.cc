@@ -45,42 +45,32 @@ void BranchAndBound::optimize() {
 
     Node<OptimizationProblem*> current_node = *node_selection.NextNode();
     OptimizationProblem current_problem = *current_node.content;
-
     current_problem.Solve();
 
-    if (current_problem.IsInfeasible() || current_problem.IsUnbounded()) {
-      continue;
-    }
+    if (!current_problem.IsInfeasible() || !current_problem.IsUnbounded()) {
 
-    IloNumArray current_solution_variables = current_problem.GetSolution();
-    std::vector<IloConstraint*> branched_constraints = *branching.Branch(current_solution_variables, *variables_);
-
-    double objective_value = current_problem.GetObjectiveValue();
-    cerr << "OBJECTIVE VALUE:------> " << objective_value << endl;
-
-    // solution has only integer values
-    if (branched_constraints.size() == 0) {
+      IloNumArray current_solution_variables = current_problem.GetSolution();
+      double objective_value = current_problem.GetObjectiveValue();
       if (objective_value > global_dual_bound_) {
-        global_dual_bound_ = objective_value;
-        best_solution_ = current_solution_variables;
+        std::vector<IloConstraint*> branched_constraints = *branching.Branch(current_solution_variables, *variables_);
+
+        // solution has only integer values
+        if (branched_constraints.size() > 0) {
+          for (auto constraint : branched_constraints) {
+            OptimizationProblem sub_problem = OptimizationProblem(&cplex_, variables_, constraint);
+            sub_problem.AddFixings(current_problem.GetFixings());
+            Node<OptimizationProblem*> sub_problem_node = Node<OptimizationProblem*>(&sub_problem);
+            node_selection.SetNextNode(&sub_problem_node);
+          }
+        } else {
+          global_dual_bound_ = objective_value;
+          best_solution_ = current_solution_variables;
+        }
+
+        //  - get (next) variable to fixate from BranchingRule
+        //  - generate two (sub-) OptimizationProblems with Constraints from BranchingRule
+        //  - add new Problems to NodeSelection
       }
-      continue;
-    }
-    cerr << "DUAL BOUND:------> " << global_dual_bound_ << endl;
-
-    if (objective_value <= global_dual_bound_) {
-      continue;
-    }
-
-    //  - get (next) variable to fixate from BranchingRule
-    //  - generate two (sub-) OptimizationProblems with Constraints from BranchingRule
-    //  - add new Problems to NodeSelection
-
-    for (auto constraint : branched_constraints) {
-      OptimizationProblem *sub_problem = new OptimizationProblem(&cplex_, variables_, constraint);
-      sub_problem->AddFixings(current_problem.GetFixings());
-      Node<OptimizationProblem*> *sub_problem_node = new Node<OptimizationProblem*>(sub_problem);
-      node_selection.SetNextNode(sub_problem_node);
     }
   }
 }

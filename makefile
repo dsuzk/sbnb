@@ -28,7 +28,7 @@ COMPILER = g++
 # Compiler options
 # ---------------------------------------------------------------------
 
-COMPILER_FLAGS = -m64 -O -fPIC -fno-strict-aliasing -fexceptions -DNDEBUG -DIL_STD -std=c++11
+COMPILER_FLAGS = -m64 -O -fPIC -fno-strict-aliasing -fexceptions -g -DNDEBUG -DIL_STD -std=c++11
 
 ifeq ($(PLATFORM), Darwin)
 	COMPILER_FLAGS += -stdlib=libstdc++

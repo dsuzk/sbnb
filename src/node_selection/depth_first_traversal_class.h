@@ -9,7 +9,7 @@
 using namespace std;
 
 template<class T>
-class DepthFirstTraversal : public NodeSelection<T> {
+class DepthFirstTraversal : public NodeSelectionInterface<T> {
 
 public:
     DepthFirstTraversal();

@@ -5,10 +5,9 @@
 #include "node_class.h"
 
 template<class T>
-class NodeSelection {
+class NodeSelectionInterface {
 
 public:
-    NodeSelection();
 
     virtual Node<T> *CurrentNode() = 0;
 
@@ -18,9 +17,5 @@ public:
 
     virtual bool HasNextNode() = 0;
 };
-
-template<class T>
-
-NodeSelection<T>::NodeSelection() {}
 
 #endif //SBNB_NODE_SELECTION_BNB_NODE_SELECTION_INTERFACE_H_

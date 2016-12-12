@@ -3,9 +3,7 @@
 #include <vector>
 #include "branch_and_bound_class.h"
 #include "branching/branching.h"
-#include "node_selection/node_selection_interface.h"
-#include "node_selection/depth_first_traversal_class.h"
-#include "core/optimization_problem_class.h"
+#include "node_selection/node_selection_class.h"
 
 BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables)
   : model_(model),
@@ -37,7 +35,7 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables)
 void BranchAndBound::optimize() {
 
   Branching branching(FIRST_FRACTIONAL);
-  DepthFirstTraversal<OptimizationProblem*> node_selection;
+  NodeSelection<OptimizationProblem*> node_selection(DEPTH_FIRST);
 
   OptimizationProblem problem(&cplex_, variables_);
   Node<OptimizationProblem*> root(&problem);

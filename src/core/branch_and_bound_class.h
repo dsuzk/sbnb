@@ -29,6 +29,8 @@ class BranchAndBound {
   const IloNumVarArray& GetVariables() const;
   const IloModel& GetModel() const;
 
+  const bool IsMaximizationProblem() const;
+
   double GetGlobalDualBound() const;
   double GetPrimalDualBound() const;
 

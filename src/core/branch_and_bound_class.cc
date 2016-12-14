@@ -80,3 +80,7 @@ const IloNumArray &BranchAndBound::GetBestSolution() const {
 double BranchAndBound::GetGlobalDualBound() const {
   return global_dual_bound_;
 }
+
+const bool BranchAndBound::IsMaximizationProblem() const {
+  return cplex_.getObjective().getSense() == IloObjective::Sense::Maximize;
+}

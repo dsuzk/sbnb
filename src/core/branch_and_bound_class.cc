@@ -43,10 +43,9 @@ void BranchAndBound::optimize() {
 
     if (!current_problem.IsInfeasible() || !current_problem.IsUnbounded()) {
       IloNumArray current_solution_variables = current_problem.GetSolution();
-      double objective_value = current_problem.GetObjectiveValue();
 
-      // subproblem has better value than former best solution
-      if (objective_value > global_dual_bound_) {
+      double objective_value = current_problem.GetObjectiveValue();
+      if (IsNewBestObjectiveValue(objective_value)) {
         // get constraints to fixate from BranchingRule
         std::vector<IloConstraint> branched_constraints = branching.Branch(current_solution_variables, *variables_);
 
@@ -79,6 +78,14 @@ const IloNumArray &BranchAndBound::GetBestSolution() const {
 
 double BranchAndBound::GetGlobalDualBound() const {
   return global_dual_bound_;
+}
+
+const bool BranchAndBound::IsNewBestObjectiveValue(double objective_value) const {
+  if (IsMaximizationProblem()) {
+    return (objective_value > global_dual_bound_);
+  } else {
+    return (objective_value < global_dual_bound_);
+  }
 }
 
 const bool BranchAndBound::IsMaximizationProblem() const {

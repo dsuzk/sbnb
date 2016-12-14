@@ -21,6 +21,8 @@ class BranchAndBound {
 
   IloNumArray best_solution_;
 
+  const bool IsNewBestObjectiveValue(double objective_value) const;
+
   void GenerateSubproblems(std::vector<IloConstraint>&, OptimizationProblem&, NodeSelection<OptimizationProblem*>&);
 
  public:

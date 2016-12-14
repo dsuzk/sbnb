@@ -7,8 +7,13 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables)
     variables_(variables),
     best_solution_(IloNumArray(model_->getEnv())),
     cplex_(IloCplex(*model)),
-    global_dual_bound_(-1000000.0),
     global_primal_bound_(0.0) {
+
+  if (IsMaximizationProblem()) {
+    global_dual_bound_ = -IloInfinity;
+  } else {
+    global_dual_bound_ = IloInfinity;
+  }
 
   cplex_.setOut(model_->getEnv().getNullStream());
 }

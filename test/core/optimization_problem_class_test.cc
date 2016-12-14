@@ -1,10 +1,10 @@
 #include "gtest/gtest.h"
 #include "core/optimization_problem_class.h"
-#include "example_model/example_cplex_model_class.h"
+#include "test_models/test_model_loader_class.h"
 
 TEST(OptimizationProblem, getSolution) {
-    ExampleCplexModel example_model;
-    OptimizationProblem problem(example_model.cplex, example_model.variables);
+    TestModelLoader model_loader((char*) "test/test_models/easy_max_model_1.lp");
+    OptimizationProblem problem(model_loader.cplex, model_loader.variables);
 
     problem.Solve();
     const IloNumArray solution = problem.GetSolution();
@@ -13,8 +13,8 @@ TEST(OptimizationProblem, getSolution) {
 }
 
 TEST(OptimizationProblem, solved) {
-    ExampleCplexModel example_model;
-    OptimizationProblem problem(example_model.cplex, example_model.variables);
+    TestModelLoader model_loader((char*) "test/test_models/easy_max_model_1.lp");
+    OptimizationProblem problem(model_loader.cplex, model_loader.variables);
 
     problem.Solve();
 
@@ -71,8 +71,8 @@ TEST(OptimizationProblem, unbounded) {
 }
 
 TEST(OptimizationProblem, objective_value) {
-    ExampleCplexModel example_model;
-    OptimizationProblem problem(example_model.cplex, example_model.variables);
+    TestModelLoader model_loader((char*) "test/test_models/easy_max_model_1.lp");
+    OptimizationProblem problem(model_loader.cplex, model_loader.variables);
     problem.Solve();
 
     double expected_solution_ = 11.01923076923077;

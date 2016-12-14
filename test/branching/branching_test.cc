@@ -2,19 +2,18 @@
 #include <gtest/gtest.h>
 #include <ilcplex/ilocplex.h>
 #include <branching/branching.h>
-#include "example_model/example_cplex_model_class.h"
+#include "test_models/test_model_loader_class.h"
 
 TEST(Branching, branch_Test) {
 
-  ExampleCplexModel example_model;
-  // ACTUAL TEST ---------------------------------------------------
+  TestModelLoader model_loader((char*) "test/test_models/easy_max_model_1.lp");
 
-  OptimizationProblem root_problem(example_model.cplex, example_model.variables);
+  OptimizationProblem root_problem(model_loader.cplex, model_loader.variables);
   root_problem.Solve();
   IloNumArray solution = root_problem.GetSolution();
 
   Branching branching(BranchingRule::FIRST_FRACTIONAL);
-  const std::vector<IloConstraint> sub_problems = branching.Branch(solution, *example_model.variables);
+  const std::vector<IloConstraint> sub_problems = branching.Branch(solution, *model_loader.variables);
 
   double expected_solution_of_branch1[2] = {3.0, 1.25};
   double expected_solution_of_branch2[2] = {2.0, 2.0833333333333335};
@@ -24,7 +23,7 @@ TEST(Branching, branch_Test) {
   for (int i = 0; i < sub_problems.size(); ++i) {
 
     IloConstraint constraint = sub_problems[i];
-    OptimizationProblem *sub_problem = new OptimizationProblem(example_model.cplex, example_model.variables, &constraint);
+    OptimizationProblem *sub_problem = new OptimizationProblem(model_loader.cplex, model_loader.variables, &constraint);
     sub_problem->Solve();
     solution = sub_problem->GetSolution();
 
@@ -34,5 +33,5 @@ TEST(Branching, branch_Test) {
     }
   }
 
-  example_model.environment->end();
+  model_loader.environment->end();
 }

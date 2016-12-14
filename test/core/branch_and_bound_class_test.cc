@@ -2,24 +2,13 @@
 #include <ilcplex/ilocplex.h>
 #include <gtest/gtest.h>
 #include "core/branch_and_bound_class.h"
-#include "example_model/example_cplex_model_class.h"
+#include "test_models/test_model_loader_class.h"
 
 TEST(BranchAndBoundClass, OptimizationTest) {
 
-  IloEnv env;
-  IloCplex cplex(env);
-  IloModel model(env);
-  IloNumVarArray variables(env);
-  IloRangeArray constraints(env);
-  IloObjective objective(env);
+  TestModelLoader model_loader((char*) "test/test_models/easy_max_model_1.lp");
 
-  char* path = (char*) "test/test_models/easy_max_model_1.lp";
-
-  cplex.importModel(model, path, objective, variables, constraints);
-
-
-  ExampleCplexModel example_model;
-  BranchAndBound branchAndBound(example_model.model, example_model.variables);
+  BranchAndBound branchAndBound(model_loader.model, model_loader.variables);
   branchAndBound.optimize();
 
   IloNumArray solution_values = branchAndBound.GetBestSolution();
@@ -33,6 +22,6 @@ TEST(BranchAndBoundClass, OptimizationTest) {
     ASSERT_EQ(actual_solution, expected_solution);
   }
 
-  example_model.environment->end();
+  model_loader.environment->end();
 }
 

@@ -22,7 +22,6 @@ class BranchAndBound {
   IloNumArray best_solution_;
 
   const bool IsNewBestObjectiveValue(double objective_value) const;
-
   void GenerateSubproblems(std::vector<IloConstraint>&, OptimizationProblem&, NodeSelection<OptimizationProblem*>&);
 
  public:
@@ -34,12 +33,8 @@ class BranchAndBound {
   const bool IsMaximizationProblem() const;
 
   double GetGlobalDualBound() const;
-  double GetPrimalDualBound() const;
 
   const IloNumArray& GetBestSolution() const;
-
-  // wait for BNB implementation
-  // const Node<IPModel*>* currentNode() const;
 
   void optimize();
 };

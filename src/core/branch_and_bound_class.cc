@@ -15,6 +15,9 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables)
     global_dual_bound_ = IloInfinity;
   }
 
+  // relaxate variables
+  model_->add(IloConversion(cplex_.getEnv(), *variables_, ILOFLOAT));
+
   cplex_.setOut(model_->getEnv().getNullStream());
 }
 
@@ -34,11 +37,11 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables)
  * }
  */
 void BranchAndBound::optimize() {
-  Branching branching(FIRST_FRACTIONAL);
-  NodeSelection<OptimizationProblem*> node_selection(DEPTH_FIRST);
 
   OptimizationProblem problem(&cplex_, variables_);
   Node<OptimizationProblem*> root(&problem);
+
+  NodeSelection<OptimizationProblem*> node_selection(DEPTH_FIRST);
   node_selection.SetNextNode(&root);
 
   while (node_selection.HasNextNode()) {
@@ -52,6 +55,7 @@ void BranchAndBound::optimize() {
       double objective_value = current_problem.GetObjectiveValue();
       if (IsNewBestObjectiveValue(objective_value)) {
         // get constraints to fixate from BranchingRule
+        Branching branching(FIRST_FRACTIONAL);
         std::vector<IloConstraint> branched_constraints = branching.Branch(current_solution_variables, *variables_);
 
         if (branched_constraints.size() > 0) { // subproblem has non-integer values

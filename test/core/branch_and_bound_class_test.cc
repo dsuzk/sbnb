@@ -42,3 +42,23 @@ TEST(BranchAndBoundClass, OptimizationMinTest) {
 
   model_loader.environment->end();
 }
+
+TEST(BranchAndBoundClass, relaxation_test) {
+  TestModelLoader model_loader((char*) "test/test_models/variable_test_model.lp");
+
+  IloNumVarArray vars = *model_loader.variables;
+  IloCplex cplex = *model_loader.cplex;
+
+  for (int i = 0; i < vars.getSize(); ++i) {
+    ASSERT_TRUE(vars[i].getType() == 1); // 1 = INT, 2 = FLOAT, 3 = Bool
+  }
+  cplex.solve();
+  ASSERT_TRUE(cplex.getObjValue() == 2);
+
+  model_loader.model->add(IloConversion(cplex.getEnv(), vars, ILOFLOAT));
+  cplex.solve();
+  ASSERT_TRUE(cplex.getObjValue() == 2.5);
+
+  model_loader.environment->end();
+}
+  

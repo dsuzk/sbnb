@@ -6,6 +6,18 @@
 
 TEST(BranchAndBoundClass, OptimizationTest) {
 
+  IloEnv env;
+  IloCplex cplex(env);
+  IloModel model(env);
+  IloNumVarArray variables(env);
+  IloRangeArray constraints(env);
+  IloObjective objective(env);
+
+  char* path = (char*) "test/test_models/easy_max_model_1.lp";
+
+  cplex.importModel(model, path, objective, variables, constraints);
+
+
   ExampleCplexModel example_model;
   BranchAndBound branchAndBound(example_model.model, example_model.variables);
   branchAndBound.optimize();

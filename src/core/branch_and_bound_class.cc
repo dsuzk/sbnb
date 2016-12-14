@@ -7,7 +7,7 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables)
     variables_(variables),
     best_solution_(IloNumArray(model_->getEnv())),
     cplex_(IloCplex(*model)),
-    global_dual_bound_(0.0),
+    global_dual_bound_(-1000000.0),
     global_primal_bound_(0.0) {
 
   cplex_.setOut(model_->getEnv().getNullStream());
@@ -75,4 +75,8 @@ void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint>& branched_co
 
 const IloNumArray &BranchAndBound::GetBestSolution() const {
   return best_solution_;
+}
+
+double BranchAndBound::GetGlobalDualBound() const {
+  return global_dual_bound_;
 }

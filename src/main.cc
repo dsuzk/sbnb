@@ -9,19 +9,19 @@ int main(int argn, char* argv[]) {
   IloCplex cplex(model);
   IloRangeArray constraints(env);
   IloObjective objective;
-  BranchAndBound bnb(&model, &vars);
 
   try {
     cplex.importModel(model, lp_file_path, objective, vars, constraints);
+    BranchAndBound bnb(&model, &vars);
     bnb.optimize();
+
+    std::cout << " ------- Branch And Bound Summary ------- " << endl;
+    std::cout << "Objective Value: " << bnb.GetGlobalDualBound() << endl;
+    std::cout << "Variable Values: " << bnb.GetBestSolution() << endl;
   }
   catch (IloException& e){
     cerr << "Exception caught: " << e <<endl;
   }
-  std::cout << " ------- Branch And Bound Summary ------- " << endl;
-  std::cout << "Objective Value: " << bnb.GetGlobalDualBound() << endl;
-  std::cout << "Variable Values: " << bnb.GetBestSolution() << endl;
-
   env.end();
 
   return 0;

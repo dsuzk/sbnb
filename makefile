@@ -93,6 +93,8 @@ gtest:
 clean:
 	@echo "Cleaning...";
 	$(RM) -r $(BUILD_DIR) $(TARGET_DIR)
+
+clean_gtest:
 	@make -C $(GTEST_DIR)/make clean
 
 docu:

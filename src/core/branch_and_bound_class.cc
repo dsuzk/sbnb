@@ -48,8 +48,7 @@ void BranchAndBound::optimize() {
     Node<OptimizationProblem*> current_node = *node_selection.NextNode();
     OptimizationProblem current_problem = *current_node.content;
     current_problem.Solve();
-
-    if (!current_problem.IsInfeasible() || !current_problem.IsUnbounded()) {
+    if (!current_problem.IsInfeasible() && !current_problem.IsUnbounded()) {
       IloNumArray current_solution_variables = current_problem.GetSolution();
 
       double objective_value = current_problem.GetObjectiveValue();

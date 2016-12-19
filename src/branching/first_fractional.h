@@ -6,6 +6,6 @@
 
 const int NO_FRACTIONAL_FOUND = -1;
 
-int IndexOfFirstFractional(const IloNumArray &numbers);
+int IndexOfFirstFractional(const IloNumArray &numbers, const double float_precision);
 
 #endif //BNB_INDEX_OF_FIRST_FRACTIONAL_FUNCTION_H

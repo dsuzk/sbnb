@@ -13,11 +13,11 @@ Branching::Branching(BranchingRule rule) {
   }
 }
 
-std::vector<IloConstraint> Branching::Branch(IloNumArray &solutions, IloNumVarArray &variables) {
+std::vector<IloConstraint> Branching::Branch(IloNumArray &solutions, IloNumVarArray &variables, const double float_precision) {
 
   std::vector<IloConstraint> sub_constraints;
 
-  int index_of_variable_to_be_branched = this->IndexOfNextVariableToFix(solutions);
+  int index_of_variable_to_be_branched = this->IndexOfNextVariableToFix(solutions, float_precision);
   if (index_of_variable_to_be_branched == NO_FIXING_VALUE_FOUND) {
     return sub_constraints;
   }

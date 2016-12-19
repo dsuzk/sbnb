@@ -56,7 +56,9 @@ void BranchAndBound::optimize() {
       if (IsNewBestObjectiveValue(objective_value)) {
         // get constraints to fixate from BranchingRule
         Branching branching(FIRST_FRACTIONAL);
-        std::vector<IloConstraint> branched_constraints = branching.Branch(current_solution_variables, *variables_);
+        // cplex feasibility tolerance as float precision
+        const double float_precision = cplex_.getParam(IloCplex::EpRHS);
+        std::vector<IloConstraint> branched_constraints = branching.Branch(current_solution_variables, *variables_, float_precision);
 
         if (branched_constraints.size() > 0) { // subproblem has non-integer values
           GenerateSubproblems(branched_constraints, current_problem, node_selection);

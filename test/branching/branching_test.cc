@@ -13,7 +13,7 @@ TEST(Branching, branch_Test) {
   IloNumArray solution = root_problem.GetSolution();
 
   Branching branching(BranchingRule::FIRST_FRACTIONAL);
-  const std::vector<IloConstraint> sub_problems = branching.Branch(solution, *model_loader.variables);
+  const std::vector<IloConstraint> sub_problems = branching.Branch(solution, *model_loader.variables, model_loader.cplex->getParam(IloCplex::EpRHS));
 
   double expected_solution_of_branch1[2] = {3.0, 1.25};
   double expected_solution_of_branch2[2] = {2.0, 2.0833333333333335};

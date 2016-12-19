@@ -16,10 +16,10 @@ class Branching {
 public:
     Branching(BranchingRule rule);
 
-    std::vector<IloConstraint> Branch(IloNumArray &solutions, IloNumVarArray &variables);
+    std::vector<IloConstraint> Branch(IloNumArray &solutions, IloNumVarArray &variables, double float_precision);
 
 private:
-    int (*IndexOfNextVariableToFix)(const IloNumArray &numbers);
+    int (*IndexOfNextVariableToFix)(const IloNumArray &numbers, const double float_precision);
 
 };
 

@@ -6,7 +6,7 @@
 
 class TestModelLoader {
  public:
-  TestModelLoader(char *path);
+  TestModelLoader(const char *path);
 
   IloEnv *environment;
   IloModel *model;

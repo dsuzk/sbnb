@@ -5,7 +5,7 @@
 
 using namespace std;
 
-TestModelLoader::TestModelLoader(char* path):
+TestModelLoader::TestModelLoader(const char* path):
     environment(new IloEnv()),
     model(new IloModel(*environment)),
     variables(new IloNumVarArray(*environment)),

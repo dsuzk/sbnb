@@ -23,12 +23,15 @@ TEST(BranchAndBoundClass, relaxation_test) {
   model_loader.environment->end();
 }
 
-TEST(BranchAndBoundClass, OptimizationMaxTest) {
-  TestModelLoader model_loader((char*) "test/test_models/easy_max_model_1.lp");
+
+class ModelTest : public ::testing::TestWithParam<const char*> {};
+
+TEST_P(ModelTest, SolveExampleModel) {
+  TestModelLoader model_loader(GetParam());
 
   BranchAndBound bnb(model_loader.model, model_loader.variables);
   bnb.optimize();
-  IloNumArray solution_values = bnb.GetBestSolution();
+  IloNumArray acutal_solution_values = bnb.GetBestSolution();
   double objective_value = bnb.GetGlobalDualBound();
 
   IloNumArray expected_solution_values(*model_loader.expected_solution_values);
@@ -36,8 +39,8 @@ TEST(BranchAndBoundClass, OptimizationMaxTest) {
 
   ASSERT_DOUBLE_EQ(expected_objective_value, objective_value);
 
-  for (int i = 0; i < solution_values.getSize(); ++i) {
-    IloNum actual_solution_value = solution_values[i];
+  for (int i = 0; i < acutal_solution_values.getSize(); ++i) {
+    IloNum actual_solution_value = acutal_solution_values[i];
     IloNum expected_solution_value = expected_solution_values[i];
     ASSERT_EQ(actual_solution_value, expected_solution_value);
   }
@@ -45,69 +48,9 @@ TEST(BranchAndBoundClass, OptimizationMaxTest) {
   model_loader.environment->end();
 }
 
-TEST(BranchAndBoundClass, OptimizationMinTest) {
+INSTANTIATE_TEST_CASE_P(BranchAndBound,
+                        ModelTest,
+                        ::testing::Values("test/test_models/qpex.lp",
+                                          "test/test_models/location.lp",
+                                          "test/test_models/easy_max_model_1.lp"));
 
-  TestModelLoader model_loader((char*) "test/test_models/easy_min_model_1.lp");
-
-  BranchAndBound branchAndBound(model_loader.model, model_loader.variables);
-
-  branchAndBound.optimize();
-
-  IloNumArray solution_values = branchAndBound.GetBestSolution();
-  IloNum expected_solutions[5] = {1, 0, 1, 0, 2};
-
-  for (int i = 0; i < solution_values.getSize(); ++i) {
-    IloNum actual_solution = solution_values[i];
-    IloNum expected_solution = expected_solutions[i];
-    ASSERT_EQ(actual_solution, expected_solution);
-  }
-
-  model_loader.environment->end();
-}
-
-  
-TEST(ModelTest, location_lp) {
-  char* model_path = (char*)"test/test_models/location.lp";
-  TestModelLoader model_loader(model_path);
-
-  BranchAndBound bnb(model_loader.model, model_loader.variables);
-  bnb.optimize();
-  IloNumArray solution_values = bnb.GetBestSolution();
-  double objective_value = bnb.GetGlobalDualBound();
-
-  IloNumArray expected_solution_values(*model_loader.expected_solution_values);
-  double expected_objective_value = model_loader.expected_objective_value;
-
-  ASSERT_DOUBLE_EQ(expected_objective_value, objective_value);
-
-  for (int i = 0; i < solution_values.getSize(); ++i) {
-    IloNum actual_solution_value = solution_values[i];
-    IloNum expected_solution_value = expected_solution_values[i];
-    ASSERT_EQ(actual_solution_value, expected_solution_value);
-  }
-
-  model_loader.environment->end();
-}
-
-TEST(ModelTest, qpex_lp) {
-  char* model_path = (char*)"test/test_models/qpex.lp";
-  TestModelLoader model_loader(model_path);
-
-  BranchAndBound bnb(model_loader.model, model_loader.variables);
-  bnb.optimize();
-  IloNumArray solution_values = bnb.GetBestSolution();
-  double objective_value = bnb.GetGlobalDualBound();
-
-  IloNumArray expected_solution_values(*model_loader.expected_solution_values);
-  double expected_objective_value = model_loader.expected_objective_value;
-
-  ASSERT_DOUBLE_EQ(expected_objective_value, objective_value);
-
-  for (int i = 0; i < solution_values.getSize(); ++i) {
-    IloNum actual_solution_value = solution_values[i];
-    IloNum expected_solution_value = expected_solution_values[i];
-    ASSERT_EQ(actual_solution_value, expected_solution_value);
-  }
-
-  model_loader.environment->end();
-}

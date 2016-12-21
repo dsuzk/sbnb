@@ -39,8 +39,11 @@ BranchAndBound::BranchAndBound(IloModel *model, IloNumVarArray *variables)
 void BranchAndBound::optimize() {
   OptimizationProblem problem(&cplex_, variables_);
   Node<OptimizationProblem *> root(&problem);
-
+  Branching branching(FIRST_FRACTIONAL);
   NodeSelection<OptimizationProblem *> node_selection(DEPTH_FIRST);
+  std::vector<IloConstraint> branched_constraints;
+  IloNumArray current_solution_variables;
+
   node_selection.AddNode(&root);
 
   while (node_selection.HasNextNode()) {
@@ -57,12 +60,10 @@ void BranchAndBound::optimize() {
       continue;
     }
 
-    Branching branching(FIRST_FRACTIONAL);
     // cplex feasibility tolerance as float precision
     const double float_precision = cplex_.getParam(IloCplex::EpRHS);
-    IloNumArray current_solution_variables = current_problem.GetSolution();
-    std::vector<IloConstraint>
-        branched_constraints = branching.Branch(current_solution_variables, *variables_, float_precision);
+    current_solution_variables = current_problem.GetSolution();
+    branched_constraints = branching.Branch(current_solution_variables, *variables_, float_precision);
 
     if (branched_constraints.size() > 0) { // sub-problem has non integer solution
       GenerateSubproblems(branched_constraints, current_problem, node_selection);

@@ -46,17 +46,19 @@ void BranchAndBound::optimize() {
 
   while (node_selection.HasNextNode()) {
     Node<OptimizationProblem*> current_node = *node_selection.NextNode();
+    //TODO copy
     OptimizationProblem current_problem = *current_node.content;
     current_problem.Solve();
     if (!current_problem.IsInfeasible() && !current_problem.IsUnbounded()) {
       IloNumArray current_solution_variables = current_problem.GetSolution();
-
       double objective_value = current_problem.GetObjectiveValue();
+
       if (IsNewBestObjectiveValue(objective_value)) {
         // get constraints to fixate from BranchingRule
         Branching branching(FIRST_FRACTIONAL);
         // cplex feasibility tolerance as float precision
         const double float_precision = cplex_.getParam(IloCplex::EpRHS);
+        //TODO reuse vector -> out of while
         std::vector<IloConstraint> branched_constraints = branching.Branch(current_solution_variables, *variables_, float_precision);
 
         if (branched_constraints.size() > 0) { // subproblem has non-integer values
@@ -78,6 +80,7 @@ void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint>& branched_co
     sub_problem->AddFixings(current_problem.GetFixings());
     Node<OptimizationProblem*>* sub_problem_node = new Node<OptimizationProblem*>(sub_problem);
     // add new Problems to NodeSelection
+    //TODO 'next' node --> add
     node_selection.SetNextNode(sub_problem_node);
   }
 }

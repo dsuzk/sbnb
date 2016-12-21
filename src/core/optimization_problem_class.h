@@ -11,6 +11,7 @@ class OptimizationProblem {
   IloCplex* cplex_;
   IloNumVarArray* variables_;
 
+  //TODO .end when solved
   IloNumArray solution_;
   IloConstraintArray fixings_;
 

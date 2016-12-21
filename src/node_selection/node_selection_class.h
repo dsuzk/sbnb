@@ -1,4 +1,3 @@
-
 #ifndef SBNB_NODE_SELECTION_NODE_SELECTION_CLASS_H_
 #define SBNB_NODE_SELECTION_NODE_SELECTION_CLASS_H_
 
@@ -11,36 +10,34 @@
 using namespace std;
 
 enum TraversalType {
-    DEPTH_FIRST,
-    BREADTH_FIRST
+  DEPTH_FIRST,
+  BREADTH_FIRST
 };
 
 template<class T>
 class NodeSelection : public NodeSelectionInterface<T> {
 
-public:
-    NodeSelection(TraversalType traversal);
+ public:
+  NodeSelection(TraversalType traversal);
 
-    Node<T> *CurrentNode();
+  Node<T> *CurrentNode();
 
-    Node<T> *NextNode();
+  Node<T> *NextNode();
 
-    void AddNode(Node<T> *node);
+  void AddNode(Node<T> *node);
 
-    bool HasNextNode();
+  bool HasNextNode();
 
-private:
-    NodeSelectionInterface<T> *traversal_order_;
+ private:
+  NodeSelectionInterface<T> *traversal_order_;
 };
 
 template<class T>
 NodeSelection<T>::NodeSelection(TraversalType traversal) {
   switch (traversal) {
-    case DEPTH_FIRST :
-      traversal_order_ = new DepthFirstTraversal<T>();
+    case DEPTH_FIRST :traversal_order_ = new DepthFirstTraversal<T>();
       break;
-    case BREADTH_FIRST :
-      traversal_order_ = new BreadthFirstTraversal<T>();
+    case BREADTH_FIRST :traversal_order_ = new BreadthFirstTraversal<T>();
       break;
   }
 }

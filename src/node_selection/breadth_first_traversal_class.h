@@ -1,6 +1,5 @@
-
-#ifndef SBNB_NODE_SELECTION_BREATH_FIRST_TRAVERSAL_CLASS_H_
-#define SBNB_NODE_SELECTION_BREATH_FIRST_TRAVERSAL_CLASS_H_
+#ifndef SBNB_NODE_SELECTION_BREADTH_FIRST_TRAVERSAL_CLASS_H_
+#define SBNB_NODE_SELECTION_BREADTH_FIRST_TRAVERSAL_CLASS_H_
 
 #include <queue>
 #include "node_selection_interface.h"
@@ -11,19 +10,19 @@ using namespace std;
 template<class T>
 class BreadthFirstTraversal : public NodeSelectionInterface<T> {
 
-public:
-    BreadthFirstTraversal();
+ public:
+  BreadthFirstTraversal();
 
-    Node<T> *CurrentNode();
+  Node<T> *CurrentNode();
 
-    Node<T> *NextNode();
+  Node<T> *NextNode();
 
-    void AddNode(Node<T> *node);
+  void AddNode(Node<T> *node);
 
-    bool HasNextNode();
+  bool HasNextNode();
 
-private:
-    queue<Node<T> *> traversal_order_;
+ private:
+  queue<Node<T> *> traversal_order_;
 };
 
 template<class T>
@@ -51,4 +50,4 @@ bool BreadthFirstTraversal<T>::HasNextNode() {
   return !this->traversal_order_.empty();
 }
 
-#endif //SBNB_NODE_SELECTION_BREATH_FIRST_TRAVERSAL_CLASS_H_
+#endif //SBNB_NODE_SELECTION_BREADTH_FIRST_TRAVERSAL_CLASS_H_

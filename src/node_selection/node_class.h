@@ -1,14 +1,13 @@
-
 #ifndef SBNB_NODE_SELECTION_NODE_CLASS_H_
 #define SBNB_NODE_SELECTION_NODE_CLASS_H_
 
 template<class T>
 class Node {
 
-public:
-    Node(T);
+ public:
+  Node(T);
 
-    T content;
+  T content;
 };
 
 template<class T>

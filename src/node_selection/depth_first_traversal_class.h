@@ -1,4 +1,3 @@
-
 #ifndef SBNB_NODE_SELECTION_DEPTH_FIRST_TRAVERSAL_CLASS_H_
 #define SBNB_NODE_SELECTION_DEPTH_FIRST_TRAVERSAL_CLASS_H_
 
@@ -11,19 +10,19 @@ using namespace std;
 template<class T>
 class DepthFirstTraversal : public NodeSelectionInterface<T> {
 
-public:
-    DepthFirstTraversal();
+ public:
+  DepthFirstTraversal();
 
-    Node<T> *NextNode();
+  Node<T> *NextNode();
 
-    Node<T> *CurrentNode();
+  Node<T> *CurrentNode();
 
-    void AddNode(Node<T> *node);
+  void AddNode(Node<T> *node);
 
-    bool HasNextNode();
+  bool HasNextNode();
 
-private:
-    stack<Node<T> *> traversal_order_;
+ private:
+  stack<Node<T> *> traversal_order_;
 };
 
 template<class T>

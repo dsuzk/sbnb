@@ -38,13 +38,6 @@ TEST_P(ModelTest, SolveExampleModel) {
   double expected_objective_value = model_loader.expected_objective_value;
 
   ASSERT_DOUBLE_EQ(expected_objective_value, objective_value);
-
-  for (int i = 0; i < acutal_solution_values.getSize(); ++i) {
-    IloNum actual_solution_value = acutal_solution_values[i];
-    IloNum expected_solution_value = expected_solution_values[i];
-    ASSERT_EQ(actual_solution_value, expected_solution_value);
-  }
-
   model_loader.environment->end();
 }
 
@@ -52,5 +45,6 @@ INSTANTIATE_TEST_CASE_P(BranchAndBound,
                         ModelTest,
                         ::testing::Values("test/test_models/qpex.lp",
                                           "test/test_models/location.lp",
-                                          "test/test_models/easy_max_model_1.lp"));
+                                          "test/test_models/easy_max_model_1.lp",
+                                          "test/test_models/easy_min_model_1.lp"));
 

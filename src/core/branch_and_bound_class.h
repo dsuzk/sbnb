@@ -1,5 +1,5 @@
-#ifndef _SBNB_CORE_BRANCH_AND_BOUND_CLASS_H_
-#define _SBNB_CORE_BRANCH_AND_BOUND_CLASS_H_
+#ifndef SBNB_CORE_BRANCH_AND_BOUND_CLASS_H
+#define SBNB_CORE_BRANCH_AND_BOUND_CLASS_H
 
 #include <ilcplex/ilocplex.h>
 #include "node_selection/node_class.h"
@@ -38,5 +38,5 @@ class BranchAndBound {
   void optimize();
 };
 
-#endif // _SBNB_CORE_BRANCH_AND_BOUND_CLASS_H_
+#endif // SBNB_CORE_BRANCH_AND_BOUND_CLASS_H
 

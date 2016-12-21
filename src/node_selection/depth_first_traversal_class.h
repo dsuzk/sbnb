@@ -18,7 +18,7 @@ public:
 
     Node<T> *CurrentNode();
 
-    void SetNextNode(Node<T> *node);
+    void AddNode(Node<T> *node);
 
     bool HasNextNode();
 
@@ -30,7 +30,7 @@ template<class T>
 DepthFirstTraversal<T>::DepthFirstTraversal() {}
 
 template<class T>
-void DepthFirstTraversal<T>::SetNextNode(Node<T> *node) {
+void DepthFirstTraversal<T>::AddNode(Node<T> *node) {
   this->traversal_order_.push(node);
 }
 

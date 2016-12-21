@@ -25,7 +25,7 @@ public:
 
     Node<T> *NextNode();
 
-    void SetNextNode(Node<T> *node);
+    void AddNode(Node<T> *node);
 
     bool HasNextNode();
 
@@ -46,8 +46,8 @@ NodeSelection<T>::NodeSelection(TraversalType traversal) {
 }
 
 template<class T>
-void NodeSelection<T>::SetNextNode(Node<T> *node) {
-  traversal_order_->SetNextNode(node);
+void NodeSelection<T>::AddNode(Node<T> *node) {
+  traversal_order_->AddNode(node);
 }
 
 template<class T>

@@ -26,21 +26,21 @@ TEST(DepthFirstTraversal, NextNode_Test) {
   Node<int> f(4);
   Node<int> g(3);
 
-  traversal.SetNextNode(&a);
+  traversal.AddNode(&a);
 
   Node<int> *next = traversal.NextNode();
   int expected_content = 1;
   EXPECT_EQ(next->content, expected_content);
 
-  traversal.SetNextNode(&b);
-  traversal.SetNextNode(&c);
+  traversal.AddNode(&b);
+  traversal.AddNode(&c);
 
   next = traversal.NextNode();
   expected_content = 2;
   EXPECT_EQ(next->content, expected_content);
 
-  traversal.SetNextNode(&f);
-  traversal.SetNextNode(&g);
+  traversal.AddNode(&f);
+  traversal.AddNode(&g);
 
   next = traversal.NextNode();
   expected_content = 3;
@@ -54,8 +54,8 @@ TEST(DepthFirstTraversal, NextNode_Test) {
   expected_content = 5;
   EXPECT_EQ(next->content, expected_content);
 
-  traversal.SetNextNode(&d);
-  traversal.SetNextNode(&e);
+  traversal.AddNode(&d);
+  traversal.AddNode(&e);
 
   next = traversal.NextNode();
   expected_content = 6;
@@ -74,8 +74,8 @@ TEST(DepthFirstTraversal, CurrentNode_Test) {
   Node<int> a(1);
   Node<int> b(2);
 
-  traversal.SetNextNode(&a);
-  traversal.SetNextNode(&b);
+  traversal.AddNode(&a);
+  traversal.AddNode(&b);
 
   Node<int> *current = traversal.CurrentNode();
   int expected_content = 2;
@@ -88,7 +88,7 @@ TEST(DepthFirstTraversal, HasNextNode_Test) {
   DepthFirstTraversal<int> traversal;
 
   Node<int> a(0);
-  traversal.SetNextNode(&a);
+  traversal.AddNode(&a);
 
   EXPECT_TRUE(traversal.HasNextNode());
 

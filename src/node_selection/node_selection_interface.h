@@ -13,7 +13,7 @@ public:
 
     virtual Node<T> *NextNode() = 0;
 
-    virtual void SetNextNode(Node<T> *node) = 0;
+    virtual void AddNode(Node<T> *node) = 0;
 
     virtual bool HasNextNode() = 0;
 };

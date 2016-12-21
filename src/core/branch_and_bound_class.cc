@@ -42,7 +42,7 @@ void BranchAndBound::optimize() {
   Node<OptimizationProblem*> root(&problem);
 
   NodeSelection<OptimizationProblem*> node_selection(DEPTH_FIRST);
-  node_selection.SetNextNode(&root);
+  node_selection.AddNode(&root);
 
   while (node_selection.HasNextNode()) {
     Node<OptimizationProblem*> current_node = *node_selection.NextNode();
@@ -81,7 +81,7 @@ void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint>& branched_co
     Node<OptimizationProblem*>* sub_problem_node = new Node<OptimizationProblem*>(sub_problem);
     // add new Problems to NodeSelection
     //TODO 'next' node --> add
-    node_selection.SetNextNode(sub_problem_node);
+    node_selection.AddNode(sub_problem_node);
   }
 }
 

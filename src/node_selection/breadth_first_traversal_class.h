@@ -18,7 +18,7 @@ public:
 
     Node<T> *NextNode();
 
-    void SetNextNode(Node<T> *node);
+    void AddNode(Node<T> *node);
 
     bool HasNextNode();
 
@@ -30,7 +30,7 @@ template<class T>
 BreadthFirstTraversal<T>::BreadthFirstTraversal() {}
 
 template<class T>
-void BreadthFirstTraversal<T>::SetNextNode(Node<T> *node) {
+void BreadthFirstTraversal<T>::AddNode(Node<T> *node) {
   this->traversal_order_.push(node);
 }
 

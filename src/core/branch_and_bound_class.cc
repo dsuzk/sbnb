@@ -2,12 +2,12 @@
 #include "branch_and_bound_class.h"
 #include "branching/branching.h"
 
-BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables)
-  : model_(model),
-    variables_(variables),
-    best_solution_(IloNumArray(model_->getEnv())),
-    cplex_(IloCplex(*model)),
-    global_primal_bound_(0.0) {
+BranchAndBound::BranchAndBound(IloModel *model, IloNumVarArray *variables)
+    : model_(model),
+      variables_(variables),
+      best_solution_(IloNumArray(model_->getEnv())),
+      cplex_(IloCplex(*model)),
+      global_primal_bound_(0.0) {
 
   if (IsMaximizationProblem()) {
     global_primal_bound_ = -IloInfinity;
@@ -37,50 +37,49 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables)
  * }
  */
 void BranchAndBound::optimize() {
-
   OptimizationProblem problem(&cplex_, variables_);
-  Node<OptimizationProblem*> root(&problem);
+  Node<OptimizationProblem *> root(&problem);
 
-  NodeSelection<OptimizationProblem*> node_selection(DEPTH_FIRST);
+  NodeSelection<OptimizationProblem *> node_selection(DEPTH_FIRST);
   node_selection.AddNode(&root);
 
   while (node_selection.HasNextNode()) {
-    Node<OptimizationProblem*> current_node = *node_selection.NextNode();
-    //TODO copy
+    Node<OptimizationProblem *> current_node = *node_selection.NextNode();
     OptimizationProblem current_problem = *current_node.content;
     current_problem.Solve();
-    if (!current_problem.IsInfeasible() && !current_problem.IsUnbounded()) {
-      IloNumArray current_solution_variables = current_problem.GetSolution();
-      double objective_value = current_problem.GetObjectiveValue();
 
-      if (IsNewBestObjectiveValue(objective_value)) {
-        // get constraints to fixate from BranchingRule
-        Branching branching(FIRST_FRACTIONAL);
-        // cplex feasibility tolerance as float precision
-        const double float_precision = cplex_.getParam(IloCplex::EpRHS);
-        //TODO reuse vector -> out of while
-        std::vector<IloConstraint> branched_constraints = branching.Branch(current_solution_variables, *variables_, float_precision);
+    if (current_problem.IsInfeasible() || current_problem.IsUnbounded()) {
+      continue;
+    }
 
-        if (branched_constraints.size() > 0) { // subproblem has non-integer values
-          GenerateSubproblems(branched_constraints, current_problem, node_selection);
-        } else {    // subproblem has a valid integer solution -> set new bounds
-          global_primal_bound_ = objective_value;
-          best_solution_ = current_solution_variables;
-        }
-      }
+    double objective_value = current_problem.GetObjectiveValue();
+    if (!IsNewBestObjectiveValue(objective_value)) {
+      continue;
+    }
+
+    Branching branching(FIRST_FRACTIONAL);
+    // cplex feasibility tolerance as float precision
+    const double float_precision = cplex_.getParam(IloCplex::EpRHS);
+    IloNumArray current_solution_variables = current_problem.GetSolution();
+    std::vector<IloConstraint>
+        branched_constraints = branching.Branch(current_solution_variables, *variables_, float_precision);
+
+    if (branched_constraints.size() > 0) { // sub-problem has non integer solution
+      GenerateSubproblems(branched_constraints, current_problem, node_selection);
+    } else {
+      global_primal_bound_ = objective_value;
+      best_solution_ = current_solution_variables;
     }
   }
 }
 
-void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint>& branched_constraints, OptimizationProblem& current_problem,
-                                         NodeSelection<OptimizationProblem*>& node_selection) {
+void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint> &branched_constraints,
+                                         OptimizationProblem &current_problem,
+                                         NodeSelection<OptimizationProblem *> &node_selection) {
   for (auto constraint : branched_constraints) {
-    // generate two (sub-)OptimizationProblems with Constraints from BranchingRule
-    OptimizationProblem* sub_problem = new OptimizationProblem(&cplex_, variables_, &constraint);
+    OptimizationProblem *sub_problem = new OptimizationProblem(&cplex_, variables_, &constraint);
     sub_problem->AddFixings(current_problem.GetFixings());
-    Node<OptimizationProblem*>* sub_problem_node = new Node<OptimizationProblem*>(sub_problem);
-    // add new Problems to NodeSelection
-    //TODO 'next' node --> add
+    Node<OptimizationProblem *> *sub_problem_node = new Node<OptimizationProblem *>(sub_problem);
     node_selection.AddNode(sub_problem_node);
   }
 }

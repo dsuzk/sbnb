@@ -16,7 +16,7 @@ int main(int argn, char* argv[]) {
     bnb.optimize();
 
     std::cout << " ------- Branch And Bound Summary ------- " << endl;
-    std::cout << "Objective Value: " << bnb.GetGlobalDualBound() << endl;
+    std::cout << "Objective Value: " << bnb.GetGlobalPrimalBound() << endl;
     std::cout << "Variable Values: " << bnb.GetBestSolution() << endl;
   }
   catch (IloException& e){

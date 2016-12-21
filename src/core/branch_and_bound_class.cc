@@ -10,9 +10,9 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables)
     global_primal_bound_(0.0) {
 
   if (IsMaximizationProblem()) {
-    global_dual_bound_ = -IloInfinity;
+    global_primal_bound_ = -IloInfinity;
   } else {
-    global_dual_bound_ = IloInfinity;
+    global_primal_bound_ = IloInfinity;
   }
 
   // relaxate variables
@@ -64,7 +64,7 @@ void BranchAndBound::optimize() {
         if (branched_constraints.size() > 0) { // subproblem has non-integer values
           GenerateSubproblems(branched_constraints, current_problem, node_selection);
         } else {    // subproblem has a valid integer solution -> set new bounds
-          global_dual_bound_ = objective_value;
+          global_primal_bound_ = objective_value;
           best_solution_ = current_solution_variables;
         }
       }
@@ -89,15 +89,15 @@ const IloNumArray &BranchAndBound::GetBestSolution() const {
   return best_solution_;
 }
 
-double BranchAndBound::GetGlobalDualBound() const {
-  return global_dual_bound_;
+double BranchAndBound::GetGlobalPrimalBound() const {
+  return global_primal_bound_;
 }
 
 const bool BranchAndBound::IsNewBestObjectiveValue(double objective_value) const {
   if (IsMaximizationProblem()) {
-    return (objective_value > global_dual_bound_);
+    return (objective_value > global_primal_bound_);
   } else {
-    return (objective_value < global_dual_bound_);
+    return (objective_value < global_primal_bound_);
   }
 }
 

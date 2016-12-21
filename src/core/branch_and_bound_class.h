@@ -16,7 +16,6 @@ class BranchAndBound {
 
   IloCplex cplex_;
 
-  double global_dual_bound_;
   double global_primal_bound_;
 
   IloNumArray best_solution_;
@@ -32,7 +31,7 @@ class BranchAndBound {
 
   const bool IsMaximizationProblem() const;
 
-  double GetGlobalDualBound() const;
+  double GetGlobalPrimalBound() const;
 
   const IloNumArray& GetBestSolution() const;
 

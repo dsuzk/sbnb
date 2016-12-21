@@ -32,7 +32,7 @@ TEST_P(ModelTest, SolveExampleModel) {
   BranchAndBound bnb(model_loader.model, model_loader.variables);
   bnb.optimize();
   IloNumArray acutal_solution_values = bnb.GetBestSolution();
-  double objective_value = bnb.GetGlobalDualBound();
+  double objective_value = bnb.GetGlobalPrimalBound();
 
   IloNumArray expected_solution_values(*model_loader.expected_solution_values);
   double expected_objective_value = model_loader.expected_objective_value;

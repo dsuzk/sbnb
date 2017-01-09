@@ -1,6 +1,5 @@
 #include <vector>
 #include "branch_and_bound_class.h"
-#include "branching/branching.h"
 
 BranchAndBound::BranchAndBound(IloModel *model, IloNumVarArray *variables)
     : model_(model),
@@ -38,17 +37,17 @@ BranchAndBound::BranchAndBound(IloModel *model, IloNumVarArray *variables)
  */
 void BranchAndBound::optimize() {
   OptimizationProblem problem(&cplex_, variables_);
-  Node<OptimizationProblem *> root(&problem);
+  Node root(&problem);
   Branching branching(FIRST_FRACTIONAL);
-  NodeSelection<OptimizationProblem *> node_selection(DEPTH_FIRST);
+  NodeSelection node_selection(DEPTH_FIRST);
   std::vector<IloConstraint> branched_constraints;
   IloNumArray current_solution_variables;
 
-  node_selection.AddNode(&root);
+  node_selection.AddNode(root);
 
   while (node_selection.HasNextNode()) {
-    Node<OptimizationProblem *> current_node = *node_selection.NextNode();
-    OptimizationProblem current_problem = *current_node.content;
+    Node current_node = node_selection.NextNode();
+    OptimizationProblem current_problem = *current_node.problem;
     current_problem.Solve();
 
     if (current_problem.IsInfeasible() || current_problem.IsUnbounded()) {
@@ -76,11 +75,11 @@ void BranchAndBound::optimize() {
 
 void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint> &branched_constraints,
                                          OptimizationProblem &current_problem,
-                                         NodeSelection<OptimizationProblem *> &node_selection) {
+                                         NodeSelection &node_selection) {
   for (auto constraint : branched_constraints) {
     OptimizationProblem *sub_problem = new OptimizationProblem(&cplex_, variables_, &constraint);
     sub_problem->AddFixings(current_problem.GetFixings());
-    Node<OptimizationProblem *> *sub_problem_node = new Node<OptimizationProblem *>(sub_problem);
+    Node sub_problem_node(sub_problem);
     node_selection.AddNode(sub_problem_node);
   }
 }

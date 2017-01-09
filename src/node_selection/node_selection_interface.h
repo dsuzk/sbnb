@@ -3,16 +3,15 @@
 
 #include "node_class.h"
 
-template<class T>
 class NodeSelectionInterface {
 
  public:
 
-  virtual Node<T> *CurrentNode() = 0;
+  virtual Node CurrentNode() = 0;
 
-  virtual Node<T> *NextNode() = 0;
+  virtual Node NextNode() = 0;
 
-  virtual void AddNode(Node<T> *node) = 0;
+  virtual void AddNode(Node node) = 0;
 
   virtual bool HasNextNode() = 0;
 };

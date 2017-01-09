@@ -1,18 +1,13 @@
 #ifndef SBNB_NODE_SELECTION_NODE_CLASS_H_
 #define SBNB_NODE_SELECTION_NODE_CLASS_H_
 
-template<class T>
+#include "core/optimization_problem_class.h"
+
 class Node {
 
  public:
-  Node(T);
-
-  T content;
+  Node(OptimizationProblem *problem_);
+  OptimizationProblem *problem;
 };
-
-template<class T>
-Node<T>::Node(T content_) {
-  this->content = content_;
-}
 
 #endif //SBNB_NODE_SELECTION_NODE_CLASS_H_

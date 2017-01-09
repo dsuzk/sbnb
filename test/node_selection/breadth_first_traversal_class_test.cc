@@ -16,79 +16,92 @@ TEST(BreadthFirstTraversal, NextNode_Test) {
 
   */
 
-  BreadthFirstTraversal<int> traversal;
+  BreadthFirstTraversal traversal;
 
-  Node<int> a(1);
-  Node<int> b(2);
-  Node<int> c(3);
-  Node<int> d(4);
-  Node<int> e(5);
-  Node<int> f(6);
-  Node<int> g(7);
+  OptimizationProblem *p1 = new OptimizationProblem(NULL, NULL);
+  OptimizationProblem *p2 = new OptimizationProblem(NULL, NULL);
+  OptimizationProblem *p3 = new OptimizationProblem(NULL, NULL);
+  OptimizationProblem *p4 = new OptimizationProblem(NULL, NULL);
+  OptimizationProblem *p5 = new OptimizationProblem(NULL, NULL);
+  OptimizationProblem *p6 = new OptimizationProblem(NULL, NULL);
+  OptimizationProblem *p7 = new OptimizationProblem(NULL, NULL);
 
-  traversal.AddNode(&a);
+  Node a(p1);
+  Node b(p5);
+  Node c(p2);
+  Node d(p7);
+  Node e(p6);
+  Node f(p4);
+  Node g(p3);
 
-  Node<int> *next = traversal.NextNode();
-  int expected_content = 1;
-  EXPECT_EQ(next->content, expected_content);
+  traversal.AddNode(a);
 
-  traversal.AddNode(&b);
-  traversal.AddNode(&c);
+  Node next = traversal.NextNode();
+  OptimizationProblem *expected_content = p1;
+  EXPECT_EQ(next.problem, expected_content);
 
-  next = traversal.NextNode();
-  expected_content = 2;
-  EXPECT_EQ(next->content, expected_content);
-
-  traversal.AddNode(&d);
-  traversal.AddNode(&e);
-
-  next = traversal.NextNode();
-  expected_content = 3;
-  EXPECT_EQ(next->content, expected_content);
+  traversal.AddNode(b);
+  traversal.AddNode(c);
 
   next = traversal.NextNode();
-  expected_content = 4;
-  EXPECT_EQ(next->content, expected_content);
+  expected_content = p2;
+  EXPECT_EQ(next.problem, expected_content);
+
+  traversal.AddNode(d);
+  traversal.AddNode(e);
 
   next = traversal.NextNode();
-  expected_content = 5;
-  EXPECT_EQ(next->content, expected_content);
-
-  traversal.AddNode(&f);
-  traversal.AddNode(&g);
+  expected_content = p3;
+  EXPECT_EQ(next.problem, expected_content);
 
   next = traversal.NextNode();
-  expected_content = 6;
-  EXPECT_EQ(next->content, expected_content);
+  expected_content = p4;
+  EXPECT_EQ(next.problem, expected_content);
 
   next = traversal.NextNode();
-  expected_content = 7;
-  EXPECT_EQ(next->content, expected_content);
+  expected_content = p5;
+  EXPECT_EQ(next.problem, expected_content);
+
+  traversal.AddNode(f);
+  traversal.AddNode(g);
+
+  next = traversal.NextNode();
+  expected_content = p6;
+  EXPECT_EQ(next.problem, expected_content);
+
+  next = traversal.NextNode();
+  expected_content = p7;
+  EXPECT_EQ(next.problem, expected_content);
 
 }
 
 TEST(BreadthFirstTraversal, CurrentNode_Test) {
 
-  BreadthFirstTraversal<int> traversal;
+  BreadthFirstTraversal traversal;
 
-  Node<int> a(1);
-  Node<int> b(2);
+  OptimizationProblem *p1 = new OptimizationProblem(NULL, NULL);
+  OptimizationProblem *p2 = new OptimizationProblem(NULL, NULL);
 
-  traversal.AddNode(&a);
-  traversal.AddNode(&b);
+  Node a(p1);
+  Node b(p2);
 
-  Node<int> *current = traversal.CurrentNode();
-  int expected_content = 1;
-  EXPECT_EQ(current->content, expected_content);
+  traversal.AddNode(a);
+  traversal.AddNode(b);
+
+  Node current = traversal.CurrentNode();
+  OptimizationProblem *expected_content = p1;
+  EXPECT_EQ(current.problem, expected_content);
 
 }
 
 TEST(BreadthFirstTraversal, HasNextNode_Test) {
 
-  BreadthFirstTraversal<int> traversal;
+  BreadthFirstTraversal traversal;
 
-  Node<int> a(0);
-  traversal.AddNode(&a);
+  OptimizationProblem *p1 = new OptimizationProblem(NULL, NULL);
+  Node a(p1);
+
+  traversal.AddNode(a);
 
   EXPECT_TRUE(traversal.HasNextNode());
 

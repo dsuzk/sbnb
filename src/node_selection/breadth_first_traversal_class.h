@@ -3,51 +3,24 @@
 
 #include <queue>
 #include "node_selection_interface.h"
-#include "node_class.h"
 
 using namespace std;
 
-template<class T>
-class BreadthFirstTraversal : public NodeSelectionInterface<T> {
+class BreadthFirstTraversal : public NodeSelectionInterface {
 
  public:
   BreadthFirstTraversal();
 
-  Node<T> *CurrentNode();
+  Node CurrentNode();
 
-  Node<T> *NextNode();
+  Node NextNode();
 
-  void AddNode(Node<T> *node);
+  void AddNode(Node node);
 
   bool HasNextNode();
 
  private:
-  queue<Node<T> *> traversal_order_;
+  queue<Node> traversal_order_;
 };
-
-template<class T>
-BreadthFirstTraversal<T>::BreadthFirstTraversal() {}
-
-template<class T>
-void BreadthFirstTraversal<T>::AddNode(Node<T> *node) {
-  this->traversal_order_.push(node);
-}
-
-template<class T>
-Node<T> *BreadthFirstTraversal<T>::CurrentNode() {
-  return this->traversal_order_.front();
-}
-
-template<class T>
-Node<T> *BreadthFirstTraversal<T>::NextNode() {
-  Node<T> *next = this->traversal_order_.front();
-  this->traversal_order_.pop();
-  return next;
-}
-
-template<class T>
-bool BreadthFirstTraversal<T>::HasNextNode() {
-  return !this->traversal_order_.empty();
-}
 
 #endif //SBNB_NODE_SELECTION_BREADTH_FIRST_TRAVERSAL_CLASS_H_

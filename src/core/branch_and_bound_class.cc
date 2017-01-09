@@ -1,12 +1,12 @@
 #include <vector>
 #include "branch_and_bound_class.h"
 
-BranchAndBound::BranchAndBound(IloModel *model, IloNumVarArray *variables)
-    : model_(model),
-      variables_(variables),
-      best_solution_(IloNumArray(model_->getEnv())),
-      cplex_(IloCplex(*model)),
-      global_primal_bound_(0.0) {
+BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables, Branching* branching)
+  : model_(model),
+    variables_(variables),
+    best_solution_(IloNumArray(model_->getEnv())),
+    cplex_(IloCplex(*model)),
+    branching_(branching) {
 
   if (IsMaximizationProblem()) {
     global_primal_bound_ = -IloInfinity;
@@ -16,7 +16,6 @@ BranchAndBound::BranchAndBound(IloModel *model, IloNumVarArray *variables)
 
   // relaxate variables
   model_->add(IloConversion(cplex_.getEnv(), *variables_, ILOFLOAT));
-
   cplex_.setOut(model_->getEnv().getNullStream());
 }
 
@@ -30,16 +29,16 @@ BranchAndBound::BranchAndBound(IloModel *model, IloNumVarArray *variables)
  *    3. if infeasible or unbounded, process next node (skip loop / break)
  *    4. if x* integer set global_lower_bound LB to max{LB, z}, process next node 
  *    5. if z <= LB, process next node
- *    6.  - get (next) variable to fixate from BranchingRule
- *        - generate two (sub-) OptimizationProblems with Constraints from BranchingRule
+ *    6.  - get (next) variable to fixate from Branching_Rule
+ *        - generate two (sub-) OptimizationProblems with Constraints from Branching_Rule
  *        - add new Problems to NodeSelection
  * }
  */
 void BranchAndBound::optimize() {
   OptimizationProblem problem(&cplex_, variables_);
   Node root(&problem);
-  Branching branching(FIRST_FRACTIONAL);
   NodeSelection node_selection(DEPTH_FIRST);
+
   std::vector<IloConstraint> branched_constraints;
   IloNumArray current_solution_variables;
 
@@ -49,7 +48,6 @@ void BranchAndBound::optimize() {
     Node current_node = node_selection.NextNode();
     OptimizationProblem current_problem = *current_node.problem;
     current_problem.Solve();
-
     if (current_problem.IsInfeasible() || current_problem.IsUnbounded()) {
       continue;
     }
@@ -59,10 +57,8 @@ void BranchAndBound::optimize() {
       continue;
     }
 
-    // cplex feasibility tolerance as float precision
-    const double float_precision = cplex_.getParam(IloCplex::EpRHS);
     current_solution_variables = current_problem.GetSolution();
-    branched_constraints = branching.Branch(current_solution_variables, *variables_, float_precision);
+    branched_constraints = branching_->Branch(current_solution_variables, *variables_);
 
     if (branched_constraints.size() > 0) { // sub-problem has non integer solution
       GenerateSubproblems(branched_constraints, current_problem, node_selection);

@@ -1,7 +1,8 @@
 
 #include <gtest/gtest.h>
 #include <ilcplex/ilocplex.h>
-#include <branching/branching.h>
+#include <branching/first_fractional.h>
+#include <core/optimization_problem_class.h>
 #include "test_models/test_model_loader_class.h"
 
 TEST(Branching, branch_Test) {
@@ -12,8 +13,8 @@ TEST(Branching, branch_Test) {
   root_problem.Solve();
   IloNumArray solution = root_problem.GetSolution();
 
-  Branching branching(BranchingRule::FIRST_FRACTIONAL);
-  const std::vector<IloConstraint> sub_problems = branching.Branch(solution, *model_loader.variables, model_loader.cplex->getParam(IloCplex::EpRHS));
+  FirstFractional branching(model_loader.cplex->getParam(IloCplex::EpRHS));
+  const std::vector<IloConstraint> sub_problems = branching.Branch(solution, *model_loader.variables);
 
   double expected_solution_of_branch1[2] = {3.0, 1.25};
   double expected_solution_of_branch2[2] = {2.0, 2.0833333333333335};

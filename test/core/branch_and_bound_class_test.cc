@@ -29,8 +29,10 @@ class ModelTest : public ::testing::TestWithParam<const char*> {};
 TEST_P(ModelTest, SolveExampleModel) {
   TestModelLoader model_loader(GetParam());
 
-  BranchAndBound bnb(model_loader.model, model_loader.variables);
+  Branching* branching_rule = new FirstFractional(model_loader.cplex->getParam(IloCplex::EpRHS));
+  BranchAndBound bnb(model_loader.model, model_loader.variables, branching_rule);
   bnb.optimize();
+
   IloNumArray acutal_solution_values = bnb.GetBestSolution();
   double objective_value = bnb.GetGlobalPrimalBound();
 

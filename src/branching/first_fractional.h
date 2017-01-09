@@ -3,9 +3,14 @@
 #define BNB_INDEX_OF_FIRST_FRACTIONAL_FUNCTION_H
 
 #include <ilcplex/ilocplex.h>
+#include "branching/branching.h"
 
-const int NO_FRACTIONAL_FOUND = -1;
+class FirstFractional :public Branching {
+  using Branching::Branching; 
 
-int IndexOfFirstFractional(const IloNumArray &numbers, const double float_precision);
+private:
+  virtual int IndexOfNextVariableToFix(const IloNumArray &numbers);
+  bool IsFractional(const double number);
+};
 
 #endif //BNB_INDEX_OF_FIRST_FRACTIONAL_FUNCTION_H

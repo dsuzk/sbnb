@@ -1,30 +1,23 @@
 
 #include "gtest/gtest.h"
 #include <node_selection/depth_first_traversal_class.h>
+#include <test_models/test_model_loader_class.h>
 #include <node_selection/node_class.h>
 
 TEST(DepthFirstTraversal, NextNode_Test) {
 
-  /*
-            (a)
-            / \
-           /   \
-         (b)   (c)
-        / |     | \
-       /  |     |  \
-     (d) (e)   (f) (g)
-
-  */
 
   DepthFirstTraversal traversal;
 
-  OptimizationProblem *p1 = new OptimizationProblem(NULL, NULL);
-  OptimizationProblem *p2 = new OptimizationProblem(NULL, NULL);
-  OptimizationProblem *p3 = new OptimizationProblem(NULL, NULL);
-  OptimizationProblem *p4 = new OptimizationProblem(NULL, NULL);
-  OptimizationProblem *p5 = new OptimizationProblem(NULL, NULL);
-  OptimizationProblem *p6 = new OptimizationProblem(NULL, NULL);
-  OptimizationProblem *p7 = new OptimizationProblem(NULL, NULL);
+  TestModelLoader testModelLoader("test/test_models/variable_test_model.lp");
+
+  OptimizationProblem *p1 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
+  OptimizationProblem *p2 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
+  OptimizationProblem *p3 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
+  OptimizationProblem *p4 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
+  OptimizationProblem *p5 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
+  OptimizationProblem *p6 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
+  OptimizationProblem *p7 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
 
   Node a(p1);
   Node b(p5);
@@ -79,8 +72,10 @@ TEST(DepthFirstTraversal, CurrentNode_Test) {
 
   DepthFirstTraversal traversal;
 
-  OptimizationProblem *p1 = new OptimizationProblem(NULL, NULL);
-  OptimizationProblem *p2 = new OptimizationProblem(NULL, NULL);
+  TestModelLoader testModelLoader("test/test_models/variable_test_model.lp");
+
+  OptimizationProblem *p1 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
+  OptimizationProblem *p2 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
 
   Node a(p1);
   Node b(p2);
@@ -98,7 +93,9 @@ TEST(DepthFirstTraversal, HasNextNode_Test) {
 
   DepthFirstTraversal traversal;
 
-  OptimizationProblem *p1 = new OptimizationProblem(NULL, NULL);
+  TestModelLoader testModelLoader("test/test_models/variable_test_model.lp");
+
+  OptimizationProblem *p1 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
   Node a(p1);
   traversal.AddNode(a);
 

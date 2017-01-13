@@ -19,7 +19,7 @@ class BranchAndBound {
   double global_primal_bound_;
   IloNumArray best_solution_;
 
-  const bool IsNewBestObjectiveValue(double objective_value) const;
+  const bool IsBetterObjectiveValue(double objective_value) const;
   void GenerateSubproblems(std::vector<IloConstraint>&, OptimizationProblem&, NodeSelection&);
 
  public:

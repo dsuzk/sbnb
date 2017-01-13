@@ -53,7 +53,7 @@ void BranchAndBound::optimize() {
     }
 
     double objective_value = current_problem.GetObjectiveValue();
-    if (!IsNewBestObjectiveValue(objective_value)) {
+    if (!IsBetterObjectiveValue(objective_value)) {
       continue;
     }
 
@@ -88,7 +88,7 @@ double BranchAndBound::GetGlobalPrimalBound() const {
   return global_primal_bound_;
 }
 
-const bool BranchAndBound::IsNewBestObjectiveValue(double objective_value) const {
+const bool BranchAndBound::IsBetterObjectiveValue(double objective_value) const {
   if (IsMaximizationProblem()) {
     return (objective_value > global_primal_bound_);
   } else {

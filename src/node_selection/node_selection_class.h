@@ -2,30 +2,22 @@
 #define SBNB_NODE_SELECTION_NODE_SELECTION_CLASS_H_
 
 #include <queue>
-#include "node_selection_interface.h"
+#include "node_class.h"
 
 using namespace std;
 
-enum TraversalType {
-  DEPTH_FIRST,
-  BREADTH_FIRST
-};
-
-class NodeSelection : public NodeSelectionInterface {
+class NodeSelection {
 
  public:
-  NodeSelection(TraversalType traversal);
+  virtual Node CurrentNode() = 0;
 
-  Node CurrentNode();
+  virtual Node NextNode() = 0;
 
-  Node NextNode();
+  virtual void AddNode(Node node) = 0;
 
-  void AddNode(Node node);
+  virtual bool HasNextNode() = 0;
 
-  bool HasNextNode();
 
- private:
-  NodeSelectionInterface *traversal_order_;
 };
 
 #endif //SBNB_NODE_SELECTION_NODE_SELECTION_CLASS_H_

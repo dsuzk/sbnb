@@ -2,11 +2,11 @@
 #define SBNB_NODE_SELECTION_BREADTH_FIRST_TRAVERSAL_CLASS_H_
 
 #include <queue>
-#include "node_selection_interface.h"
+#include "node_selection_class.h"
 
 using namespace std;
 
-class BreadthFirstTraversal : public NodeSelectionInterface {
+class BreadthFirstTraversal : public NodeSelection {
 
  public:
   BreadthFirstTraversal();

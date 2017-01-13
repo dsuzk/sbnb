@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 #include "core/branch_and_bound_class.h"
 #include "test_models/test_model_loader_class.h"
+#include "node_selection/breadth_first_traversal_class.h"
 
 TEST(BranchAndBoundClass, relaxation_test) {
   TestModelLoader model_loader((char*) "test/test_models/variable_test_model.lp");
@@ -30,7 +31,8 @@ TEST_P(ModelTest, SolveExampleModel) {
   TestModelLoader model_loader(GetParam());
 
   Branching* branching_rule = new FirstFractional(model_loader.cplex->getParam(IloCplex::EpRHS));
-  BranchAndBound bnb(model_loader.model, model_loader.variables, branching_rule);
+  NodeSelection* node_selection = new BreadthFirstTraversal();
+  BranchAndBound bnb(model_loader.model, model_loader.variables, branching_rule, node_selection);
   bnb.optimize();
 
   IloNumArray acutal_solution_values = bnb.GetBestSolution();

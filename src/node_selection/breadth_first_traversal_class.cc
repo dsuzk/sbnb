@@ -4,8 +4,7 @@
 #include "breadth_first_traversal_class.h"
 
 using namespace std;
-
-BreadthFirstTraversal::BreadthFirstTraversal() {}
+BreadthFirstTraversal::BreadthFirstTraversal(){};
 
 void BreadthFirstTraversal::AddNode(Node node) {
   this->traversal_order_.push(node);

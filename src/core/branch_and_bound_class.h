@@ -2,9 +2,9 @@
 #define SBNB_CORE_BRANCH_AND_BOUND_CLASS_H
 
 #include <ilcplex/ilocplex.h>
-#include "node_selection/node_selection_class.h"
 #include "core/optimization_problem_class.h"
 #include "branching/first_fractional.h"
+#include "node_selection/depth_first_traversal_class.h"
 
 /**
  * @brief The main entry point for the branch and bound framework
@@ -14,6 +14,7 @@ class BranchAndBound {
   IloModel* model_;
   IloNumVarArray* variables_;
   Branching* branching_;
+  NodeSelection* node_selection_;
 
   IloCplex cplex_;
   double global_primal_bound_;
@@ -24,7 +25,7 @@ class BranchAndBound {
 
  public:
   //default: first fractional + depth first traversal
-  BranchAndBound(IloModel*, IloNumVarArray*, Branching* = new FirstFractional());
+  BranchAndBound(IloModel*, IloNumVarArray*, Branching* = new FirstFractional(), NodeSelection* = new DepthFirstTraversal());
 
   const IloNumVarArray& GetVariables() const;
   const IloModel& GetModel() const;

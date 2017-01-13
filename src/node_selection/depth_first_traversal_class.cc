@@ -5,7 +5,7 @@
 
 using namespace std;
 
-DepthFirstTraversal::DepthFirstTraversal() {}
+DepthFirstTraversal::DepthFirstTraversal(){};
 
 void DepthFirstTraversal::AddNode(Node node) {
   this->traversal_order_.push(node);

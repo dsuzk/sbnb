@@ -46,25 +46,26 @@ void BranchAndBound::optimize() {
 
   while (node_selection_->HasNextNode()) {
     Node current_node = node_selection_->NextNode();
-    OptimizationProblem current_problem = *current_node.problem;
-    current_problem.Solve();
-    if (current_problem.IsInfeasible() || current_problem.IsUnbounded()) {
+    OptimizationProblem *current_problem = current_node.problem;
+    current_problem->Solve();
+    if (current_problem->IsInfeasible() || current_problem->IsUnbounded()) {
       continue;
     }
 
-    double objective_value = current_problem.GetObjectiveValue();
+    double objective_value = current_problem->GetObjectiveValue();
     if (!IsBetterObjectiveValue(objective_value)) {
       continue;
     }
 
-    current_solution_variables = current_problem.GetSolution();
+    current_solution_variables = current_problem->GetSolution();
     branched_constraints = branching_->Branch(current_solution_variables, *variables_);
 
-    if (branched_constraints.size() > 0) { // sub-problem has non integer solution
-      GenerateSubproblems(branched_constraints, current_problem, *node_selection_);
-    } else {
+    bool is_integer_solution = branched_constraints.size() == 0;
+    if (is_integer_solution) {
       global_primal_bound_ = objective_value;
       best_solution_ = current_solution_variables;
+    } else {
+      GenerateSubproblems(branched_constraints, *current_problem, *node_selection_);
     }
   }
 }

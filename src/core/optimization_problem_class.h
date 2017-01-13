@@ -16,6 +16,7 @@ class OptimizationProblem {
 
   IloAlgorithm::Status cplex_status_;
   bool solved_;
+  bool fathomed_;
   double objective_value_;
 
  public:
@@ -29,6 +30,7 @@ class OptimizationProblem {
   bool IsSolved() const;
   bool IsInfeasible() const;
   bool IsUnbounded() const;
+  bool IsFathomed() const;
 
   double GetObjectiveValue() const;
 };

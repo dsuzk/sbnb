@@ -27,6 +27,7 @@ const IloConstraintArray &OptimizationProblem::GetFixings() const {
 void OptimizationProblem::Solve() {
   cplex_->getModel().add(fixings_);
   solved_ = cplex_->solve();
+  fathomed_ = !solved_;
   cplex_status_ = cplex_->getStatus();
   solution_ = IloNumArray(cplex_->getEnv());
 
@@ -56,5 +57,9 @@ bool OptimizationProblem::IsUnbounded() const {
 
 double OptimizationProblem::GetObjectiveValue() const {
   return objective_value_;
+}
+
+bool OptimizationProblem::IsFathomed() const {
+  return  fathomed_;
 }
 

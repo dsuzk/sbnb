@@ -27,42 +27,42 @@ TEST(DepthFirstTraversal, NextNode_Test) {
   Node f(p4);
   Node g(p3);
 
-  traversal.AddNode(a);
+  traversal.AddNode(&a);
 
-  Node next = traversal.NextNode();
+  Node next = *traversal.NextNode();
   OptimizationProblem *expected_content = p1;
   EXPECT_EQ(next.problem, expected_content);
 
-  traversal.AddNode(b);
-  traversal.AddNode(c);
+  traversal.AddNode(&b);
+  traversal.AddNode(&c);
 
-  next = traversal.NextNode();
+  next = *traversal.NextNode();
   expected_content = p2;
   EXPECT_EQ(next.problem, expected_content);
 
-  traversal.AddNode(f);
-  traversal.AddNode(g);
+  traversal.AddNode(&f);
+  traversal.AddNode(&g);
 
-  next = traversal.NextNode();
+  next = *traversal.NextNode();
   expected_content = p3;
   EXPECT_EQ(next.problem, expected_content);
 
-  next = traversal.NextNode();
+  next = *traversal.NextNode();
   expected_content = p4;
   EXPECT_EQ(next.problem, expected_content);
 
-  next = traversal.NextNode();
+  next = *traversal.NextNode();
   expected_content = p5;
   EXPECT_EQ(next.problem, expected_content);
 
-  traversal.AddNode(d);
-  traversal.AddNode(e);
+  traversal.AddNode(&d);
+  traversal.AddNode(&e);
 
-  next = traversal.NextNode();
+  next = *traversal.NextNode();
   expected_content = p6;
   EXPECT_EQ(next.problem, expected_content);
 
-  next = traversal.NextNode();
+  next = *traversal.NextNode();
   expected_content = p7;
   EXPECT_EQ(next.problem, expected_content);
 
@@ -80,10 +80,10 @@ TEST(DepthFirstTraversal, CurrentNode_Test) {
   Node a(p1);
   Node b(p2);
 
-  traversal.AddNode(a);
-  traversal.AddNode(b);
+  traversal.AddNode(&a);
+  traversal.AddNode(&b);
 
-  Node current = traversal.CurrentNode();
+  Node current = *traversal.CurrentNode();
   OptimizationProblem *expected_content = p2;
   EXPECT_EQ(current.problem, expected_content);
 
@@ -97,7 +97,7 @@ TEST(DepthFirstTraversal, HasNextNode_Test) {
 
   OptimizationProblem *p1 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
   Node a(p1);
-  traversal.AddNode(a);
+  traversal.AddNode(&a);
 
   EXPECT_TRUE(traversal.HasNextNode());
 

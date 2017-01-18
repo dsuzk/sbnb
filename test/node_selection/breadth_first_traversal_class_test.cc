@@ -18,22 +18,22 @@ TEST(BreadthFirstTraversal, NextNode_Test) {
   Node b(p2);
   Node c(p1);
 
-  traversal.AddNode(a);
-  traversal.AddNode(b);
-  traversal.AddNode(c);
+  traversal.AddNode(&a);
+  traversal.AddNode(&b);
+  traversal.AddNode(&c);
 
-  Node next = traversal.NextNode();
+  Node next = *traversal.NextNode();
   OptimizationProblem *expected_content = p3;
   EXPECT_EQ(next.problem, expected_content);
 
 
 
-  next = traversal.NextNode();
+  next = *traversal.NextNode();
   expected_content = p2;
   EXPECT_EQ(next.problem, expected_content);
 
 
-  next = traversal.NextNode();
+  next = *traversal.NextNode();
   expected_content = p1;
   EXPECT_EQ(next.problem, expected_content);
 }
@@ -50,10 +50,10 @@ TEST(BreadthFirstTraversal, CurrentNode_Test) {
   Node a(p1);
   Node b(p2);
 
-  traversal.AddNode(a);
-  traversal.AddNode(b);
+  traversal.AddNode(&a);
+  traversal.AddNode(&b);
 
-  Node current = traversal.CurrentNode();
+  Node current = *traversal.CurrentNode();
   OptimizationProblem *expected_content = p1;
   EXPECT_EQ(current.problem, expected_content);
 
@@ -68,7 +68,7 @@ TEST(BreadthFirstTraversal, HasNextNode_Test) {
   OptimizationProblem *p1 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
   Node a(p1);
 
-  traversal.AddNode(a);
+  traversal.AddNode(&a);
 
   EXPECT_TRUE(traversal.HasNextNode());
 

@@ -36,8 +36,8 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables, Branc
  * }
  */
 void BranchAndBound::optimize() {
-  OptimizationProblem problem(&cplex_, variables_);
-  Node root(&problem);
+  OptimizationProblem* problem = new OptimizationProblem(&cplex_, variables_);
+  Node* root = new Node(problem);
 
   std::vector<IloConstraint> branched_constraints;
   IloNumArray current_solution_variables;
@@ -45,8 +45,8 @@ void BranchAndBound::optimize() {
   node_selection_->AddNode(root);
 
   while (node_selection_->HasNextNode()) {
-    Node current_node = node_selection_->NextNode();
-    OptimizationProblem *current_problem = current_node.problem;
+    Node* current_node = node_selection_->NextNode();
+    OptimizationProblem *current_problem = current_node->problem;
     current_problem->Solve();
     if (current_problem->IsInfeasible() || current_problem->IsUnbounded()) {
       current_problem->Fathom();
@@ -79,7 +79,7 @@ void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint> &branched_co
   for (auto constraint : branched_constraints) {
     OptimizationProblem *sub_problem = new OptimizationProblem(&cplex_, variables_, &constraint);
     sub_problem->AddFixings(current_problem.GetFixings());
-    Node sub_problem_node(sub_problem);
+    Node* sub_problem_node = new Node(sub_problem);
     node_selection_.AddNode(sub_problem_node);
   }
 }

@@ -9,11 +9,11 @@ using namespace std;
 class NodeSelection {
 
  public:
-  virtual Node CurrentNode() = 0;
+  virtual Node* CurrentNode() = 0;
 
-  virtual Node NextNode() = 0;
+  virtual Node* NextNode() = 0;
 
-  virtual void AddNode(Node node) = 0;
+  virtual void AddNode(Node* node) = 0;
 
   virtual bool HasNextNode() = 0;
 

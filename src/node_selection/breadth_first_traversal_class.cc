@@ -6,16 +6,16 @@
 using namespace std;
 BreadthFirstTraversal::BreadthFirstTraversal(){};
 
-void BreadthFirstTraversal::AddNode(Node node) {
+void BreadthFirstTraversal::AddNode(Node* node) {
   this->traversal_order_.push(node);
 }
 
-Node BreadthFirstTraversal::CurrentNode() {
+Node* BreadthFirstTraversal::CurrentNode() {
   return this->traversal_order_.front();
 }
 
-Node BreadthFirstTraversal::NextNode() {
-  Node next = this->traversal_order_.front();
+Node* BreadthFirstTraversal::NextNode() {
+  Node* next = this->traversal_order_.front();
   this->traversal_order_.pop();
   return next;
 }

@@ -11,16 +11,16 @@ class DepthFirstTraversal : public NodeSelection {
  public:
   DepthFirstTraversal();
 
-  Node NextNode();
+  Node* NextNode();
 
-  Node CurrentNode();
+  Node* CurrentNode();
 
-  void AddNode(Node node);
+  void AddNode(Node* node);
 
   bool HasNextNode();
 
  private:
-  stack<Node> traversal_order_;
+  stack<Node*> traversal_order_;
 };
 
 #endif //SBNB_NODE_SELECTION_DEPTH_FIRST_TRAVERSAL_CLASS_H_

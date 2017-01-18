@@ -11,16 +11,16 @@ class BreadthFirstTraversal : public NodeSelection {
  public:
   BreadthFirstTraversal();
 
-  Node CurrentNode();
+  Node* CurrentNode();
 
-  Node NextNode();
+  Node* NextNode();
 
-  void AddNode(Node node);
+  void AddNode(Node* node);
 
   bool HasNextNode();
 
  private:
-  queue<Node> traversal_order_;
+  queue<Node*> traversal_order_;
 };
 
 #endif //SBNB_NODE_SELECTION_BREADTH_FIRST_TRAVERSAL_CLASS_H_

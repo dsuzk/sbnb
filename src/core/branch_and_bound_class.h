@@ -21,7 +21,7 @@ class BranchAndBound {
   IloNumArray best_solution_;
 
   const bool IsBetterObjectiveValue(double objective_value) const;
-  void GenerateSubproblems(std::vector<IloConstraint>&, OptimizationProblem&, NodeSelection&);
+  void GenerateSubproblems(std::vector<IloConstraint>&, Node*, NodeSelection&);
 
  public:
   //default: first fractional + depth first traversal

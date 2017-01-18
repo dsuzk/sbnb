@@ -68,18 +68,18 @@ void BranchAndBound::optimize() {
       best_solution_ = current_solution_variables;
       current_problem->Fathom();
     } else {
-      GenerateSubproblems(branched_constraints, *current_problem, *node_selection_);
+      GenerateSubproblems(branched_constraints, current_node, *node_selection_);
     }
   }
 }
 
 void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint> &branched_constraints,
-                                         OptimizationProblem &current_problem,
+                                         Node* parent_node,
                                          NodeSelection &node_selection_) {
-  for (auto constraint : branched_constraints) {
-    OptimizationProblem *sub_problem = new OptimizationProblem(&cplex_, variables_, &constraint);
-    sub_problem->AddFixings(current_problem.GetFixings());
-    Node* sub_problem_node = new Node(sub_problem);
+  for (int i = 0; i < branched_constraints.size(); ++i) {
+    OptimizationProblem *sub_problem = new OptimizationProblem(&cplex_, variables_, &branched_constraints[i]);
+    sub_problem->AddFixings(parent_node->problem->GetFixings());
+    Node* sub_problem_node = new Node(sub_problem, parent_node);
     node_selection_.AddNode(sub_problem_node);
   }
 }

@@ -15,8 +15,8 @@ class OptimizationProblem {
   IloConstraintArray fixings_;
 
   IloAlgorithm::Status cplex_status_;
-  bool solved_;
-  bool fathomed_;
+  bool solved_ = false;
+  bool fathomed_ = true;
   double objective_value_;
 
  public:
@@ -24,6 +24,7 @@ class OptimizationProblem {
   OptimizationProblem(IloCplex*, IloNumVarArray*, IloConstraint*);
   void AddFixings(const IloConstraintArray&);
   void Solve();
+  void Fathom();
   const IloNumArray& GetSolution() const;
   const IloConstraintArray& GetFixings() const;
 

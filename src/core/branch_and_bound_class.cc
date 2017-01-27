@@ -39,7 +39,7 @@ void BranchAndBound::optimize() {
   OptimizationProblem* root_problem = new OptimizationProblem(&cplex_, variables_);
   Node* current_node = new Node(root_problem);
 
-  std::vector<IloConstraint> branched_constraints;
+  std::vector<IloConstraint*> branched_constraints;
   IloNumArray current_solution_variables;
 
   node_selection_->AddNode(current_node);
@@ -90,11 +90,11 @@ void BranchAndBound::InstallFixings(const Node* previous_node, const Node* curre
   }
 }
 
-void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint> &branched_constraints,
+void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint*> &branched_constraints,
                                          Node* parent_node,
                                          NodeSelection &node_selection_) {
     for (int i = 0; i < branched_constraints.size(); ++i) {
-      OptimizationProblem *sub_problem = new OptimizationProblem(&cplex_, variables_, &branched_constraints[i]);
+      OptimizationProblem *sub_problem = new OptimizationProblem(&cplex_, variables_, branched_constraints[i]);
       Node* sub_problem_node = new Node(sub_problem, parent_node);
 
       if (i == 0) {

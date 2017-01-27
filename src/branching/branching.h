@@ -11,7 +11,7 @@ public:
   // default floating precision from IloCplex::EpRHS
   Branching(const double float_precision = 0.000001);
 
-  std::vector<IloConstraint> Branch(IloNumArray &solutions, IloNumVarArray &variables);
+  std::vector<IloConstraint*> Branch(IloNumArray &solutions, IloNumVarArray &variables);
 
 protected:
   const int NO_FIXING_VALUE_FOUND = -1;

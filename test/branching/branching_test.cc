@@ -14,7 +14,7 @@ TEST(Branching, branch_Test) {
   IloNumArray solution = root_problem.GetSolution();
 
   FirstFractional branching(model_loader.cplex->getParam(IloCplex::EpRHS));
-  const std::vector<IloConstraint> expected_sub_problems = branching.Branch(solution, *model_loader.variables);
+  const std::vector<IloConstraint*> expected_sub_problems = branching.Branch(solution, *model_loader.variables);
 
   double expected_solution_of_branch1[2] = {3.0, 1.25};
   double expected_solution_of_branch2[2] = {2.0, 2.0833333333333335};
@@ -23,8 +23,8 @@ TEST(Branching, branch_Test) {
 
   for (int i = 0; i < expected_sub_problems.size(); ++i) {
 
-    IloConstraint constraint = expected_sub_problems[i];
-    OptimizationProblem *sub_problem = new OptimizationProblem(model_loader.cplex, model_loader.variables, &constraint);
+    IloConstraint* constraint = expected_sub_problems[i];
+    OptimizationProblem *sub_problem = new OptimizationProblem(model_loader.cplex, model_loader.variables, constraint);
     sub_problem->Solve();
     solution = sub_problem->GetSolution();
 
@@ -55,7 +55,7 @@ TEST(IndexOfFirstFractional, FirstFractional_Test) {
 
   const double kFloatPrecision = 0.000001; // According to IloCplex::EpRHS
   FirstFractional first_fractional(kFloatPrecision);
-  std::vector<IloConstraint> actual_sub_problems = first_fractional.Branch(numbers, vars);
+  std::vector<IloConstraint*> actual_sub_problems = first_fractional.Branch(numbers, vars);
 
   IloConstraint expected_lesser_constraint = IloConstraint(vars[1] <= 2);
   IloConstraint expected_greater_constraint = IloConstraint(3 <= vars[1]);
@@ -70,7 +70,7 @@ TEST(IndexOfFirstFractional, FirstFractional_Test) {
   for (int i = 0; i < actual_sub_problems.size(); ++i) {
     string_representation_expected.str(""); 
     string_representation_actual.str("");
-    string_representation_actual<< actual_sub_problems[i];
+    string_representation_actual<< *actual_sub_problems[i];
     string_representation_expected << expected_sub_problems[i];
     ASSERT_TRUE(string_representation_actual.str() == string_representation_expected.str());
   }
@@ -87,6 +87,6 @@ TEST(NoFractionalFound, FirstFractional_Test) {
   numbers.add(2.0);
 
   FirstFractional first_fractional;
-  std::vector<IloConstraint> actual_sub_problems = first_fractional.Branch(numbers, vars);
+  std::vector<IloConstraint*> actual_sub_problems = first_fractional.Branch(numbers, vars);
   ASSERT_TRUE(actual_sub_problems.size() == 0);
 }

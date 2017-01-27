@@ -9,9 +9,9 @@ public:
   OptimizationProblem* problem;
   void SetFirstChild(Node*);
   void SetNextSibling(Node*);
-  const Node* GetFirstChild();
-  const Node* GetParent();
-  const Node* GetNextSibling();
+  const Node* GetFirstChild() const;
+  const Node* GetParent() const;
+  const Node* GetNextSibling() const;
 
 private:
   Node* parent_ = NULL;

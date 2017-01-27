@@ -13,14 +13,14 @@ void Node::SetNextSibling(Node *next_sibling) {
   sibling_ = next_sibling;
 }
 
-const Node* Node::GetFirstChild() {
+const Node* Node::GetFirstChild() const {
   return first_child_;
 }
 
-const Node* Node::GetNextSibling() {
+const Node* Node::GetNextSibling() const {
   return sibling_;
 }
 
-const Node* Node::GetParent() {
+const Node* Node::GetParent() const {
   return parent_;
 }

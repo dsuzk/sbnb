@@ -11,13 +11,10 @@ class BreadthFirstTraversal : public NodeSelection {
  public:
   BreadthFirstTraversal();
 
-  Node* CurrentNode();
-
   Node* NextNode();
-
+  Node* CurrentNode() const;
   void AddNode(Node* node);
-
-  bool HasNextNode();
+  bool HasNextNode() const;
 
  private:
   queue<Node*> traversal_order_;

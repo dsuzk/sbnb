@@ -12,12 +12,9 @@ class DepthFirstTraversal : public NodeSelection {
   DepthFirstTraversal();
 
   Node* NextNode();
-
-  Node* CurrentNode();
-
+  Node* CurrentNode() const;
   void AddNode(Node* node);
-
-  bool HasNextNode();
+  bool HasNextNode() const;
 
  private:
   stack<Node*> traversal_order_;

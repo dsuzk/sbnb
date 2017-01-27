@@ -78,7 +78,6 @@ void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint> &branched_co
                                          NodeSelection &node_selection_) {
     for (int i = 0; i < branched_constraints.size(); ++i) {
       OptimizationProblem *sub_problem = new OptimizationProblem(&cplex_, variables_, &branched_constraints[i]);
-      sub_problem->AddFixings(parent_node->problem->GetFixings());
       Node* sub_problem_node = new Node(sub_problem, parent_node);
 
       if (i == 0) {

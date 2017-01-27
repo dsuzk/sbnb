@@ -12,26 +12,29 @@ class OptimizationProblem {
   IloNumVarArray* variables_;
   
   IloNumArray solution_;
-  IloConstraintArray fixings_;
+  IloConstraint* fixing_;
 
   IloAlgorithm::Status cplex_status_;
   bool solved_ = false;
   bool fathomed_ = true;
+  bool has_fixing_installed = false;
   double objective_value_;
 
  public:
   OptimizationProblem(IloCplex*, IloNumVarArray*);
   OptimizationProblem(IloCplex*, IloNumVarArray*, IloConstraint*);
-  void AddFixings(const IloConstraintArray&);
+  void InstallFixing();
+  void RemoveFixing(const IloConstraint&);
   void Solve();
   void Fathom();
   const IloNumArray& GetSolution() const;
-  const IloConstraintArray& GetFixings() const;
+  const IloConstraint& GetFixing() const;
 
   bool IsSolved() const;
   bool IsInfeasible() const;
   bool IsUnbounded() const;
   bool IsFathomed() const;
+  bool HasFixingInstalled() const;
 
   double GetObjectiveValue() const;
 };

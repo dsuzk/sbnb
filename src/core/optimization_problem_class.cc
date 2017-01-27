@@ -3,29 +3,19 @@
 
 OptimizationProblem::OptimizationProblem(IloCplex *cplex, IloNumVarArray *variables)
     : cplex_(cplex),
-      variables_(variables),
-      fixings_(cplex->getEnv()) {}
+      variables_(variables){}
 
 OptimizationProblem::OptimizationProblem(IloCplex *cplex, IloNumVarArray *variables, IloConstraint *constraint)
     : cplex_(cplex),
       variables_(variables),
-      fixings_(cplex->getEnv()) {
+      fixing_(constraint){}
 
-  fixings_.add(*constraint);
-}
 
-void OptimizationProblem::AddFixings(const IloConstraintArray &fixings) {
-  for (int i = 0; i < fixings.getSize(); ++i) {
-    fixings_.add(fixings[i]);
-  }
-}
-
-const IloConstraintArray &OptimizationProblem::GetFixings() const {
-  return fixings_;
+const IloConstraint& OptimizationProblem::GetFixing() const {
+  return *fixing_;
 }
 
 void OptimizationProblem::Solve() {
-  cplex_->getModel().add(fixings_);
   solved_ = cplex_->solve();
   cplex_status_ = cplex_->getStatus();
   solution_ = IloNumArray(cplex_->getEnv());
@@ -34,8 +24,16 @@ void OptimizationProblem::Solve() {
     cplex_->getValues(solution_, *variables_);
     objective_value_ = cplex_->getObjValue();
   }
+}
 
-  cplex_->getModel().remove(fixings_);
+void OptimizationProblem::InstallFixing() {
+  cplex_->getModel().add(*fixing_);
+  has_fixing_installed = true;
+}
+
+void OptimizationProblem::RemoveFixing(const IloConstraint& constraint) {
+  cplex_->getModel().remove(constraint);
+  has_fixing_installed = false;
 }
 
 void OptimizationProblem::Fathom() {
@@ -64,5 +62,9 @@ double OptimizationProblem::GetObjectiveValue() const {
 
 const IloNumArray &OptimizationProblem::GetSolution() const {
   return solution_;
+}
+
+bool OptimizationProblem::HasFixingInstalled() const {
+  return has_fixing_installed;
 }
 

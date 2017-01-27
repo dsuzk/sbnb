@@ -3,7 +3,8 @@
 
 OptimizationProblem::OptimizationProblem(IloCplex *cplex, IloNumVarArray *variables)
     : cplex_(cplex),
-      variables_(variables){}
+      variables_(variables),
+      has_fixing_installed(true){}
 
 OptimizationProblem::OptimizationProblem(IloCplex *cplex, IloNumVarArray *variables, IloConstraint *constraint)
     : cplex_(cplex),
@@ -31,8 +32,8 @@ void OptimizationProblem::InstallFixing() {
   has_fixing_installed = true;
 }
 
-void OptimizationProblem::RemoveFixing(const IloConstraint& constraint) {
-  cplex_->getModel().remove(constraint);
+void OptimizationProblem::RemoveFixing() {
+  cplex_->getModel().remove(*fixing_);
   has_fixing_installed = false;
 }
 

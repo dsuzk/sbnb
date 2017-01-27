@@ -4,6 +4,7 @@
 #include <ilcplex/ilocplex.h>
 #include "core/optimization_problem_class.h"
 #include "branching/first_fractional.h"
+#include "node_selection/breadth_first_traversal_class.h"
 #include "node_selection/depth_first_traversal_class.h"
 
 /**
@@ -21,11 +22,12 @@ class BranchAndBound {
   IloNumArray best_solution_;
 
   const bool IsBetterObjectiveValue(double objective_value) const;
-  void GenerateSubproblems(std::vector<IloConstraint>&, Node*, NodeSelection&);
+  void GenerateSubproblems(std::vector<IloConstraint*>&, Node*, NodeSelection&);
+  void InstallFixings(const Node* previous_node, const Node* current_node);
 
- public:
-  //default: first fractional + depth first traversal
-  BranchAndBound(IloModel*, IloNumVarArray*, Branching* = new FirstFractional(), NodeSelection* = new DepthFirstTraversal());
+  public:
+  //default: first fractional + breadth first traversal
+  BranchAndBound(IloModel*, IloNumVarArray*, Branching* = new FirstFractional(), NodeSelection* = new BreadthFirstTraversal());
 
   const IloNumVarArray& GetVariables() const;
   const IloModel& GetModel() const;

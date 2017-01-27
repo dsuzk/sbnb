@@ -36,17 +36,20 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables, Branc
  * }
  */
 void BranchAndBound::optimize() {
-  OptimizationProblem* problem = new OptimizationProblem(&cplex_, variables_);
-  Node* root = new Node(problem);
+  OptimizationProblem* root_problem = new OptimizationProblem(&cplex_, variables_);
+  Node* current_node = new Node(root_problem);
 
   std::vector<IloConstraint> branched_constraints;
   IloNumArray current_solution_variables;
 
-  node_selection_->AddNode(root);
+  node_selection_->AddNode(current_node);
 
   while (node_selection_->HasNextNode()) {
-    Node* current_node = node_selection_->NextNode();
-    OptimizationProblem *current_problem = current_node->problem;
+    Node* previous_node = current_node;
+    current_node = node_selection_->NextNode();
+    InstallFixings(previous_node, current_node);
+
+    OptimizationProblem* current_problem = current_node->problem;
     current_problem->Solve();
     if (current_problem->IsInfeasible() || current_problem->IsUnbounded()) {
       current_problem->Fathom();
@@ -70,6 +73,20 @@ void BranchAndBound::optimize() {
     } else {
       GenerateSubproblems(branched_constraints, current_node, *node_selection_);
     }
+  }
+}
+
+void BranchAndBound::InstallFixings(const Node* previous_node, const Node* current_node) {
+  //Find common ancestor and add new fixings to model
+  while(!current_node->problem->HasFixingInstalled()) {
+    current_node->problem->InstallFixing();
+    current_node = current_node->GetParent();
+  }
+
+ //Remove old fixings from model
+  while(previous_node != current_node) {
+    previous_node->problem->RemoveFixing();
+    previous_node = previous_node->GetParent();
   }
 }
 

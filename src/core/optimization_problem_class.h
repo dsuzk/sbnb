@@ -24,7 +24,7 @@ class OptimizationProblem {
   OptimizationProblem(IloCplex*, IloNumVarArray*);
   OptimizationProblem(IloCplex*, IloNumVarArray*, IloConstraint*);
   void InstallFixing();
-  void RemoveFixing(const IloConstraint&);
+  void RemoveFixing();
   void Solve();
   void Fathom();
   const IloNumArray& GetSolution() const;

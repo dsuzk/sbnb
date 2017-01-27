@@ -22,20 +22,17 @@ class BranchAndBound {
   IloNumArray best_solution_;
 
   const bool IsBetterObjectiveValue(double objective_value) const;
+  void InstallFixings(const Node* previous_node, const Node* current_node) const;
   void GenerateSubproblems(std::vector<IloConstraint*>&, Node*, NodeSelection&);
-  void InstallFixings(const Node* previous_node, const Node* current_node);
 
   public:
-  //default: first fractional + breadth first traversal
-  BranchAndBound(IloModel*, IloNumVarArray*, Branching* = new FirstFractional(), NodeSelection* = new BreadthFirstTraversal());
+  //default: first fractional + depth first traversal
+  BranchAndBound(IloModel*, IloNumVarArray*, Branching* = new FirstFractional(), NodeSelection* = new DepthFirstTraversal());
 
   const IloNumVarArray& GetVariables() const;
   const IloModel& GetModel() const;
-
   const bool IsMaximizationProblem() const;
-
-  double GetGlobalPrimalBound() const;
-
+  const double GetGlobalPrimalBound() const;
   const IloNumArray& GetBestSolution() const;
 
   void optimize();

@@ -76,7 +76,7 @@ void BranchAndBound::optimize() {
   }
 }
 
-void BranchAndBound::InstallFixings(const Node* previous_node, const Node* current_node) {
+void BranchAndBound::InstallFixings(const Node* previous_node, const Node* current_node) const {
   //Find common ancestor and add new fixings to model
   while(!current_node->problem->HasFixingInstalled()) {
     current_node->problem->InstallFixing();
@@ -110,7 +110,7 @@ const IloNumArray &BranchAndBound::GetBestSolution() const {
   return best_solution_;
 }
 
-double BranchAndBound::GetGlobalPrimalBound() const {
+const double BranchAndBound::GetGlobalPrimalBound() const {
   return global_primal_bound_;
 }
 

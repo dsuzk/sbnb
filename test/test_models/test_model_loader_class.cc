@@ -14,14 +14,27 @@ TestModelLoader::TestModelLoader(const char* path):
     objective(new IloObjective()),
     expected_solution_values(new IloNumArray(*environment))
 {
-  cplex->importModel(*model, path, *objective, *variables, *constraints);
+  
   cplex->setOut(environment->getNullStream());
+  cplex->importModel(*model, path, *objective, *variables, *constraints);
 
   IloConversion relaxation(*environment, *variables, ILOINT);
+
+  if (IsMaximizationProblem()) {
+    expected_objective_value = -IloInfinity;
+  } else {
+    expected_objective_value = IloInfinity;
+  }
+
   model->add(relaxation);
-  cplex->solve();
-  cplex->getValues(*expected_solution_values, *variables);
-  expected_objective_value = cplex->getObjValue();
+  if (cplex->solve()) {
+    cplex->getValues(*expected_solution_values, *variables);
+    expected_objective_value = cplex->getObjValue();
+  }
   relaxation.end();
+
 }
 
+const bool TestModelLoader::IsMaximizationProblem() const {
+  return cplex->getObjective().getSense() == IloObjective::Sense::Maximize;
+}

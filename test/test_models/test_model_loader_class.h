@@ -5,7 +5,10 @@
 #include <ilcplex/ilocplex.h>
 
 class TestModelLoader {
- public:
+ private:
+  const bool IsMaximizationProblem() const;
+
+  public:
   TestModelLoader(const char *path);
 
   IloEnv *environment;

@@ -29,12 +29,10 @@ class ModelTest : public ::testing::TestWithParam<const char*> {};
 
 TEST_P(ModelTest, SolveExampleModel) {
   TestModelLoader model_loader(GetParam());
-
   Branching* branching_rule = new FirstFractional(model_loader.cplex->getParam(IloCplex::EpRHS));
   NodeSelection* node_selection = new BreadthFirstTraversal();
   BranchAndBound bnb(model_loader.model, model_loader.variables, branching_rule, node_selection);
   bnb.optimize();
-
   IloNumArray acutal_solution_values = bnb.GetBestSolution();
   double objective_value = bnb.GetGlobalPrimalBound();
 
@@ -50,5 +48,15 @@ INSTANTIATE_TEST_CASE_P(BranchAndBound,
                         ::testing::Values("test/test_models/qpex.lp",
                                           "test/test_models/location.lp",
                                           "test/test_models/easy_max_model_1.lp",
-                                          "test/test_models/easy_min_model_1.lp"));
+                                          "test/test_models/easy_min_model_1.lp",
+                                          "test/test_models/sample1.mps",
+                                          "test/test_models/sample3.mps",
+                                          "test/test_models/sample4.mps",
+                                          "test/test_models/sample5.mps",
+                                          "test/test_models/sample6.mps",
+                                          "test/test_models/sample7.mps",
+                                          "test/test_models/sample8.mps",
+                                          "test/test_models/sample9.mps",
+                                          "test/test_models/sample10.mps",
+                                          "test/test_models/sample11.mps"));
 

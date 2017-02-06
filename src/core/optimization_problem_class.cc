@@ -43,6 +43,8 @@ void OptimizationProblem::Fathom() {
 
 bool OptimizationProblem::IsFathomed() const {
   return fathomed_;
+  fixing_->end();
+  delete fixing_;
 }
 
 bool OptimizationProblem::IsSolved() const {

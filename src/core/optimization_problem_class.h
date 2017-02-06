@@ -16,7 +16,7 @@ class OptimizationProblem {
 
   IloAlgorithm::Status cplex_status_;
   bool solved_ = false;
-  bool fathomed_ = true;
+  bool fathomed_ = false;
   bool has_fixing_installed = false;
   double objective_value_;
 

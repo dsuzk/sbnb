@@ -33,18 +33,23 @@ void OptimizationProblem::InstallFixing() {
 }
 
 void OptimizationProblem::RemoveFixing() {
-  cplex_->getModel().remove(*fixing_);
-  has_fixing_installed = false;
+  if (has_fixing_installed) {
+    cplex_->getModel().remove(*fixing_);
+    has_fixing_installed = false;
+  }
 }
 
 void OptimizationProblem::Fathom() {
+  if (fixing_) {
+    fixing_->end();
+    delete fixing_;
+  }
+  has_fixing_installed = false;
   fathomed_ = true;
 }
 
 bool OptimizationProblem::IsFathomed() const {
   return fathomed_;
-  fixing_->end();
-  delete fixing_;
 }
 
 bool OptimizationProblem::IsSolved() const {

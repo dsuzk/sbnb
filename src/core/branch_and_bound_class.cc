@@ -52,13 +52,13 @@ void BranchAndBound::optimize() {
     OptimizationProblem* current_problem = current_node->problem;
     current_problem->Solve();
     if (current_problem->IsInfeasible() || current_problem->IsUnbounded()) {
-      current_problem->Fathom();
+      current_node->Fathom();
       continue;
     }
 
     double objective_value = current_problem->GetObjectiveValue();
     if (!IsBetterObjectiveValue(objective_value)) {
-      current_problem->Fathom();
+      current_node->Fathom();
       continue;
     }
 
@@ -69,7 +69,7 @@ void BranchAndBound::optimize() {
     if (is_integer_solution) {
       global_primal_bound_ = objective_value;
       best_solution_ = current_solution_variables;
-      current_problem->Fathom();
+      current_node->Fathom();
     } else {
       GenerateSubproblems(branched_constraints, current_node, *node_selection_);
     }

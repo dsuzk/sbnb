@@ -27,7 +27,7 @@ class BranchAndBound {
 
   public:
   //default: first fractional + depth first traversal
-  BranchAndBound(IloModel*, IloNumVarArray*, Branching* = new FirstFractional(), NodeSelection* = new DepthFirstTraversal());
+  BranchAndBound(IloModel*, IloNumVarArray*, Branching* = new FirstFractional(), NodeSelection* = new BreadthFirstTraversal());
 
   const IloNumVarArray& GetVariables() const;
   const IloModel& GetModel() const;

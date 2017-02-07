@@ -10,9 +10,8 @@ class OptimizationProblem {
  private:
   IloCplex* cplex_;
   IloNumVarArray* variables_;
-  
   IloNumArray solution_;
-  IloConstraint* fixing_;
+  IloConstraint* fixing_ = NULL;
 
   IloAlgorithm::Status cplex_status_;
   bool solved_ = false;

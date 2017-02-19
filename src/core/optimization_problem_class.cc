@@ -28,12 +28,14 @@ void OptimizationProblem::Solve() {
 }
 
 void OptimizationProblem::InstallFixing() {
+  std::cout << "----- installing fixing: " << *fixing_ << std::endl;
   cplex_->getModel().add(*fixing_);
   has_fixing_installed = true;
 }
 
 void OptimizationProblem::RemoveFixing() {
   if (has_fixing_installed) {
+    std::cout << "----- removing fixing: " << *fixing_ << std::endl;
     cplex_->getModel().remove(*fixing_);
     has_fixing_installed = false;
   }
@@ -41,6 +43,7 @@ void OptimizationProblem::RemoveFixing() {
 
 void OptimizationProblem::Fathom() {
   if (fixing_) {
+    std::cout << "----- freeing fixing: " << *fixing_ << std::endl;
     fixing_->end();
     delete fixing_;
   }

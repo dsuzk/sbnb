@@ -44,39 +44,47 @@ void BranchAndBound::optimize() {
 
   node_selection_->AddNode(current_node);
 
+
   while (node_selection_->HasNextNode()) {
+    std::cout << "[NODE " << ++number_nodes_ <<"]" << std::endl;
     Node* previous_node = current_node;
     current_node = node_selection_->NextNode();
     InstallFixings(previous_node, current_node);
 
     OptimizationProblem* current_problem = current_node->problem;
     current_problem->Solve();
+    std::cout << "----- ";
     if (current_problem->IsInfeasible() || current_problem->IsUnbounded()) {
+      std::cout << "solution is unfeasible or unbounded: fathom node" << std::endl;
       current_node->Fathom();
       continue;
     }
 
     double objective_value = current_problem->GetObjectiveValue();
     if (!IsBetterObjectiveValue(objective_value)) {
+      std::cout << "solution has worse objective value: fathom node" << std::endl;
       current_node->Fathom();
       continue;
     }
 
     current_solution_variables = current_problem->GetSolution();
     branched_constraints = branching_->Branch(current_solution_variables, *variables_);
-
+    std::cout <<  "better objective value [" << objective_value << "] : ";
     bool is_integer_solution = branched_constraints.size() == 0;
     if (is_integer_solution) {
+      std::cout <<  "integer solution - fathom node" << std::endl;
       global_primal_bound_ = objective_value;
       best_solution_ = current_solution_variables;
       current_node->Fathom();
     } else {
+      std::cout <<  "non-integer solution - branch" << std::endl;
       GenerateSubproblems(branched_constraints, current_node, *node_selection_);
     }
   }
 }
 
 void BranchAndBound::InstallFixings(const Node* previous_node, const Node* current_node) const {
+
   //Find common ancestor and add new fixings to model
   while(!current_node->problem->HasFixingInstalled()) {
     current_node->problem->InstallFixing();

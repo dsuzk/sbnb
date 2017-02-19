@@ -32,13 +32,18 @@ TEST_P(ModelTest, SolveExampleModel) {
   Branching* branching_rule = new FirstFractional(model_loader.cplex->getParam(IloCplex::EpRHS));
   NodeSelection* node_selection = new BreadthFirstTraversal();
   BranchAndBound bnb(model_loader.model, model_loader.variables, branching_rule, node_selection);
-  bnb.optimize();
+
+  try {
+    bnb.optimize();
+  } catch (IloException ex) {
+    std::cerr << "Error: " << ex << std::endl;
+  }
+
   IloNumArray acutal_solution_values = bnb.GetBestSolution();
   double objective_value = bnb.GetGlobalPrimalBound();
 
   IloNumArray expected_solution_values(*model_loader.expected_solution_values);
   double expected_objective_value = model_loader.expected_objective_value;
-
   ASSERT_DOUBLE_EQ(expected_objective_value, objective_value);
   model_loader.environment->end();
 }

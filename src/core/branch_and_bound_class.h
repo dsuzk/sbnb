@@ -4,7 +4,6 @@
 #include <ilcplex/ilocplex.h>
 #include "core/optimization_problem_class.h"
 #include "branching/first_fractional.h"
-#include "node_selection/breadth_first_traversal_class.h"
 #include "node_selection/depth_first_traversal_class.h"
 
 /**

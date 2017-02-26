@@ -5,7 +5,7 @@
 #include <ilcplex/ilocplex.h>
 #include "branching/branching.h"
 
-class FirstFractional :public Branching {
+class FirstFractional : public Branching {
   using Branching::Branching; 
 
 private:

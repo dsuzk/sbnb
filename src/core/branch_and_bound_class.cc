@@ -1,13 +1,14 @@
 #include <vector>
 #include "branch_and_bound_class.h"
 
-BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables, Branching* branching, NodeSelection* node_selection)
+BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables, Branching* branching, NodeSelection* node_selection, bool console_output)
   : model_(model),
     variables_(variables),
     best_solution_(IloNumArray(model_->getEnv())),
     cplex_(IloCplex(*model)),
     branching_(branching),
-    node_selection_(node_selection){
+    node_selection_(node_selection),
+    console_output_(console_output) {
 
   if (IsMaximizationProblem()) {
     global_primal_bound_ = -IloInfinity;
@@ -38,46 +39,51 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables, Branc
 void BranchAndBound::optimize() {
   OptimizationProblem* root_problem = new OptimizationProblem(&cplex_, variables_);
   Node* current_node = new Node(root_problem);
+  node_selection_->AddNode(current_node);
 
   std::vector<IloConstraint*> branched_constraints;
   IloNumArray current_solution_variables;
 
-  node_selection_->AddNode(current_node);
-
-
   while (node_selection_->HasNextNode()) {
-    std::cout << "[NODE " << ++number_nodes_ <<"]" << std::endl;
+    if (console_output_)
+      std::cout << "[NODE " << ++number_nodes_ <<"]" << std::endl;
+
     Node* previous_node = current_node;
     current_node = node_selection_->NextNode();
     InstallFixings(previous_node, current_node);
 
     OptimizationProblem* current_problem = current_node->problem;
     current_problem->Solve();
-    std::cout << "----- ";
     if (current_problem->IsInfeasible() || current_problem->IsUnbounded()) {
-      std::cout << "solution is unfeasible or unbounded: fathom node" << std::endl;
+      if (console_output_)
+        std::cout << "\tsolution is unfeasible or unbounded: fathom node" << std::endl;
       current_node->Fathom();
       continue;
     }
 
     double objective_value = current_problem->GetObjectiveValue();
     if (!IsBetterObjectiveValue(objective_value)) {
-      std::cout << "solution has worse objective value: fathom node" << std::endl;
+      if (console_output_)
+        std::cout << "\tsolution has worse objective value: fathom node" << std::endl;
       current_node->Fathom();
       continue;
     }
 
+    if (console_output_)
+      std::cout <<  "\tsolution has better objective value [" << objective_value << "]: ";
+
     current_solution_variables = current_problem->GetSolution();
     branched_constraints = branching_->Branch(current_solution_variables, *variables_);
-    std::cout <<  "better objective value [" << objective_value << "] : ";
     bool is_integer_solution = branched_constraints.size() == 0;
     if (is_integer_solution) {
-      std::cout <<  "integer solution - fathom node" << std::endl;
+      if (console_output_)
+        std::cout <<  "integer solution - save and fathom node" << std::endl;
       global_primal_bound_ = objective_value;
       best_solution_ = current_solution_variables;
       current_node->Fathom();
     } else {
-      std::cout <<  "non-integer solution - branch" << std::endl;
+      if (console_output_)
+        std::cout <<  "non-integer solution - branch" << std::endl;
       GenerateSubproblems(branched_constraints, current_node, *node_selection_);
     }
   }
@@ -102,10 +108,10 @@ void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint*> &branched_c
                                          Node* parent_node,
                                          NodeSelection &node_selection_) {
 
-  OptimizationProblem* sub_problem = new OptimizationProblem(&cplex_, variables_, branched_constraints[0]);
+  OptimizationProblem* sub_problem = new OptimizationProblem(&cplex_, variables_, branched_constraints[0], console_output_);
   Node* sub_problem_node_1 = new Node(sub_problem, parent_node);
 
-  sub_problem = new OptimizationProblem(&cplex_, variables_, branched_constraints[1]);
+  sub_problem = new OptimizationProblem(&cplex_, variables_, branched_constraints[1], console_output_);
   Node* sub_problem_node_2 = new Node(sub_problem, parent_node);
 
   parent_node->SetFirstChild(sub_problem_node_1);

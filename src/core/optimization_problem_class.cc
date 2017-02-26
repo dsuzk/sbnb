@@ -1,15 +1,17 @@
 
 #include "optimization_problem_class.h"
 
-OptimizationProblem::OptimizationProblem(IloCplex *cplex, IloNumVarArray *variables)
+OptimizationProblem::OptimizationProblem(IloCplex *cplex, IloNumVarArray *variables, bool console_output)
     : cplex_(cplex),
       variables_(variables),
-      has_fixing_installed(true){}
+      has_fixing_installed(true),
+      console_output_(console_output) {}
 
-OptimizationProblem::OptimizationProblem(IloCplex *cplex, IloNumVarArray *variables, IloConstraint *constraint)
+OptimizationProblem::OptimizationProblem(IloCplex *cplex, IloNumVarArray *variables, IloConstraint *constraint, bool console_output)
     : cplex_(cplex),
       variables_(variables),
-      fixing_(constraint){}
+      fixing_(constraint),
+      console_output_(console_output) {}
 
 
 const IloConstraint& OptimizationProblem::GetFixing() const {
@@ -28,14 +30,16 @@ void OptimizationProblem::Solve() {
 }
 
 void OptimizationProblem::InstallFixing() {
-  std::cout << "----- installing fixing: " << *fixing_ << std::endl;
+  if (console_output_)
+    std::cout << "\tinstalling fixing: " << *fixing_ << std::endl;
   cplex_->getModel().add(*fixing_);
   has_fixing_installed = true;
 }
 
 void OptimizationProblem::RemoveFixing() {
   if (has_fixing_installed) {
-    std::cout << "----- removing fixing: " << *fixing_ << std::endl;
+    if (console_output_)
+      std::cout << "\tremoving fixing: " << *fixing_ << std::endl;
     cplex_->getModel().remove(*fixing_);
     has_fixing_installed = false;
   }
@@ -43,7 +47,8 @@ void OptimizationProblem::RemoveFixing() {
 
 void OptimizationProblem::Fathom() {
   if (fixing_) {
-    std::cout << "----- freeing fixing: " << *fixing_ << std::endl;
+    if (console_output_)
+      std::cout << "\tfreeing fixing: " << *fixing_ << std::endl;
     fixing_->end();
     delete fixing_;
   }

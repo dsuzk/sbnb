@@ -19,9 +19,11 @@ class OptimizationProblem {
   bool has_fixing_installed = false;
   double objective_value_;
 
+  bool console_output_;
+
  public:
-  OptimizationProblem(IloCplex*, IloNumVarArray*);
-  OptimizationProblem(IloCplex*, IloNumVarArray*, IloConstraint*);
+  OptimizationProblem(IloCplex*, IloNumVarArray*, bool console_output = false);
+  OptimizationProblem(IloCplex*, IloNumVarArray*, IloConstraint*, bool console_output = false);
   void InstallFixing();
   void RemoveFixing();
   void Solve();

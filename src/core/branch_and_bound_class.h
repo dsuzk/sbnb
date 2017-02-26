@@ -22,13 +22,16 @@ class BranchAndBound {
 
   int number_nodes_ = 0;
 
+  bool console_output_ = false;
+
   const bool IsBetterObjectiveValue(double objective_value) const;
   void InstallFixings(const Node* previous_node, const Node* current_node) const;
   void GenerateSubproblems(std::vector<IloConstraint*>&, Node*, NodeSelection&);
 
   public:
-  //default: first fractional + depth first traversal
-  BranchAndBound(IloModel*, IloNumVarArray*, Branching* = new FirstFractional(), NodeSelection* = new DepthFirstTraversal());
+  //default: first fractional; depth first traversal
+  BranchAndBound(IloModel*, IloNumVarArray*, Branching* = new FirstFractional(),
+                 NodeSelection* = new DepthFirstTraversal(), bool = false);
 
   const IloNumVarArray& GetVariables() const;
   const IloModel& GetModel() const;

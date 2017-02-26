@@ -4,17 +4,18 @@
 #include "core/branch_and_bound_class.h"
 #include "node_selection/breadth_first_traversal_class.h"
 
-void SolveLP(int traversal_flag, int selection_flag, char* file_path);
+void SolveLP(int traversal_flag, int selection_flag, bool verbose_flag, char* file_path);
 void ShowUsage();
 
 int main(int argc, char* argv[]) {
   int selection_flag = 0; // Depth First Traversal = 0, Breadth First Traversal = 1
   int branching_flag = 0; // First Fractional = 0
+  bool verbose_flag = false;
   char *file_path = NULL;
   int option_character;
   opterr = 0;
 
-  while ((option_character = getopt (argc, argv, "dbfhP:")) != -1)
+  while ((option_character = getopt (argc, argv, "dbfvhP:")) != -1)
     switch (option_character) {
       case 'd':
         selection_flag = 0;
@@ -24,6 +25,9 @@ int main(int argc, char* argv[]) {
         break;
       case 'f':
         branching_flag = 0;
+        break;
+      case 'v':
+        verbose_flag = true;
         break;
       case 'h':
         ShowUsage();
@@ -45,7 +49,7 @@ int main(int argc, char* argv[]) {
 
 
   if (file_path)
-    SolveLP(selection_flag, branching_flag, file_path);
+    SolveLP(selection_flag, branching_flag, verbose_flag, file_path);
   else
     std:cerr << "No file path specified. See \"sbnb -h for help.\"" << std::endl;
 
@@ -53,16 +57,17 @@ int main(int argc, char* argv[]) {
 }
 
 void ShowUsage() {
-    std::cout << "USAGE: sbnb [-d|-b] [-f] -P file_path" << std::endl;
+    std::cout << "USAGE: sbnb [-d|-b] [-f] [-v] -P file_path" << std::endl;
     std::cout << "\t -d: Set node selection to 'Depth first traversal' (default)" << std::endl;
     std::cout << "\t -b: Set node selection to 'Breadth first traversal'" << std::endl;
     std::cout << "\t -f: Set branching rule to 'First fractional' (default)" << std::endl;
+    std::cout << "\t -v: Enable verbose output" << std::endl;
     std::cout << "\t -P file_path: Location of linear problem file (.lp/.mps file formats). REQUIRED " << std::endl;
     std::cout << "EXAMPLES:" << std::endl << "\t sbnb -bfP test/testmodels/sample3.mps" << std::endl;
-    std::cout << "\t sbnb -P test/testmodels/sample10.mps" << std::endl;
+    std::cout << "\t sbnb -vP test/testmodels/sample10.mps" << std::endl;
 }
 
-void SolveLP(int selection_flag, int branching_flag, char* file_path) {
+void SolveLP(int selection_flag, int branching_flag, bool verbose_flag, char* file_path) {
   IloEnv env;
   IloModel model(env);
   IloNumVarArray vars(env);
@@ -95,7 +100,7 @@ void SolveLP(int selection_flag, int branching_flag, char* file_path) {
   try {
     cplex.setOut(env.getNullStream());
     cplex.importModel(model, file_path, objective, vars, constraints);
-    BranchAndBound bnb(&model, &vars, branching_rule, node_selection);
+    BranchAndBound bnb(&model, &vars, branching_rule, node_selection, verbose_flag);
 
     const float begin = clock();
     bnb.optimize();

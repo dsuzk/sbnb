@@ -112,14 +112,15 @@ void SolveLP(int selection_flag, int branching_flag, bool verbose_flag, char* fi
     cplex.importModel(model, file_path, objective, vars, constraints);
     BranchAndBound bnb(&model, &vars, branching_rule, node_selection, verbose_flag);
 
-    const float begin = clock();
     bnb.optimize();
-    const float duration = (clock() - begin)/CLOCKS_PER_SEC;
 
-    std::cout << "------- Branch And Bound Summary -------" << endl;
-    std::cout << "Objective Value: " << bnb.GetGlobalPrimalBound() << endl;
+    std::cout << endl << "------- Branch And Bound Summary -------" << endl;
     std::cout << "Variable Values: " << bnb.GetBestSolution() << endl;
-    std::cout << "Elapsed Time: " << duration << " sec" << endl;
+    std::cout << "Objective Value: " << bnb.GetGlobalPrimalBound() << endl;
+    std::cout << "Max Node Level: " << bnb.GetStatistics().maxLevel << endl;
+    std::cout << "Computed Nodes: " << bnb.GetStatistics().nNodes << endl;
+    std::cout << "Elapsed Time: " << bnb.GetStatistics().runtime << " sec" << endl;
+    std::cout << "Time per Node: " << (bnb.GetStatistics().runtime / bnb.GetStatistics().nNodes) * 1000 << " ms/node" << endl << endl;
   } catch (IloException& e) {
     cerr << "Error: " << e << endl;
   }
@@ -142,8 +143,8 @@ void CompareWithCplex(char* file_path) {
 
     std::cout << "------- Cplex Statistics -------" << endl;
     std::cout << "Objective Value: " << cplex_solver.global_primal_bound_ << endl;
-    std::cout << "Elapsed Time: " << cplex_solver.cplex_.getTime() << "sec" << endl;
     std::cout << "Computed Nodes: " << cplex_solver.cplex_.getNnodes() << endl;
+    std::cout << "Elapsed Time: " << cplex_solver.cplex_.getTime() << " sec" << endl;
     std::cout << "Time per Node: " << (cplex_solver.cplex_.getTime() / cplex_solver.cplex_.getNnodes()) * 1000 << " ms/node" << endl;
   } catch (IloException& e) {
     cerr << "Error: " << e << endl;

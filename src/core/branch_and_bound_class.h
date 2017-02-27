@@ -5,6 +5,7 @@
 #include "core/optimization_problem_class.h"
 #include "branching/first_fractional.h"
 #include "node_selection/depth_first_traversal_class.h"
+#include "statistics/statistics_class.h"
 
 /**
  * @brief The main entry point for the branch and bound framework
@@ -17,10 +18,11 @@ class BranchAndBound {
   NodeSelection* node_selection_;
 
   IloCplex cplex_;
-  double global_primal_bound_;
   IloNumArray best_solution_;
+  double global_primal_bound_;
 
   int number_nodes_ = 0;
+  Statistics statistics_;
 
   bool console_output_ = false;
 
@@ -38,6 +40,7 @@ class BranchAndBound {
   const bool IsMaximizationProblem() const;
   const double GetGlobalPrimalBound() const;
   const IloNumArray& GetBestSolution() const;
+  const Statistics& GetStatistics() const;
 
   void optimize();
 };

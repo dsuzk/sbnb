@@ -8,7 +8,8 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables, Branc
     cplex_(IloCplex(*model)),
     branching_(branching),
     node_selection_(node_selection),
-    console_output_(console_output) {
+    console_output_(console_output),
+    statistics_() {
 
   if (IsMaximizationProblem()) {
     global_primal_bound_ = -IloInfinity;
@@ -19,6 +20,7 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables, Branc
   // relaxate variables
   model_->add(IloConversion(cplex_.getEnv(), *variables_, ILOFLOAT));
   cplex_.setOut(model_->getEnv().getNullStream());
+
 }
 
 /*
@@ -44,12 +46,15 @@ void BranchAndBound::optimize() {
   std::vector<IloConstraint*> branched_constraints;
   IloNumArray current_solution_variables;
 
+  const float begin = clock();
   while (node_selection_->HasNextNode()) {
-    if (console_output_)
-      std::cout << "[NODE " << ++number_nodes_ <<"]" << std::endl;
-
     Node* previous_node = current_node;
     current_node = node_selection_->NextNode();
+
+    statistics_.nNodes++;
+    if (console_output_)
+      std::cout << "[NODE " << statistics_.nNodes << " at LEVEL " << current_node->GetLevel() << "]" << std::endl;
+
     InstallFixings(previous_node, current_node);
 
     OptimizationProblem* current_problem = current_node->problem;
@@ -86,7 +91,12 @@ void BranchAndBound::optimize() {
         std::cout <<  "non-integer solution - branch" << std::endl;
       GenerateSubproblems(branched_constraints, current_node, *node_selection_);
     }
+
+    statistics_.maxLevel = (current_node->GetLevel() > statistics_.maxLevel) ? current_node->GetLevel() : statistics_.maxLevel;
   }
+
+  const float duration = (clock() - begin)/CLOCKS_PER_SEC;
+  statistics_.runtime = duration;
 }
 
 void BranchAndBound::InstallFixings(const Node* previous_node, const Node* current_node) const {
@@ -109,10 +119,11 @@ void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint*> &branched_c
                                          NodeSelection &node_selection_) {
 
   OptimizationProblem* sub_problem = new OptimizationProblem(&cplex_, variables_, branched_constraints[0], console_output_);
-  Node* sub_problem_node_1 = new Node(sub_problem, parent_node);
+  int level = parent_node->GetLevel();
+  Node* sub_problem_node_1 = new Node(sub_problem, parent_node, level+1);
 
   sub_problem = new OptimizationProblem(&cplex_, variables_, branched_constraints[1], console_output_);
-  Node* sub_problem_node_2 = new Node(sub_problem, parent_node);
+  Node* sub_problem_node_2 = new Node(sub_problem, parent_node, level+1);
 
   parent_node->SetFirstChild(sub_problem_node_1);
   sub_problem_node_1->SetNextSibling(sub_problem_node_2);
@@ -121,12 +132,16 @@ void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint*> &branched_c
   node_selection_.AddNode(sub_problem_node_2);
 }
 
-const IloNumArray &BranchAndBound::GetBestSolution() const {
+const IloNumArray& BranchAndBound::GetBestSolution() const {
   return best_solution_;
 }
 
 const double BranchAndBound::GetGlobalPrimalBound() const {
   return global_primal_bound_;
+}
+
+const Statistics& BranchAndBound::GetStatistics() const {
+  return statistics_;
 }
 
 const bool BranchAndBound::IsBetterObjectiveValue(double objective_value) const {

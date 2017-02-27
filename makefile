@@ -28,7 +28,7 @@ COMPILER = g++
 # Compiler options
 # ---------------------------------------------------------------------
 
-COMPILER_FLAGS = -m64 -O -fPIC -fno-strict-aliasing -fexceptions -g -DNDEBUG -DIL_STD -std=c++11
+COMPILER_FLAGS = -m64 -O3 -fPIC -fno-strict-aliasing -fexceptions -g -DNDEBUG -DIL_STD -std=c++11
 
 ifeq ($(PLATFORM), Darwin)
 	COMPILER_FLAGS += -stdlib=libstdc++
@@ -77,12 +77,13 @@ TEST_OBJECTS := $(patsubst $(TEST_DIR)/%, $(BUILD_DIR)/%, $(TESTS:.$(SRC_EXTENSI
 # Targets
 # ---------------------------------------------------------------------
 
-all: sbnb test
+all: sbnb
 
 sbnb: $(TARGET)
 
 test: gtest $(TEST_TARGET)
 	./$(TEST_TARGET)
+
 gtest:
 	@echo "Compiling googletest framework...";
 	@git submodule update --init --recursive

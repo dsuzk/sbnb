@@ -1,9 +1,6 @@
-
 #include <iostream>
 #include <ilcplex/ilocplex.h>
 #include "test_model_loader_class.h"
-
-using namespace std;
 
 TestModelLoader::TestModelLoader(const char* path):
     environment(new IloEnv()),

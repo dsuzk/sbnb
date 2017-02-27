@@ -5,13 +5,14 @@
 
 class Node {
 public:
-  Node(OptimizationProblem* problem_, Node* parent = NULL);
+  Node(OptimizationProblem* problem_, Node* parent = NULL, int level = 0);
   OptimizationProblem* problem;
   void SetFirstChild(Node*);
   void SetNextSibling(Node*);
   const Node* GetFirstChild() const;
   const Node* GetParent() const;
   const Node* GetNextSibling() const;
+  const int GetLevel() const;
 
   void Fathom() const;
 
@@ -19,6 +20,8 @@ private:
   Node* parent_ = NULL;
   Node* sibling_ = NULL;
   Node* first_child_ = NULL;
+
+  int level_ = 0;
 
   const bool SiblingFathomed() const;
   const bool IsRoot() const;

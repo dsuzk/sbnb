@@ -1,9 +1,10 @@
 
 #include "node_class.h"
 
-Node::Node(OptimizationProblem *problem, Node* parent)
+Node::Node(OptimizationProblem *problem, Node* parent, int level)
   : problem(problem),
-    parent_(parent) {}
+    parent_(parent),
+    level_(level) {}
 
 void Node::SetFirstChild(Node *first_child) {
   first_child_ = first_child;
@@ -23,6 +24,10 @@ const Node* Node::GetNextSibling() const {
 
 const Node* Node::GetParent() const {
   return parent_;
+}
+
+const int Node::GetLevel() const {
+  return level_;
 }
 
 void Node::Fathom() const {

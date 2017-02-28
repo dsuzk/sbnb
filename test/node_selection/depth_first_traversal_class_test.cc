@@ -1,7 +1,6 @@
-
 #include "gtest/gtest.h"
 #include <node_selection/depth_first_traversal_class.h>
-#include <models/test_model_loader_class.h>
+#include <utils/test_model_loader_class.h>
 #include <node_selection/node_class.h>
 
 TEST(DepthFirstTraversal, NextNode_Test) {

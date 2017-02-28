@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "core/optimization_problem_class.h"
-#include "models/test_model_loader_class.h"
+#include "utils/test_model_loader_class.h"
 
 TEST(OptimizationProblem, getSolution) {
     TestModelLoader model_loader((char*) "test/models/easy_max_model_1.lp");

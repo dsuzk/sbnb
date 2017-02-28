@@ -1,8 +1,7 @@
-
 #include <ilcplex/ilocplex.h>
 #include <gtest/gtest.h>
 #include "core/branch_and_bound_class.h"
-#include "models/test_model_loader_class.h"
+#include "utils/test_model_loader_class.h"
 
 TEST(BranchAndBoundClass, relaxation_test) {
   TestModelLoader model_loader((char*) "test/models/variable_test_model.lp");

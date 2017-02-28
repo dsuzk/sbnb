@@ -1,9 +1,8 @@
-
 #include <gtest/gtest.h>
 #include <ilcplex/ilocplex.h>
 #include <branching/first_fractional.h>
 #include <core/optimization_problem_class.h>
-#include "models/test_model_loader_class.h"
+#include "utils/test_model_loader_class.h"
 
 TEST(Branching, branch_Test) {
 

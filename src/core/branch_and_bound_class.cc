@@ -50,10 +50,9 @@ void BranchAndBound::optimize() {
   while (node_selection_->HasNextNode()) {
     Node* previous_node = current_node;
     current_node = node_selection_->NextNode();
-
-    statistics_.nNodes++;
     if (console_output_)
       std::cout << "[NODE " << statistics_.nNodes << " at LEVEL " << current_node->GetLevel() << "]" << std::endl;
+    statistics_.nNodes++;
 
     InstallFixings(previous_node, current_node);
 

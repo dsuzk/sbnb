@@ -6,7 +6,7 @@
 
 TEST(Branching, branch_Test) {
 
-  TestModelLoader model_loader((char*) "test/models/easy_max_model_1.lp");
+  TestModelLoader model_loader((char*) "test/models/easy_max_model.lp");
 
   OptimizationProblem root_problem(model_loader.cplex, model_loader.variables);
   root_problem.Solve();

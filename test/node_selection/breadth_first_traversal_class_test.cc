@@ -1,14 +1,14 @@
 
 #include "gtest/gtest.h"
 #include <node_selection/breadth_first_traversal_class.h>
-#include <test_models/test_model_loader_class.h>
+#include <models/test_model_loader_class.h>
 #include <node_selection/node_class.h>
 
 TEST(BreadthFirstTraversal, NextNode_Test) {
 
   BreadthFirstTraversal traversal;
 
-  TestModelLoader testModelLoader("test/test_models/variable_test_model.lp");
+  TestModelLoader testModelLoader("test/models/variable_test_model.lp");
 
   OptimizationProblem *p1 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
   OptimizationProblem *p2 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
@@ -42,7 +42,7 @@ TEST(BreadthFirstTraversal, CurrentNode_Test) {
 
   BreadthFirstTraversal traversal;
 
-  TestModelLoader testModelLoader("test/test_models/variable_test_model.lp");
+  TestModelLoader testModelLoader("test/models/variable_test_model.lp");
 
   OptimizationProblem *p1 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
   OptimizationProblem *p2 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
@@ -63,7 +63,7 @@ TEST(BreadthFirstTraversal, HasNextNode_Test) {
 
   BreadthFirstTraversal traversal;
 
-  TestModelLoader testModelLoader("test/test_models/variable_test_model.lp");
+  TestModelLoader testModelLoader("test/models/variable_test_model.lp");
 
   OptimizationProblem *p1 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
   Node a(p1);

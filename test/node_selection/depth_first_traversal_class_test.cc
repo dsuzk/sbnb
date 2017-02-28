@@ -1,7 +1,7 @@
 
 #include "gtest/gtest.h"
 #include <node_selection/depth_first_traversal_class.h>
-#include <test_models/test_model_loader_class.h>
+#include <models/test_model_loader_class.h>
 #include <node_selection/node_class.h>
 
 TEST(DepthFirstTraversal, NextNode_Test) {
@@ -9,7 +9,7 @@ TEST(DepthFirstTraversal, NextNode_Test) {
 
   DepthFirstTraversal traversal;
 
-  TestModelLoader testModelLoader("test/test_models/variable_test_model.lp");
+  TestModelLoader testModelLoader("test/models/variable_test_model.lp");
 
   OptimizationProblem *p1 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
   OptimizationProblem *p2 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
@@ -72,7 +72,7 @@ TEST(DepthFirstTraversal, CurrentNode_Test) {
 
   DepthFirstTraversal traversal;
 
-  TestModelLoader testModelLoader("test/test_models/variable_test_model.lp");
+  TestModelLoader testModelLoader("test/models/variable_test_model.lp");
 
   OptimizationProblem *p1 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
   OptimizationProblem *p2 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
@@ -93,7 +93,7 @@ TEST(DepthFirstTraversal, HasNextNode_Test) {
 
   DepthFirstTraversal traversal;
 
-  TestModelLoader testModelLoader("test/test_models/variable_test_model.lp");
+  TestModelLoader testModelLoader("test/models/variable_test_model.lp");
 
   OptimizationProblem *p1 = new OptimizationProblem(testModelLoader.cplex, testModelLoader.variables);
   Node a(p1);

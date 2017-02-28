@@ -60,7 +60,7 @@ void BranchAndBound::optimize() {
     current_problem->Solve();
     if (current_problem->IsInfeasible() || current_problem->IsUnbounded()) {
       if (console_output_)
-        std::cout << "\tsolution is unfeasible or unbounded: fathom node" << std::endl;
+        std::cout << "\tSolution is unfeasible or unbounded: fathom node" << std::endl;
       current_node->Fathom();
       continue;
     }
@@ -68,20 +68,22 @@ void BranchAndBound::optimize() {
     double objective_value = current_problem->GetObjectiveValue();
     if (!IsBetterObjectiveValue(objective_value)) {
       if (console_output_)
-        std::cout << "\tsolution has worse objective value: fathom node" << std::endl;
+        std::cout << "\tSolution has worse objective value: fathom node" << std::endl;
       current_node->Fathom();
       continue;
     }
 
     if (console_output_)
-      std::cout <<  "\tsolution has better objective value [" << objective_value << "]: ";
+      std::cout <<  "\tSolution has better objective value [" << objective_value << "]: ";
 
     current_solution_variables = current_problem->GetSolution();
     branched_constraints = branching_->Branch(current_solution_variables, *variables_);
     bool is_integer_solution = branched_constraints.size() == 0;
     if (is_integer_solution) {
-      if (console_output_)
-        std::cout <<  "integer solution - save and fathom node" << std::endl;
+      if (console_output_) {
+        std::cout <<  "integer solution - fathom node" << std::endl;
+        std::cout <<  "\tNew best objective value: [" << objective_value << "]!" << std::endl;
+      }
       global_primal_bound_ = objective_value;
       best_solution_ = current_solution_variables;
       current_node->Fathom();

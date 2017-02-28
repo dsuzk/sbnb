@@ -1,5 +1,5 @@
 #include <vector>
-#include "branch_and_bound_class.h"
+#include "branch_and_bound.h"
 
 BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables, Branching* branching, NodeSelection* node_selection, bool console_output)
   : model_(model),

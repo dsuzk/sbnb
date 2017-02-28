@@ -1,5 +1,4 @@
-
-#include "optimization_problem_class.h"
+#include "optimization_problem.h"
 
 OptimizationProblem::OptimizationProblem(IloCplex *cplex, IloNumVarArray *variables, bool console_output)
     : cplex_(cplex),

@@ -1,7 +1,6 @@
-
 #include <queue>
-#include "node_class.h"
-#include "breadth_first_traversal_class.h"
+#include "node.h"
+#include "breadth_first_traversal.h"
 
 BreadthFirstTraversal::BreadthFirstTraversal(){};
 

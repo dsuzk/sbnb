@@ -1,4 +1,4 @@
-#include "cplex_solver_class.h"
+#include "cplex_solver.h"
 
 CplexSolver::CplexSolver(IloModel* model, IloNumVarArray* variables) :
   model_(model),

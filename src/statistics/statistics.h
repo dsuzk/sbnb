@@ -1,5 +1,5 @@
-#ifndef __STATISTICS_CLASS_H_
-#define __STATISTICS_CLASS_H_
+#ifndef __STATISTICS_H_
+#define __STATISTICS_H_
 
 class Statistics {
   public:
@@ -10,5 +10,4 @@ class Statistics {
     int maxLevel = 0;
 };
 
-
-#endif // __STATISTICS_CLASS_H_
+#endif // __STATISTICS_H_

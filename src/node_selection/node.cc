@@ -1,5 +1,4 @@
-
-#include "node_class.h"
+#include "node.h"
 
 Node::Node(OptimizationProblem *problem, Node* parent, int level)
   : problem(problem),

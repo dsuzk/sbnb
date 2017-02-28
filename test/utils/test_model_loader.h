@@ -1,6 +1,5 @@
-
-#ifndef BNB_TEST_TEST_MODAL_LOADER_CLASS_H_
-#define BNB_TEST_TEST_MODAL_LOADER_CLASS_H_
+#ifndef BNB_TEST_TEST_MODAL_LOADER_H_
+#define BNB_TEST_TEST_MODAL_LOADER_H_
 
 #include <ilcplex/ilocplex.h>
 
@@ -23,4 +22,4 @@ class TestModelLoader {
 
 };
 
-#endif //BNB_TEST_TEST_MODAL_LOADER_CLASS_H_
+#endif //BNB_TEST_TEST_MODAL_LOADER_H_

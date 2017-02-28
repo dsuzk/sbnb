@@ -1,7 +1,6 @@
-
 #include <stack>
-#include "node_class.h"
-#include "depth_first_traversal_class.h"
+#include "node.h"
+#include "depth_first_traversal.h"
 
 using namespace std;
 

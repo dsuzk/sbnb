@@ -1,9 +1,9 @@
 #include <iostream>
 #include <ctime>
 #include <string>
-#include "core/branch_and_bound_class.h"
-#include "node_selection/breadth_first_traversal_class.h"
-#include "statistics/cplex_solver_class.h"
+#include "core/branch_and_bound.h"
+#include "node_selection/breadth_first_traversal.h"
+#include "statistics/cplex_solver.h"
 
 using namespace std;
 

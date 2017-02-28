@@ -1,8 +1,8 @@
-#ifndef SBNB_NODE_SELECTION_NODE_SELECTION_CLASS_H_
-#define SBNB_NODE_SELECTION_NODE_SELECTION_CLASS_H_
+#ifndef SBNB_NODE_SELECTION_NODE_SELECTION_H_
+#define SBNB_NODE_SELECTION_NODE_SELECTION_H_
 
 #include <queue>
-#include "node_class.h"
+#include "node.h"
 
 class NodeSelection {
 
@@ -13,4 +13,4 @@ class NodeSelection {
   virtual bool HasNextNode() const = 0;
 };
 
-#endif //SBNB_NODE_SELECTION_NODE_SELECTION_CLASS_H_
+#endif //SBNB_NODE_SELECTION_NODE_SELECTION_H_

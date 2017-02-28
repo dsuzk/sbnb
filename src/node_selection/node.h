@@ -1,7 +1,7 @@
-#ifndef SBNB_NODE_SELECTION_NODE_CLASS_H_
-#define SBNB_NODE_SELECTION_NODE_CLASS_H_
+#ifndef SBNB_NODE_SELECTION_NODE_H_
+#define SBNB_NODE_SELECTION_NODE_H_
 
-#include "core/optimization_problem_class.h"
+#include "core/optimization_problem.h"
 
 class Node {
 public:
@@ -29,4 +29,4 @@ private:
   const bool IsRoot() const;
 };
 
-#endif //SBNB_NODE_SELECTION_NODE_CLASS_H_
+#endif //SBNB_NODE_SELECTION_NODE_H_

@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
-#include <node_selection/breadth_first_traversal_class.h>
-#include <utils/test_model_loader_class.h>
-#include <node_selection/node_class.h>
+#include <node_selection/breadth_first_traversal.h>
+#include <utils/test_model_loader.h>
+#include <node_selection/node.h>
 
 TEST(BreadthFirstTraversal, NextNode_Test) {
 

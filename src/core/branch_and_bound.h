@@ -1,11 +1,11 @@
-#ifndef SBNB_CORE_BRANCH_AND_BOUND_CLASS_H
-#define SBNB_CORE_BRANCH_AND_BOUND_CLASS_H
+#ifndef SBNB_CORE_BRANCH_AND_BOUND_H
+#define SBNB_CORE_BRANCH_AND_BOUND_H
 
 #include <ilcplex/ilocplex.h>
-#include "core/optimization_problem_class.h"
+#include "core/optimization_problem.h"
 #include "branching/first_fractional.h"
-#include "node_selection/depth_first_traversal_class.h"
-#include "statistics/statistics_class.h"
+#include "node_selection/depth_first_traversal.h"
+#include "statistics/statistics.h"
 
 /**
  * @brief The main entry point for the branch and bound framework
@@ -45,5 +45,5 @@ class BranchAndBound {
   void optimize();
 };
 
-#endif // SBNB_CORE_BRANCH_AND_BOUND_CLASS_H
+#endif // SBNB_CORE_BRANCH_AND_BOUND_H
 

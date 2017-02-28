@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
   int option_character;
   opterr = 0;
 
-  while ((option_character = getopt (argc, argv, "dbfvchP:")) != -1)
+  while ((option_character = getopt (argc, argv, "dbfvch")) != -1)
     switch (option_character) {
     case 'd':
       selection_flag = 0;
@@ -38,13 +38,8 @@ int main(int argc, char* argv[]) {
     case 'h':
       ShowUsage();
       return 0;
-    case 'P':
-      file_path = optarg;
-      break;
     case '?':
-      if (optopt == 'P')
-        fprintf (stderr, "Option -%c requires an argument. See \"sbnb -h\" for help.\n", optopt);
-      else if (isprint (optopt))
+      if (isprint (optopt))
         fprintf (stderr, "Unknown option `-%c'. See \"sbnb -h\" for help.\n", optopt);
       else
         fprintf (stderr, "Unknown option character `\\x%x'. See \"sbnb -h\" for help.\n", optopt);
@@ -53,11 +48,13 @@ int main(int argc, char* argv[]) {
       abort();
     }
 
-
-  if (file_path)
+  if (optind < argc) {
+    file_path = argv[optind];
     SolveLP(selection_flag, branching_flag, verbose_flag, file_path);
-  else
-  std:cerr << "No file path specified. See \"sbnb -h for help.\"" << std::endl;
+  } else {
+    std:cerr << "No file path specified. See \"sbnb -h for help.\"" << std::endl;
+    return 1;
+  }
 
   if (compare_flag)
     CompareWithCplex(file_path);
@@ -66,15 +63,15 @@ int main(int argc, char* argv[]) {
 }
 
 void ShowUsage() {
-  std::cout << "USAGE: sbnb [-d|-b] [-f] [-v] [-c] -P file_path" << std::endl;
+  std::cout << "USAGE: sbnb [-d|-b] [-f] [-v] [-c] file_path" << std::endl;
   std::cout << "\t -d: Set node selection to 'Depth first traversal' (default)" << std::endl;
   std::cout << "\t -b: Set node selection to 'Breadth first traversal'" << std::endl;
   std::cout << "\t -f: Set branching rule to 'First fractional' (default)" << std::endl;
   std::cout << "\t -v: Enable verbose output" << std::endl;
   std::cout << "\t -c: Compare with Cplex Solver" << std::endl;
-  std::cout << "\t -P file_path: Location of linear problem file (.lp/.mps file formats). REQUIRED " << std::endl;
-  std::cout << "EXAMPLES:" << std::endl << "\t sbnb -bfP test/testmodels/sample3.mps" << std::endl;
-  std::cout << "\t sbnb -vP test/testmodels/sample10.mps" << std::endl;
+  std::cout << "\t file_path: Location of linear problem file (.lp/.mps file formats). REQUIRED " << std::endl;
+  std::cout << "EXAMPLES:" << std::endl << "\t sbnb -bc test/testmodels/sample3.mps" << std::endl;
+  std::cout << "\t sbnb -v test/testmodels/sample10.mps" << std::endl;
 }
 
 void SolveLP(int selection_flag, int branching_flag, bool verbose_flag, char* file_path) {

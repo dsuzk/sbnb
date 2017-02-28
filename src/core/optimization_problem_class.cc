@@ -45,7 +45,7 @@ void OptimizationProblem::RemoveFixing() {
   }
 }
 
-void OptimizationProblem::Fathom() {
+void OptimizationProblem::FreeFixing() {
   if (fixing_) {
     if (console_output_)
       std::cout << "\tfreeing fixing: " << *fixing_ << std::endl;
@@ -53,11 +53,6 @@ void OptimizationProblem::Fathom() {
     delete fixing_;
   }
   has_fixing_installed = false;
-  fathomed_ = true;
-}
-
-bool OptimizationProblem::IsFathomed() const {
-  return fathomed_;
 }
 
 bool OptimizationProblem::IsSolved() const {

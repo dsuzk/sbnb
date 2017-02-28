@@ -15,7 +15,6 @@ class OptimizationProblem {
 
   IloAlgorithm::Status cplex_status_;
   bool solved_ = false;
-  bool fathomed_ = false;
   bool has_fixing_installed = false;
   double objective_value_;
 
@@ -26,15 +25,14 @@ class OptimizationProblem {
   OptimizationProblem(IloCplex*, IloNumVarArray*, IloConstraint*, bool console_output = false);
   void InstallFixing();
   void RemoveFixing();
+  void FreeFixing();
   void Solve();
-  void Fathom();
   const IloNumArray& GetSolution() const;
   const IloConstraint& GetFixing() const;
 
   bool IsSolved() const;
   bool IsInfeasible() const;
   bool IsUnbounded() const;
-  bool IsFathomed() const;
   bool HasFixingInstalled() const;
 
   double GetObjectiveValue() const;

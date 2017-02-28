@@ -14,7 +14,8 @@ public:
   const Node* GetNextSibling() const;
   const int GetLevel() const;
 
-  void Fathom() const;
+  void Fathom();
+  const bool IsFathomed() const;
 
 private:
   Node* parent_ = NULL;
@@ -22,6 +23,7 @@ private:
   Node* first_child_ = NULL;
 
   int level_ = 0;
+  bool fathomed_ = false;
 
   const bool SiblingFathomed() const;
   const bool IsRoot() const;

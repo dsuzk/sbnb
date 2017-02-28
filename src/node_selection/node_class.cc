@@ -30,8 +30,9 @@ const int Node::GetLevel() const {
   return level_;
 }
 
-void Node::Fathom() const {
-  problem->Fathom();
+void Node::Fathom() {
+  problem->FreeFixing();
+  fathomed_ = true;
 
   // recursive check to fathom parents
   if (!IsRoot() && SiblingFathomed()) {
@@ -40,12 +41,16 @@ void Node::Fathom() const {
 }
 
 const bool Node::SiblingFathomed() const {
-  if (sibling_ && sibling_->problem->IsFathomed()) { // left child 
+  if (sibling_ && sibling_->IsFathomed()) { // left child
     return true;
-  } else if (!sibling_ && parent_->first_child_->problem->IsFathomed()) { // right child
+  } else if (!sibling_ && parent_->first_child_->IsFathomed()) { // right child
     return true;
   }
   return false;
+}
+
+const bool Node::IsFathomed() const {
+  return fathomed_;
 }
 
 const bool Node::IsRoot() const {

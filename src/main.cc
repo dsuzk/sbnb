@@ -80,8 +80,8 @@ void ShowUsage() {
   cout << "\t -v: Enable verbose output" << std::endl;
   cout << "\t -c: Compare with Cplex Solver" << std::endl;
   cout << "\t file_path: Location of linear problem file (.lp/.mps file formats). REQUIRED " << std::endl;
-  cout << "EXAMPLES:" << std::endl << "\t sbnb -bc test/testmodels/sample3.mps" << std::endl;
-  cout << "\t sbnb -v test/testmodels/sample10.mps" << std::endl;
+  cout << "EXAMPLES:" << std::endl << "\t sbnb -bc test/models/sample3.mps" << std::endl;
+  cout << "\t sbnb -v test/models/sample10.mps" << std::endl;
 }
 
 void SolveLP(int selection_flag, int branching_flag, bool verbose_flag, char* file_path) {

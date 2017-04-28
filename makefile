@@ -15,8 +15,8 @@ endif
 # CPlex dirs
 #------------------------------------------------------------
 
-CPLEX_DIR      = /vol/informatik/ilog/cplex1263
-CONCERT_DIR    = /vol/informatik/ilog/concert
+CPLEX_DIR      = /opt/ibm/ILOG/CPLEX_Studio1271/cplex
+CONCERT_DIR    = /opt/ibm/ILOG/CPLEX_Studio1271/concert
 
 # ---------------------------------------------------------------------
 # Compiler selection

@@ -32,3 +32,11 @@ docu/*
 *.exe
 *.out
 *.app
+
+#eclipse
+.settings/*
+.project
+.cproject
+
+#makefile
+makefile

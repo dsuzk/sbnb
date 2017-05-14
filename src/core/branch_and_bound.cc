@@ -21,6 +21,8 @@ BranchAndBound::BranchAndBound(IloModel* model, IloNumVarArray* variables, Branc
   model_->add(IloConversion(cplex_.getEnv(), *variables_, ILOFLOAT));
   cplex_.setOut(model_->getEnv().getNullStream());
 
+
+
 }
 
 /*

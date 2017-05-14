@@ -10,10 +10,11 @@ using namespace std;
 void SolveLP(int traversal_flag, int selection_flag, bool verbose_flag, char* file_path);
 void ShowUsage();
 void CompareWithCplex(char* file_path);
+void setObjectiveCoefficients(IloCplex* cplex, vector<double>* coef);
 
 int main(int argc, char* argv[]) {
 	int selection_flag = -1; // Depth First Traversal = 0, Breadth First Traversal = 1
-	int branching_flag = -1; // First Fractional = 0
+	int branching_flag = -1; // First Fractional = 0, Close Half = 1, Close Half Expensive = 2
 	bool verbose_flag = false;
 	bool compare_flag = false;
 	char *file_path = NULL;
@@ -48,7 +49,7 @@ int main(int argc, char* argv[]) {
 				cerr << "-g option is mutually exclusive with -f and -i. See \"sbnb -h for help.\"" << endl;
 				return 0;
 			}
-			branching_flag = 1;// TODO(lukas): exclusive option
+			branching_flag = 1;
 			break;
 		case 'i':
 			if (branching_flag > -1) {
@@ -112,8 +113,19 @@ void SolveLP(int selection_flag, int branching_flag, bool verbose_flag, char* fi
 	IloRangeArray constraints(env);
 	IloObjective objective;
 
+	try {
+		cplex.setOut(env.getNullStream());
+		cplex.importModel(model, file_path, objective, vars, constraints);
+
+
+	} catch (IloException& e) {
+		cerr << "Error: " << e << endl;
+	}
+
+
 	NodeSelection* node_selection;
 	Branching* branching_rule;
+	vector<double> coef;
 
 	switch (selection_flag) {
 	case 0:
@@ -126,6 +138,7 @@ void SolveLP(int selection_flag, int branching_flag, bool verbose_flag, char* fi
 		node_selection = new DepthFirstTraversal();
 	}
 
+
 	switch (branching_flag) {
 	case 0:
 		branching_rule = new FirstFractional(cplex.getParam(IloCplex::EpRHS));
@@ -134,29 +147,27 @@ void SolveLP(int selection_flag, int branching_flag, bool verbose_flag, char* fi
 		branching_rule = new CloseHalf(cplex.getParam(IloCplex::EpRHS));
 		break;
 	case 2:
-		branching_rule = new CloseHalfExpensive(cplex.getParam(IloCplex::EpRHS));
+		setObjectiveCoefficients(&cplex,&coef);
+		branching_rule = new CloseHalfExpensive(coef,cplex.getParam(IloCplex::EpRHS));
 		break;
 	default:
 		branching_rule = new FirstFractional(cplex.getParam(IloCplex::EpRHS));
 	}
 
-	try {
-		cplex.setOut(env.getNullStream());
-		cplex.importModel(model, file_path, objective, vars, constraints);
-		BranchAndBound bnb(&model, &vars, branching_rule, node_selection, verbose_flag);
 
-		bnb.optimize();
+	// TODO (lukas): I moved the cplex model import including try/catch to the beginning of the function, is it necessary to try/catch the following lines too?
+	BranchAndBound bnb(&model, &vars, branching_rule, node_selection, verbose_flag);
 
-		cout << endl << "------- Branch And Bound Summary -------" << endl;
-		cout << "Variable Values: " << bnb.GetBestSolution() << endl;
-		cout << "Objective Value: " << bnb.GetGlobalPrimalBound() << endl;
-		cout << "Max Node Level: " << bnb.GetStatistics().maxLevel << endl;
-		cout << "Computed Nodes: " << bnb.GetStatistics().nNodes << endl;
-		cout << "Elapsed Time: " << bnb.GetStatistics().runtime << " sec" << endl;
-		cout << "Time per Node: " << (bnb.GetStatistics().runtime / bnb.GetStatistics().nNodes) * 1000 << " ms/node" << endl << endl;
-	} catch (IloException& e) {
-		cerr << "Error: " << e << endl;
-	}
+	bnb.optimize();
+
+	cout << endl << "------- Branch And Bound Summary -------" << endl;
+	//	cout << "Variable Values: " << bnb.GetBestSolution() << endl;
+	cout << "Objective Value: " << bnb.GetGlobalPrimalBound() << endl;
+	cout << "Max Node Level: " << bnb.GetStatistics().maxLevel << endl;
+	cout << "Computed Nodes: " << bnb.GetStatistics().nNodes << endl;
+	cout << "Elapsed Time: " << bnb.GetStatistics().runtime << " sec" << endl;
+	cout << "Time per Node: " << (bnb.GetStatistics().runtime / bnb.GetStatistics().nNodes) * 1000 << " ms/node" << endl << endl;
+
 	env.end();
 }
 
@@ -183,4 +194,20 @@ void CompareWithCplex(char* file_path) {
 		cerr << "Error: " << e << endl;
 	}
 	env.end();
+}
+
+void setObjectiveCoefficients(IloCplex* cplex, vector<double>* coef){
+
+	IloExpr::LinearIterator linIterator_ = cplex->getObjective().getLinearIterator();
+
+	while (linIterator_.ok()){
+		coef->push_back(linIterator_.getCoef());
+		++linIterator_;
+	}
+
+	//	std::cout<<"coeff: ";
+	//	for (int i = 0; i<coef.size();i++){
+	//		std::cout<<coef[i]<<"\t";
+	//	}
+	//	std::cout<<std::endl;
 }

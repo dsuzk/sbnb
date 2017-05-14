@@ -24,7 +24,16 @@ protected:
 };
 
 class CloseHalfExpensive : public Branching {
-	using Branching::Branching;
+
+public:
+	CloseHalfExpensive(const std::vector <double> coef_, const double float_precision = 0.000001, const double delta_=0.1);
+
+
+private:
+	const std::vector<double> coef;
+	const double delta;
+
+
 protected:
 	int IndexOfNextVariableToFix(const IloNumArray &numbers);
 };

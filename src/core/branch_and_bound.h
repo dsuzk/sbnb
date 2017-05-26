@@ -4,7 +4,6 @@
 #include <ilcplex/ilocplex.h>
 
 #include "../branching/select_node.h"
-#include "core/optimization_problem.h"
 #include "node_selection/depth_first_traversal.h"
 #include "statistics/statistics.h"
 
@@ -28,7 +27,7 @@ class BranchAndBound {
   bool console_output_ = false;
 
   const bool IsBetterObjectiveValue(double objective_value) const;
-  void InstallFixings(const Node* previous_node, const Node* current_node) const;
+  void InstallFixings( Node* previous_node,  Node* current_node) const;
   void GenerateSubproblems(std::vector<IloConstraint*>&, Node*, NodeSelection&);
 
   public:

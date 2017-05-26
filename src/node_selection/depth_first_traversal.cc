@@ -7,19 +7,19 @@ using namespace std;
 DepthFirstTraversal::DepthFirstTraversal(){};
 
 Node* DepthFirstTraversal::NextNode() {
-  Node* next = this->traversal_order_.top();
-  this->traversal_order_.pop();
-  return next;
+    Node* next = this->traversal_order_.top();
+    this->traversal_order_.pop();
+    return next;
 }
 
 Node* DepthFirstTraversal::CurrentNode() const {
-  return this->traversal_order_.top();
+    return this->traversal_order_.top();
 }
 
 void DepthFirstTraversal::AddNode(Node* node) {
-  this->traversal_order_.push(node);
+    this->traversal_order_.push(node);
 }
 
 bool DepthFirstTraversal::HasNextNode() const {
-  return !this->traversal_order_.empty();
+    return !this->traversal_order_.empty();
 }

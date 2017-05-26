@@ -48,6 +48,7 @@ void BranchAndBound::optimize() {
     IloNumArray current_solution_variables;
 
     const float begin = clock();
+
     while (node_selection_->HasNextNode()) {
 	Node* previous_node = current_node;
 	current_node = node_selection_->NextNode();
@@ -120,8 +121,8 @@ void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint*> &branched_c
 	NodeSelection &node_selection_) {
 
     int level = parent_node->GetLevel();
-    Node* sub_problem_node_1 = new Node(&cplex_, variables_, branched_constraints[0], parent_node, level+1, console_output_);
 
+    Node* sub_problem_node_1 = new Node(&cplex_, variables_, branched_constraints[0], parent_node, level+1, console_output_);
     Node* sub_problem_node_2 = new Node(&cplex_, variables_, branched_constraints[1], parent_node, level+1, console_output_);
 
     parent_node->SetFirstChild(sub_problem_node_1);

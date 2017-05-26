@@ -88,7 +88,7 @@ void Node::Solve() {
 
 void Node::InstallFixing() {
     if (console_output_)
-//	std::cout<<"fixing installed,solved,fathomed: "<<has_fixing_installed<<solved_<<fathomed_<<std::endl;
+	//	std::cout<<"fixing installed,solved,fathomed: "<<has_fixing_installed<<solved_<<fathomed_<<std::endl;
 	std::cout << "\tInstalling fixing: " << *fixing_ << std::endl;
     cplex_->getModel().add(*fixing_);
     has_fixing_installed = true;

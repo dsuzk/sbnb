@@ -2,18 +2,19 @@
 #include <ilcplex/ilocplex.h>
 #include "branching/branching.h"
 
-int FirstFractional::IndexOfNextVariableToFix(const IloNumArray &numbers) {
+std::vector<int> FirstFractional::IndexOfNextVariableToFix(const IloNumArray &numbers) {
+    std::vector<int> indizes;
     for (int i = 0; i < numbers.getSize(); i++) {
 	if (IsFractional(numbers[i])!=0) {
-
-	    return i;
+	    indizes.insert(indizes.begin(),i);
+	    return indizes;
 	}
     }
-    return NO_FIXING_VALUE_FOUND;
+    return indizes;
 }
 
 
-int CloseHalf::IndexOfNextVariableToFix(const IloNumArray &numbers) {
+std::vector<int> CloseHalf::IndexOfNextVariableToFix(const IloNumArray &numbers) {
     int maxIndex=-1;
     double bestValue=1,temp;
 
@@ -29,14 +30,16 @@ int CloseHalf::IndexOfNextVariableToFix(const IloNumArray &numbers) {
 	}
     }
 
-    if(maxIndex!=-1) return maxIndex;
-    return NO_FIXING_VALUE_FOUND;
+    std::vector<int> indizes;
+
+    if(maxIndex!=-1) indizes.insert(indizes.begin(),maxIndex);
+    return indizes;
 }
 
 
 CloseHalfExpensive::CloseHalfExpensive(const std::vector <double> coef_, const double float_precision, const double delta_) : coef(coef_),delta(delta_), Branching(float_precision){}
 
-int CloseHalfExpensive::IndexOfNextVariableToFix(const IloNumArray &numbers) {
+std::vector<int> CloseHalfExpensive::IndexOfNextVariableToFix(const IloNumArray &numbers) {
     int bestIndex=-1,indexIgnoringDelta=-1;
     double maxValue=-1,maxValueIgnoringDelta=-1,temp;
 
@@ -60,7 +63,19 @@ int CloseHalfExpensive::IndexOfNextVariableToFix(const IloNumArray &numbers) {
 	    }
 	}
     }
-    if(bestIndex!=-1) return bestIndex;
-    if(indexIgnoringDelta!=-1) return indexIgnoringDelta;
-    return NO_FIXING_VALUE_FOUND;
+
+    std::vector<int> indizes;
+    if(bestIndex!=-1) indizes.insert(indizes.begin(),bestIndex);
+    else if(indexIgnoringDelta!=-1) indizes.insert(indizes.begin(),bestIndex);
+    return indizes;
+}
+
+std::vector<int> AllFractional::IndexOfNextVariableToFix(const IloNumArray &numbers) {
+    std::vector<int> indizes;
+    for (int i = 0; i < numbers.getSize(); i++) {
+	if (IsFractional(numbers[i])!=0) {
+	    indizes.insert(indizes.end(),i);
+	}
+    }
+    return indizes;
 }

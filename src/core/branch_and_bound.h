@@ -30,6 +30,7 @@ private:
     const bool IsBetterObjectiveValue(double objective_value) const;
     void InstallFixings( Node* previous_node,  Node* current_node) const;
     void GenerateSubproblems(std::vector<IloConstraint*>&, Node*, NodeSelection&);
+    void GenerateSubproblems2(std::vector<IloConstraint*>&, Node*, NodeSelection&);
 
 public:
     //default: first fractional; depth first traversal

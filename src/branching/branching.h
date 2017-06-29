@@ -20,7 +20,7 @@ protected:
     const int NO_FIXING_VALUE_FOUND = -1;
     const double kFloatPrecision;
 
-    virtual int IndexOfNextVariableToFix(const IloNumArray &numbers) = 0;
+    virtual std::vector<int> IndexOfNextVariableToFix(const IloNumArray &numbers) = 0;
     double IsFractional(const double number);
 
 

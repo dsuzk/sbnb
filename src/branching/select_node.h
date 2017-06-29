@@ -12,14 +12,14 @@
 class FirstFractional : public Branching {
     using Branching::Branching;
 protected:
-    int IndexOfNextVariableToFix(const IloNumArray &numbers);
+    std::vector<int> IndexOfNextVariableToFix(const IloNumArray &numbers);
 
 };
 
 class CloseHalf : public Branching {
     using Branching::Branching;
 protected:
-    int IndexOfNextVariableToFix(const IloNumArray &numbers);
+    std::vector<int> IndexOfNextVariableToFix(const IloNumArray &numbers);
 
 };
 
@@ -35,7 +35,14 @@ private:
 
 
 protected:
-    int IndexOfNextVariableToFix(const IloNumArray &numbers);
+    std::vector<int> IndexOfNextVariableToFix(const IloNumArray &numbers);
 };
 
 #endif //BNB_INDEX_OF_FIRST_FRACTIONAL_FUNCTION_H
+
+class AllFractional : public Branching {
+    using Branching::Branching;
+protected:
+    std::vector<int> IndexOfNextVariableToFix(const IloNumArray &numbers);
+
+};

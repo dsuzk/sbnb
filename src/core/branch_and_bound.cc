@@ -56,9 +56,9 @@ void BranchAndBound::optimize() {
 	Node* previous_node = current_node;
 	current_node = node_selection_->NextNode();
 
-//	if(current_node->GetParent()==NULL)
-//	    std::cout<<"ROOT!!!"<<std::endl;
-//	node_selection_->printList();
+	//	if(current_node->GetParent()==NULL)
+	//	    std::cout<<"ROOT!!!"<<std::endl;
+	//	node_selection_->printList();
 
 	if (console_output_)
 	    std::cout << "[NODE " << statistics_.nNodes << " at LEVEL " << current_node->GetLevel() << "]" << std::endl;
@@ -97,7 +97,10 @@ void BranchAndBound::optimize() {
 	} else {
 	    if (console_output_)
 		std::cout <<  "non-integer solution - branch" << std::endl;
-	    GenerateSubproblems(branched_constraints, current_node, *node_selection_);
+	    if (branched_constraints.size()>2)
+		GenerateSubproblems2(branched_constraints, current_node, *node_selection_);
+	    else
+		GenerateSubproblems(branched_constraints, current_node, *node_selection_);
 	}
 
 	statistics_.maxLevel = (current_node->GetLevel() > statistics_.maxLevel) ? current_node->GetLevel() : statistics_.maxLevel;
@@ -123,6 +126,32 @@ void BranchAndBound::InstallFixings( Node* previous_node,  Node* current_node) c
 }
 
 void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint*> &branched_constraints,
+	Node* parent_node,
+	NodeSelection &node_selection_) {
+
+    int level = parent_node->GetLevel();
+
+    Node* sub_problem_node_1 = new Node(&cplex_, variables_, branched_constraints[0], parent_node, level+1, console_output_);
+    Node* sub_problem_node_2 = new Node(&cplex_, variables_, branched_constraints[1], parent_node, level+1, console_output_);
+
+    parent_node->SetFirstChild(sub_problem_node_1);
+    sub_problem_node_1->SetNextSibling(sub_problem_node_2);
+
+
+
+    sub_problem_node_1->InstallFixing();
+    sub_problem_node_1->Solve();
+    sub_problem_node_1->RemoveFixing();
+
+    sub_problem_node_2->InstallFixing();
+    sub_problem_node_2->Solve();
+    sub_problem_node_2->RemoveFixing();
+
+    node_selection_.AddNode(sub_problem_node_1);
+    node_selection_.AddNode(sub_problem_node_2);
+}
+
+void BranchAndBound::GenerateSubproblems2(std::vector<IloConstraint*> &branched_constraints,
 	Node* parent_node,
 	NodeSelection &node_selection_) {
 

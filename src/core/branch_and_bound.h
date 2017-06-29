@@ -2,9 +2,10 @@
 #define SBNB_CORE_BRANCH_AND_BOUND_H
 
 #include <ilcplex/ilocplex.h>
-
-#include "../branching/select_node.h"
+#include "node_selection/best_first_traversal.h"
+#include "node_selection/breadth_first_traversal.h"
 #include "node_selection/depth_first_traversal.h"
+#include "../branching/select_node.h"
 #include "statistics/statistics.h"
 
 /**

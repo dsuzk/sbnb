@@ -17,7 +17,13 @@ void CplexSolver::Solve() {
     if (cplex_.solve()) {
 	cplex_.getValues(best_solution_, *variables_);
 	global_primal_bound_ = cplex_.getObjValue();
+	solution_ = IloNumArray(cplex_.getEnv());
+	cplex_.getValues(solution_, *variables_);
     }
+}
+
+IloNumArray CplexSolver::getSolution(){
+    return solution_;
 }
 
 void CplexSolver::SetCplexParams() {

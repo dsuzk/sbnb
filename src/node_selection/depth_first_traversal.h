@@ -10,9 +10,10 @@ public:
     DepthFirstTraversal();
 
     Node* NextNode();
-    Node* CurrentNode() const;
     void AddNode(Node* node);
     bool HasNextNode() const;
+    int getSize();
+    void printList();
 
 private:
     std::stack<Node*> traversal_order_;

@@ -1,5 +1,3 @@
-#include <stack>
-#include "node.h"
 #include "depth_first_traversal.h"
 
 using namespace std;
@@ -12,14 +10,18 @@ Node* DepthFirstTraversal::NextNode() {
     return next;
 }
 
-Node* DepthFirstTraversal::CurrentNode() const {
-    return this->traversal_order_.top();
-}
-
 void DepthFirstTraversal::AddNode(Node* node) {
     this->traversal_order_.push(node);
 }
 
 bool DepthFirstTraversal::HasNextNode() const {
     return !this->traversal_order_.empty();
+}
+
+int DepthFirstTraversal::getSize(){
+    return traversal_order_.size();
+}
+
+void DepthFirstTraversal::printList(){
+
 }

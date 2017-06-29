@@ -35,7 +35,6 @@ public:
     void Fathom();
     const bool IsFathomed() const;
 
-
 private:
     IloCplex* cplex_;
     IloNumVarArray* variables_;

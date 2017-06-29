@@ -16,8 +16,10 @@ public:
     CplexSolver(IloModel* model, IloNumVarArray* variables);
 
     void Solve();
+    IloNumArray getSolution();
 
     double global_primal_bound_ = 0;
+    IloNumArray solution_;
     IloCplex cplex_;
 };
 

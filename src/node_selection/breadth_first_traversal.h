@@ -10,9 +10,10 @@ public:
     BreadthFirstTraversal();
 
     Node* NextNode();
-    Node* CurrentNode() const;
     void AddNode(Node* node);
     bool HasNextNode() const;
+    int getSize();
+    void printList();
 
 private:
     std::queue<Node*> traversal_order_;

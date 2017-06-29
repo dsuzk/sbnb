@@ -44,21 +44,27 @@ void BranchAndBound::optimize() {
     Node* current_node = new Node(&cplex_,variables_,console_output_);
     node_selection_->AddNode(current_node);
 
+    current_node->Solve();
+
     std::vector<IloConstraint*> branched_constraints;
     IloNumArray current_solution_variables;
 
     const float begin = clock();
 
     while (node_selection_->HasNextNode()) {
+
 	Node* previous_node = current_node;
 	current_node = node_selection_->NextNode();
+
+//	if(current_node->GetParent()==NULL)
+//	    std::cout<<"ROOT!!!"<<std::endl;
+//	node_selection_->printList();
+
 	if (console_output_)
 	    std::cout << "[NODE " << statistics_.nNodes << " at LEVEL " << current_node->GetLevel() << "]" << std::endl;
 	statistics_.nNodes++;
 
-	InstallFixings(previous_node, current_node);
-
-	current_node->Solve();
+	InstallFixings(previous_node, current_node);	//@todo (lukas): optimize...
 
 	if (current_node->IsInfeasible() || current_node->IsUnbounded()) {
 	    if (console_output_)
@@ -127,6 +133,16 @@ void BranchAndBound::GenerateSubproblems(std::vector<IloConstraint*> &branched_c
 
     parent_node->SetFirstChild(sub_problem_node_1);
     sub_problem_node_1->SetNextSibling(sub_problem_node_2);
+
+
+
+    sub_problem_node_1->InstallFixing();
+    sub_problem_node_1->Solve();
+    sub_problem_node_1->RemoveFixing();
+
+    sub_problem_node_2->InstallFixing();
+    sub_problem_node_2->Solve();
+    sub_problem_node_2->RemoveFixing();
 
     node_selection_.AddNode(sub_problem_node_1);
     node_selection_.AddNode(sub_problem_node_2);

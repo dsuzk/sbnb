@@ -10,7 +10,6 @@ public:
     virtual void AddNode(Node* node) = 0;
     virtual bool HasNextNode() const = 0;
     virtual int getSize() = 0;
-    virtual void printList() = 0;
 };
 
 

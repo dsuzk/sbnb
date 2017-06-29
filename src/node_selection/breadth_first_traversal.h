@@ -4,6 +4,9 @@
 #include <queue>
 #include "node_selection.h"
 
+/**
+ * @brief Manages nodes in a queue
+ */
 class BreadthFirstTraversal : public NodeSelection {
 
 public:

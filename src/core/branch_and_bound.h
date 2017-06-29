@@ -18,7 +18,7 @@ private:
     Branching* branching_;
     NodeSelection* node_selection_;
 
-    IloCplex cplex_;
+    IloCplex* cplex_;
     IloNumArray best_solution_;
     double global_primal_bound_;
 
@@ -30,11 +30,11 @@ private:
     const bool IsBetterObjectiveValue(double objective_value) const;
     void InstallFixings( Node* previous_node,  Node* current_node) const;
     void GenerateSubproblems(std::vector<IloConstraint*>&, Node*, NodeSelection&);
-    void GenerateSubproblems2(std::vector<IloConstraint*>&, Node*, NodeSelection&);
+    double findBestBranchingPair(double objVal1, double objVal2);
 
 public:
     //default: first fractional; depth first traversal
-    BranchAndBound(IloModel*, IloNumVarArray*, Branching* = new FirstFractional(),
+    BranchAndBound(IloCplex*, IloModel*, IloNumVarArray*, Branching*,
 	    NodeSelection* = new DepthFirstTraversal(), bool = false);
 
     const IloNumVarArray& GetVariables() const;

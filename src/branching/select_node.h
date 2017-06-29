@@ -7,26 +7,32 @@
 #include "branching/branching.h"
 
 
-
+struct Sol{
+public:
+    Sol(int index, double frac);
+    int variableIndex;
+    double fractionalComp;
+    bool operator()(Sol*,Sol*) const;
+};
 
 class FirstFractional : public Branching {
     using Branching::Branching;
 protected:
-    std::vector<int> IndexOfNextVariableToFix(const IloNumArray &numbers);
+    int IndexOfNextVariableToFix(const IloNumArray &numbers);
 
 };
 
 class CloseHalf : public Branching {
     using Branching::Branching;
 protected:
-    std::vector<int> IndexOfNextVariableToFix(const IloNumArray &numbers);
+    int IndexOfNextVariableToFix(const IloNumArray &numbers);
 
 };
 
 class CloseHalfExpensive : public Branching {
 
 public:
-    CloseHalfExpensive(const std::vector <double> coef_, const double float_precision = 0.000001, const double delta_=0.1);
+    CloseHalfExpensive(IloNumVarArray vars, const std::vector <double> coef_, const double float_precision = 0.000001, const double delta_=0.1);
 
 
 private:
@@ -35,14 +41,25 @@ private:
 
 
 protected:
-    std::vector<int> IndexOfNextVariableToFix(const IloNumArray &numbers);
+    int IndexOfNextVariableToFix(const IloNumArray &numbers);
 };
 
-#endif //BNB_INDEX_OF_FIRST_FRACTIONAL_FUNCTION_H
 
-class AllFractional : public Branching {
-    using Branching::Branching;
+class StrongBranching : public Branching {
+
+public:
+    StrongBranching(IloNumVarArray vars, IloCplex*, int nBranchStart, double alpha, const double float_precision = 0.000001);
+    void reduceNBranch(int level);
+
+
 protected:
-    std::vector<int> IndexOfNextVariableToFix(const IloNumArray &numbers);
+    IloCplex* cplex_;
+    int IndexOfNextVariableToFix(const IloNumArray &numbers);
 
+    int nBranch;
+    int nBranchStart;
+    double alpha;
 };
+
+
+#endif

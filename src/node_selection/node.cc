@@ -76,6 +76,8 @@ IloConstraint& Node::GetFixing() const {
 }
 
 void Node::Solve() {
+    if (console_output_)
+	std::cout << "\tSolving Node: ";
     solved_ = cplex_->solve();
     cplex_status_ = cplex_->getStatus();
     solution_ = IloNumArray(cplex_->getEnv());
@@ -83,6 +85,11 @@ void Node::Solve() {
     if (solved_) {
 	cplex_->getValues(solution_, *variables_);
 	objective_value_ = cplex_->getObjValue();
+	if (console_output_)
+	    std::cout << "ObjVal="<<GetObjectiveValue()<<" Solution="<<GetSolution()<< std::endl;
+    }else{
+	if (console_output_)
+		    std::cout << "Node "<<cplex_status_<< std::endl;
     }
 }
 

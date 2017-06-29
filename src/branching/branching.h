@@ -11,16 +11,18 @@ class Branching {
 
 public:
     // default floating precision from IloCplex::EpRHS
-    Branching(const double float_precision = 0.000001);
+    Branching(IloNumVarArray vars, const double float_precision = 0.000001);
 
-    std::vector<IloConstraint*> Branch(IloNumArray &solutions, IloNumVarArray &variables);
+    std::vector<IloConstraint*> Branch(IloNumArray &solutions);
 
     virtual ~Branching(){};
 protected:
     const int NO_FIXING_VALUE_FOUND = -1;
     const double kFloatPrecision;
+    IloNumVarArray vars_;
 
-    virtual std::vector<int> IndexOfNextVariableToFix(const IloNumArray &numbers) = 0;
+    void generateConstraints(IloNumArray solutions, int index_of_variable_to_be_branched, std::vector<IloConstraint*>*);
+    virtual int IndexOfNextVariableToFix(const IloNumArray &numbers) = 0;
     double IsFractional(const double number);
 
 

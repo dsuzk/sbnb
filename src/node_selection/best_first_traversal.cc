@@ -1,6 +1,9 @@
 
 #include "best_first_traversal.h"
 
+CompareByObjValue::CompareByObjValue(){}
+
+CompareByObjValue::CompareByObjValue(bool maxProblem):maxProb(maxProblem){}
 
 bool CompareByObjValue::operator()(Node* node1, Node* node2) const{
     if (maxProb){
@@ -13,11 +16,7 @@ bool CompareByObjValue::operator()(Node* node1, Node* node2) const{
 
 BestFirstTraversal::BestFirstTraversal(){};
 
-BestFirstTraversal::BestFirstTraversal(bool maxProblem){
-    CompareByObjValue* a = new CompareByObjValue();
-    a->maxProb=maxProblem;
-    delete a;
-};
+BestFirstTraversal::BestFirstTraversal(bool maxProblem): traversal_order_(CompareByObjValue(maxProblem)) {};
 
 
 Node* BestFirstTraversal::NextNode() {
@@ -37,5 +36,3 @@ bool BestFirstTraversal::HasNextNode() const {
 int BestFirstTraversal::getSize(){
     return traversal_order_.size();
 }
-
-void BestFirstTraversal::printList(){}

@@ -19,7 +19,3 @@ bool BreadthFirstTraversal::HasNextNode() const {
 int BreadthFirstTraversal::getSize(){
     return traversal_order_.size();
 }
-
-void BreadthFirstTraversal::printList(){
-
-}

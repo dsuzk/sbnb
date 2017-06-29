@@ -21,7 +21,3 @@ bool DepthFirstTraversal::HasNextNode() const {
 int DepthFirstTraversal::getSize(){
     return traversal_order_.size();
 }
-
-void DepthFirstTraversal::printList(){
-
-}

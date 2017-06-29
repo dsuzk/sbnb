@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include <ilcplex/ilocplex.h>
-#include <core/optimization_problem.h>
 #include "../../src/branching/select_node.h"
 #include "utils/test_model_loader.h"
 

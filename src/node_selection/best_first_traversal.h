@@ -5,12 +5,20 @@
 #include <queue>
 #include "node_selection.h"
 
-
+/**
+ * @brief Struct to compare nodes by objective value for the priority_queue
+ */
 struct CompareByObjValue{
-public: bool maxProb;
+public:
+    CompareByObjValue();
+    CompareByObjValue(bool);
+    bool maxProb;
     bool operator()(Node* node1, Node* node2) const;
 };
 
+/**
+ * @brief Manages nodes in a priority_queue sorted by objective value
+ */
 class BestFirstTraversal : public NodeSelection {
 
 public:

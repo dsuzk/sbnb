@@ -1,0 +1,30 @@
+
+sort data 
+
+grep -e '^[1234567890].[1234567890] 15' -e '#' steiner1 > steiner1b15
+grep -e '^0.9 [1234567890]' -e '#' steiner1 > steiner1a09
+
+
+gnuplot
+
+plot 'steiner1b15' using 1:5 with l
+splot 'steiner1' using 1:2:5
+
+
+
+node selection rules: 
+0=depth first
+1=breadth first
+2=best first
+
+branching rules: 
+0=first fractional
+1=close half
+2=close half expensive
+3=strong branching
+
+then alpha; then #pseudonodes
+
+format: 
+
+problemName_[node selection rule]_[branching rule]_[alpha]_[pseudonodes]

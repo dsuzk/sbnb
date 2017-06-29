@@ -4,6 +4,9 @@
 #include <stack>
 #include "node_selection.h"
 
+/**
+ * @brief Manages nodes in a stack
+ */
 class DepthFirstTraversal : public NodeSelection {
 
 public:

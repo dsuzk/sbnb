@@ -24,7 +24,6 @@ public:
     double GetObjectiveValue() const;
 
 
-
     void SetFirstChild(Node*);
     void SetNextSibling(Node*);
     Node* GetFirstChild() const;
@@ -47,7 +46,6 @@ private:
     double objective_value_;
 
     bool console_output_ = false;
-
 
 
     Node* parent_ = NULL;

@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#with a given directory full of testcases (.lp and .mps files) this script runs all testcases with the options chosen with the arrays and saves the solutions
+#needs the outputDirectory as argument
+#sbnbPath and testcaseDir must fit your local installation
+#i think the most options are selfexplaining, timeout kills the computation after a chosen time, with cplexSwitch only cplex will solve the instances, clusterSwitch adds the necessary commands for the koebes cluster at the RRZK in Cologne
+
+#nodeselection method and branching rule are given as numbers which you can see further down (firstFractional=0, ...; depthFirstTraversal=0,...)
+#the names of the ouput files and the numbers in the 'data'-files which is produced by the collectData script refer to these numbers
+
 echo "PID: " $$
 
 sbnbPath=/home/bildhauer/c++Seminar/sbnb/bin/sbnb

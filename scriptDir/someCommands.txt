@@ -1,17 +1,25 @@
 
-sort data 
+#We normally used runTestcasesFinal.sh first, then collectData.sh and plotted the data with gnuplot or Excel or matlab
 
+
+# Here are some commands I used to work with the data
+
+#get selected data 
+
+#chooses only the data with testcase steiner1 with 15 pseudonodes...
 grep -e '^[1234567890].[1234567890] 15' -e '#' steiner1 > steiner1b15
+#chooses only the data with testcase steiner1 with alpha = 0.9...
 grep -e '^0.9 [1234567890]' -e '#' steiner1 > steiner1a09
 
 
-gnuplot
+#gnuplot
 
 plot 'steiner1b15' using 1:5 with l
 splot 'steiner1' using 1:2:5
 
 
 
+#format for the filenames
 node selection rules: 
 0=depth first
 1=breadth first
@@ -25,6 +33,5 @@ branching rules:
 
 then alpha; then #pseudonodes
 
-format: 
-
+#filenames
 problemName_[node selection rule]_[branching rule]_[alpha]_[pseudonodes]

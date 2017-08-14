@@ -25,7 +25,6 @@ int main(int argc, char* argv[]) {
     opterr = 0;
 
     while ((option_character = getopt (argc, argv, "dbefgij::vcha::")) != -1){
-	//	cout<<"argc: "<<argc<<" argv: "<<*argv<<" optind: "<<optind<<" optioncharacter: "<<option_character<<endl;
 	switch (option_character) {
 	case 'd':
 	    if (selection_flag > -1) {
@@ -249,7 +248,6 @@ void SolveLP(int selection_flag, int branching_flag, bool verbose_flag, char* fi
     }
 
 
-    // TODO (lukas): I moved the cplex model import including try/catch to the beginning of the function, is it necessary to try/catch the following lines too?
     BranchAndBound bnb(&cplex, &model, &vars, branching_rule, node_selection, verbose_flag);
 
     bnb.optimize();

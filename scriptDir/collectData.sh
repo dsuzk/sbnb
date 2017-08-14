@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#collects the output data produced with the runTestcases script
+#input argument is the directory which contains the files
+#produces a 'data' file which contains all results in an array and 'data_{testCaseName}' files which are equal to the first one but hold only the result data for that testcase
+
 addData () {
 input1=$1
 

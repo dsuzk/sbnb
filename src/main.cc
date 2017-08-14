@@ -24,7 +24,8 @@ int main(int argc, char* argv[]) {
     double strongBranchingAlpha=0.9;
     opterr = 0;
 
-    while ((option_character = getopt (argc, argv, "dbefgij::vcha:")) != -1){
+    while ((option_character = getopt (argc, argv, "dbefgij::vcha::")) != -1){
+	//	cout<<"argc: "<<argc<<" argv: "<<*argv<<" optind: "<<optind<<" optioncharacter: "<<option_character<<endl;
 	switch (option_character) {
 	case 'd':
 	    if (selection_flag > -1) {
@@ -77,7 +78,29 @@ int main(int argc, char* argv[]) {
 	    if(optarg==NULL){
 		std::cout<<"No value for strong branching pseudo nodes given. Setting to standard "<<strongBranchingPseudoNodes<<". "<<std::endl;
 	    }else{
-		strongBranchingPseudoNodes=atoi(optarg);
+		char *end;
+		float value = strtof(optarg, &end);
+		if (errno == ERANGE){
+		    cerr<<"Not an acceptable value for the number of pseudonodes for strong branching! "<<endl;
+		    return 0;
+		}else if(*end != '\0'){
+		    cerr<<"The place after the 'j'-argument is reserved for optional pseudonode values. Please give additional options as single arguments with an own '-'.  "<<endl;
+		    return 0;
+		}else{
+		    int valueI;
+		    if(ceilf(value) == value){
+			valueI=int(value);
+		    }else{
+			cerr<<"Input for pseudonodes should be an integer. "<<endl;
+			return 0;
+		    }
+		    if(valueI<2 || valueI > 1000){
+			cerr<<"Pseudonode value should be between 2 and 1000."<<endl;
+			return 0;
+		    }else{
+			strongBranchingPseudoNodes=valueI;
+		    }
+		}
 	    }
 
 	    break;
@@ -85,13 +108,25 @@ int main(int argc, char* argv[]) {
 	    if (branching_flag != 3) {
 		cerr << "-a option is only available for strong branching(-j option). See \"sbnb -h for help.\"" << endl;
 		return 0;
-	    }
-	    strongBranchingAlpha=atof(optarg);
-	    if(strongBranchingAlpha<0 or strongBranchingAlpha>1){
-		cerr << "Strong branching alpha has to be between 0 and 1. " << endl;
+	    }else if(optarg==NULL){
+		cerr<<"No value for strong branching alpha value given. "<<std::endl;
 		return 0;
+	    }else{
+		char *end;
+		float value = strtof(optarg, &end);
+		if (errno == ERANGE){
+		    cerr<<"Not an acceptable value for alpha for strong branching! "<<endl;
+		    return 0;
+		}else if(*end != '\0'){
+		    cerr<<"The place after the 'a'-argument is reserved for strong branching alpha values. Please give additional options as single arguments with an own '-'.  "<<endl;
+		    return 0;
+		}
+		if(value<0 or value>1){
+		    cerr << "Strong branching alpha value has to be in range 0 and 1. " << endl;
+		    return 0;
+		}
+		strongBranchingAlpha=value;
 	    }
-
 	    break;
 	case 'v':
 	    verbose_flag = true;
@@ -115,6 +150,10 @@ int main(int argc, char* argv[]) {
 
     if (optind < argc) {
 	file_path = argv[optind];
+	if(access(file_path, F_OK) == -1) {
+	    cerr<<"'"<<file_path<<"' is not a file. "<<endl;
+	    return 0;
+	}
 	if (compare_flag){
 	    cout<<"'Use Cplex' argument given; only solving with cplex. "<<endl;
 	    CompareWithCplex(file_path);
@@ -216,12 +255,6 @@ void SolveLP(int selection_flag, int branching_flag, bool verbose_flag, char* fi
     bnb.optimize();
 
     cout << endl << "------- Branch And Bound Summary -------" << endl;
-    //    if(cplex.getStatus()==IloAlgorithm::Optimal){
-    //	cout << "Variable Values ("<<bnb.GetBestSolution().getSize()<<"): " << bnb.GetBestSolution() << endl;
-    //	cout << "Objective Value: " << bnb.GetGlobalPrimalBound() << endl;
-    //    }else{
-    //	cout<<"Cplex status: "<<cplex.getStatus()<<endl;
-    //    }
 
     cout << "Variable Values ("<<bnb.GetBestSolution().getSize()<<"): " << bnb.GetBestSolution() << endl;
     cout << "Objective Value: " << bnb.GetGlobalPrimalBound() << endl;

@@ -86,7 +86,7 @@ void Node::Solve() {
 	cplex_->getValues(solution_, *variables_);
 	objective_value_ = cplex_->getObjValue();
 	if (console_output_)
-	    std::cout << "ObjVal="<<GetObjectiveValue()<<" Solution="<<GetSolution()<< std::endl;
+	    std::cout << "ObjVal="<<GetObjectiveValue()<< std::endl;
     }else{
 	if (console_output_)
 		    std::cout << "Node "<<cplex_status_<< std::endl;

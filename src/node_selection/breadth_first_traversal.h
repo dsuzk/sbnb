@@ -4,18 +4,22 @@
 #include <queue>
 #include "node_selection.h"
 
+/**
+ * @brief Manages nodes in a queue
+ */
 class BreadthFirstTraversal : public NodeSelection {
 
- public:
-  BreadthFirstTraversal();
+public:
+    BreadthFirstTraversal();
 
-  Node* NextNode();
-  Node* CurrentNode() const;
-  void AddNode(Node* node);
-  bool HasNextNode() const;
+    Node* NextNode();
+    void AddNode(Node* node);
+    bool HasNextNode() const;
+    int getSize();
+    void printList();
 
- private:
-  std::queue<Node*> traversal_order_;
+private:
+    std::queue<Node*> traversal_order_;
 };
 
 #endif //SBNB_NODE_SELECTION_BREADTH_FIRST_TRAVERSAL_H_

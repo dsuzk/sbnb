@@ -32,3 +32,14 @@ docu/*
 *.exe
 *.out
 *.app
+
+#eclipse
+.settings/*
+.project
+.cproject
+
+#makefile
+./makefile
+
+#testcases exceeding size
+test/models/testcases/*

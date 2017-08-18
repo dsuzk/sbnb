@@ -4,21 +4,23 @@
 #include <ilcplex/ilocplex.h>
 
 class CplexSolver {
-  
- private:
-  IloModel* model_;
-  IloNumVarArray* variables_;
-  IloNumArray best_solution_;
 
-  void SetCplexParams();
+private:
+    IloModel* model_;
+    IloNumVarArray* variables_;
+    IloNumArray best_solution_;
 
- public:
-  CplexSolver(IloModel* model, IloNumVarArray* variables);
+    void SetCplexParams();
 
-  void Solve();
+public:
+    CplexSolver(IloModel* model, IloNumVarArray* variables);
 
-  double global_primal_bound_ = 0;
-  IloCplex cplex_;
+    void Solve();
+    IloNumArray getSolution();
+
+    double global_primal_bound_ = 0;
+    IloNumArray solution_;
+    IloCplex cplex_;
 };
 
 #endif // __CPLEX_SOLVER_H_
